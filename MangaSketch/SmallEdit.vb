@@ -1,6 +1,6 @@
 ﻿<Serializable()>
 Public Class SmallEdit
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) 
         Dim str As String = TextBox1.Text
         Dim st As Integer = TextBox1.SelectionStart
         Dim slen As Integer = TextBox1.SelectionLength

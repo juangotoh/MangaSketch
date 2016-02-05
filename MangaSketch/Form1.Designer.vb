@@ -44,6 +44,9 @@ Partial Class Form1
         Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripSeparator()
         Me.選択されたテキストの削除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.テキスト選択解除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ヘルプHToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.まんがスケッチについてToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ヒントToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.ToolStripLabel2 = New System.Windows.Forms.ToolStripLabel()
         Me.PenMenu = New System.Windows.Forms.ToolStripComboBox()
@@ -79,7 +82,7 @@ Partial Class Form1
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ファイルToolStripMenuItem, Me.編集ToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ファイルToolStripMenuItem, Me.編集ToolStripMenuItem, Me.ヘルプHToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(767, 24)
@@ -90,8 +93,8 @@ Partial Class Form1
         '
         Me.ファイルToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.新規ToolStripMenuItem, Me.開くToolStripMenuItem, Me.ToolStripMenuItem2, Me.保存SToolStripMenuItem, Me.別名で保存AToolStripMenuItem, Me.書き出しEToolStripMenuItem, Me.ToolStripMenuItem3, Me.閉じるToolStripMenuItem, Me.終了XToolStripMenuItem})
         Me.ファイルToolStripMenuItem.Name = "ファイルToolStripMenuItem"
-        Me.ファイルToolStripMenuItem.Size = New System.Drawing.Size(52, 20)
-        Me.ファイルToolStripMenuItem.Text = "ファイル"
+        Me.ファイルToolStripMenuItem.Size = New System.Drawing.Size(66, 20)
+        Me.ファイルToolStripMenuItem.Text = "ファイル(&F)"
         '
         '新規ToolStripMenuItem
         '
@@ -157,8 +160,8 @@ Partial Class Form1
         '
         Me.編集ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.元へ戻すToolStripMenuItem, Me.ToolStripMenuItem1, Me.コピーToolStripMenuItem, Me.切り取りToolStripMenuItem, Me.貼り付けToolStripMenuItem, Me.ToolStripMenuItem4, Me.選択されたテキストの削除ToolStripMenuItem, Me.テキスト選択解除ToolStripMenuItem})
         Me.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem"
-        Me.編集ToolStripMenuItem.Size = New System.Drawing.Size(43, 20)
-        Me.編集ToolStripMenuItem.Text = "編集"
+        Me.編集ToolStripMenuItem.Size = New System.Drawing.Size(57, 20)
+        Me.編集ToolStripMenuItem.Text = "編集(&E)"
         '
         '元へ戻すToolStripMenuItem
         '
@@ -211,6 +214,25 @@ Partial Class Form1
         Me.テキスト選択解除ToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
         Me.テキスト選択解除ToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
         Me.テキスト選択解除ToolStripMenuItem.Text = "テキスト選択解除"
+        '
+        'ヘルプHToolStripMenuItem
+        '
+        Me.ヘルプHToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.まんがスケッチについてToolStripMenuItem, Me.ヒントToolStripMenuItem})
+        Me.ヘルプHToolStripMenuItem.Name = "ヘルプHToolStripMenuItem"
+        Me.ヘルプHToolStripMenuItem.Size = New System.Drawing.Size(65, 20)
+        Me.ヘルプHToolStripMenuItem.Text = "ヘルプ(&H)"
+        '
+        'まんがスケッチについてToolStripMenuItem
+        '
+        Me.まんがスケッチについてToolStripMenuItem.Name = "まんがスケッチについてToolStripMenuItem"
+        Me.まんがスケッチについてToolStripMenuItem.Size = New System.Drawing.Size(200, 22)
+        Me.まんがスケッチについてToolStripMenuItem.Text = "まんがスケッチについて(&A)..."
+        '
+        'ヒントToolStripMenuItem
+        '
+        Me.ヒントToolStripMenuItem.Name = "ヒントToolStripMenuItem"
+        Me.ヒントToolStripMenuItem.Size = New System.Drawing.Size(200, 22)
+        Me.ヒントToolStripMenuItem.Text = "ヒント(&?)..."
         '
         'ToolStrip1
         '
@@ -401,8 +423,10 @@ Partial Class Form1
         Me.Controls.Add(Me.FlowLayoutPanel1)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.MenuStrip1)
+        Me.DataBindings.Add(New System.Windows.Forms.Binding("Location", Global.MangaSketch.My.MySettings.Default, "Location", True, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.KeyPreview = True
+        Me.Location = Global.MangaSketch.My.MySettings.Default.Location
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "Form1"
         Me.Text = "まんがスケッチ"
@@ -464,4 +488,7 @@ Partial Class Form1
     Friend WithEvents サイズToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem5 As ToolStripSeparator
     Friend WithEvents 削除ToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents ヘルプHToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents まんがスケッチについてToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ヒントToolStripMenuItem As ToolStripMenuItem
 End Class

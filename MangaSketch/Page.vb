@@ -734,6 +734,11 @@ Public Class Page
                 r2 = Rectangle.Inflate(r2, 1, 1)
                 unselectAllText()
                 v.selected = True
+                form.selectFontMenu(v.GetFont)
+                form.selectSizeMenu(v.GetSize)
+                form.VertButton.Checked = v.IsVertical()
+                form.HorizButton.Checked = Not v.IsVertical()
+                form.vertical = v.IsVertical
                 'Invalidate(r)
                 g.Dispose()
             Else

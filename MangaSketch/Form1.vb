@@ -7,9 +7,10 @@ Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Formatters.Binary
 Imports WinTabDotnet
 Imports System.Threading
+Imports System.ComponentModel
 
 Public Class Form1
-    Dim vertical As Boolean
+    Public vertical As Boolean
     Public penOK As Boolean
     Public thePage As Page
     Public pagenum As Integer = 0
@@ -41,6 +42,7 @@ Public Class Form1
     Dim note As List(Of Page) = New List(Of Page)
     Public fontname As String = "ＭＳ ゴシック"
     Public fontSize As Integer = 12
+
     Public key As Integer = 0
     Public keyPressed As Char = Nothing
     Dim oldLoc As Point
@@ -92,6 +94,13 @@ Public Class Form1
         Return y * scheight * times(mul) / ymax
     End Function
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.ClientSize = My.Settings.MyClientSize
+        fontname = My.Settings.font
+        fontSize = My.Settings.size
+        vertical = My.Settings.Vertical
+        rtl = My.Settings.RTL
+        startLeft = My.Settings.StartLeft
+
         If Not WinTab.LoadWinTab() Then
             MessageBox.Show("ペンタブレットが見つかりません(WinTab32.dllが見つかりません)。", "WinTab.NET")
             Throw New WinTabException("WinTab.NETの初期化に失敗しました")
@@ -152,19 +161,20 @@ Public Class Form1
             Dim v As TextView = thePage.FindSelectedText()
             If v IsNot Nothing Then
                 v.SetSize(size_)
+                Refresh()
             End If
         End If
     End Sub
-    Private Sub selectFontMenu(name As String)
+    Public Sub selectFontMenu(name As String)
         Dim num As Integer = ComboBox_Font.Items.Count
         For i As Integer = 0 To num - 1
-            If ComboBox_Font.Items.Item(i).ToString = fontname Then
+            If ComboBox_Font.Items.Item(i).ToString = name Then
                 ComboBox_Font.SelectedIndex = i
                 Exit For
             End If
         Next
     End Sub
-    Private Sub selectSizeMenu(size As Integer)
+    Public Sub selectSizeMenu(size As Integer)
         Dim num As Integer = ComboBox_size.Items.Count
         For i As Integer = 0 To num - 1
             If Integer.Parse(ComboBox_size.Items.Item(i).ToString) = size Then
@@ -310,6 +320,9 @@ Public Class Form1
     Private Sub 新規ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 新規ToolStripMenuItem.Click
         If closeDocument() Then
             Dim nd As New NewDocumentDialog()
+            nd.RadioButton_rtl.Checked = My.Settings.RTL
+            nd.RadioButton_ltr.Checked = Not My.Settings.RTL
+            nd.RadioButton_startLeft.Checked = My.Settings.StartLeft
             If nd.ShowDialog(Me) = DialogResult.OK Then
                 Try
                     pagenum = Integer.Parse(nd.TextBox_PageNum.Text)
@@ -327,6 +340,9 @@ Public Class Form1
                 Else
                     startLeft = False
                 End If
+                My.Settings.RTL = rtl
+                My.Settings.StartLeft = startLeft
+
                 CreateDocument(pagenum, rtl, startLeft)
                 SetTitle()
             End If
@@ -960,8 +976,24 @@ Public Class Form1
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If Not closeDocument() Then
             e.Cancel = True
+        Else
+            My.Settings.MyClientSize = Me.ClientSize
+            My.Settings.font = fontname
+            My.Settings.size = fontSize
+            My.Settings.RTL = rtl
+            My.Settings.StartLeft = startLeft
+            My.Settings.Vertical = vertical
         End If
 
+    End Sub
+
+    Private Sub まんがスケッチについてToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles まんがスケッチについてToolStripMenuItem.Click
+        AboutBox1.ShowDialog()
+
+    End Sub
+
+    Private Sub ヒントToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ヒントToolStripMenuItem.Click
+        Tips.ShowDialog()
     End Sub
 
     Private Sub SelectVertical(vert As Boolean)
@@ -980,7 +1012,9 @@ Public Class Form1
             If v IsNot Nothing Then
                 v.SetDirection(vert)
                 Dim g As Graphics = thePage.CreateGraphics()
-                thePage.DrawGuides(g, thePage.sizeFactor, New Rectangle(0, 0, BMP_WIDTH, BMP_HEIGHT), Nothing)
+                Refresh()
+
+                'thePage.DrawGuides(g, thePage.sizeFactor, New Rectangle(0, 0, BMP_WIDTH, BMP_HEIGHT), Nothing)
             End If
         End If
     End Sub
@@ -990,5 +1024,9 @@ Public Class Form1
 
     Private Sub VertButton_Click(sender As Object, e As EventArgs) Handles VertButton.Click
         SelectVertical(True)
+    End Sub
+
+    Private Sub Form1_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        My.Settings.MyClientSize = Me.ClientSize
     End Sub
 End Class

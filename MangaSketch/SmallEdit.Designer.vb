@@ -23,7 +23,6 @@ Partial Class SmallEdit
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
@@ -43,17 +42,6 @@ Partial Class SmallEdit
         Me.TextBox1.TabIndex = 0
         Me.TextBox1.UseWaitCursor = True
         Me.TextBox1.WordWrap = False
-        '
-        'Button1
-        '
-        Me.Button1.CausesValidation = False
-        Me.Button1.Location = New System.Drawing.Point(3, 138)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(53, 20)
-        Me.Button1.TabIndex = 1
-        Me.Button1.Text = "ルビ..."
-        Me.Button1.UseVisualStyleBackColor = True
-        Me.Button1.UseWaitCursor = True
         '
         'Button2
         '
@@ -86,7 +74,6 @@ Partial Class SmallEdit
         Me.CausesValidation = False
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.TextBox1)
         Me.Font = New System.Drawing.Font("MS UI Gothic", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
         Me.ImeMode = System.Windows.Forms.ImeMode.Hiragana
@@ -100,7 +87,6 @@ Partial Class SmallEdit
     End Sub
 
     Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents Button1 As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents Button3 As Button
 End Class

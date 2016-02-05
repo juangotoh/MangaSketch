@@ -49,6 +49,11 @@ Public Class TextView
             Return "horizontal"
         End If
     End Function
+    Public Function IsVertical() As Boolean
+        Return vertical
+    End Function
+
+
     Public Sub Draw(g As Graphics, sf As Double, r As Rectangle, noDraw As TextView)
         g.PageUnit = GraphicsUnit.Pixel
         Dim fontSuffix As String = ""
