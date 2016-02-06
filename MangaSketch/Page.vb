@@ -7,7 +7,7 @@ Imports BitMiracle.LibJpeg
 Imports BitMiracle.LibJpeg.Classic
 Imports System.Reflection
 
-<Serializable()>
+
 Public Class Page
     Inherits Panel
     Const BMP_WIDTH As Integer = 2149

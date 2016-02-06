@@ -349,6 +349,7 @@ Partial Class Form1
         '
         'FlowLayoutPanel1
         '
+        Me.FlowLayoutPanel1.AllowDrop = True
         Me.FlowLayoutPanel1.AutoScroll = True
         Me.FlowLayoutPanel1.AutoSize = True
         Me.FlowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink

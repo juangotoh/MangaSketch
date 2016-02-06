@@ -10,7 +10,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("まんがスケッチ")>
 <Assembly: AssemblyDescription("漫画のネーム（絵コンテ）製作ソフト。略して「まんスケ」")>
-<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyCompany("JuanGotoh")>
 <Assembly: AssemblyProduct("MangaSketch")>
 <Assembly: AssemblyCopyright("Copyright ©  2016")>
 <Assembly: AssemblyTrademark("")>

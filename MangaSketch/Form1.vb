@@ -52,10 +52,17 @@ Public Class Form1
     Dim exportText As Boolean = True
     Dim GaijiSave As Boolean = True
     Public isDirty As Boolean = False
-    Public HandCursor As Cursor = New Cursor("Resources\Hand.cur")
-    Public DotCursor As Cursor = New Cursor("Resources\Dot_00.cur")
+    Public HandCursor As Cursor
+    Public DotCursor As Cursor
     Dim MenuDropping As Boolean = False
+    Public Sub New()
 
+        ' この呼び出しはデザイナーで必要です。
+        InitializeComponent()
+
+        ' InitializeComponent() 呼び出しの後で初期化を追加します。
+
+    End Sub
     Protected Overrides Sub WndProc(ByRef m As Message)
         Try
             If m_wtMessenger Is Nothing Then
@@ -94,6 +101,44 @@ Public Class Form1
         Return y * scheight * times(mul) / ymax
     End Function
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Try
+            If Not WinTab.LoadWinTab() Then
+                MessageBox.Show("ペンタブレットが見つかりません(WinTab32.dllが見つかりません)。", "WinTab.NET")
+                Throw New WinTabException("WinTab.NETの初期化に失敗しました")
+            End If
+            m_wtMessenger = New WinTabMessenger
+            m_wtContext = New WinTabContext
+            AddHandler m_wtMessenger.CursorMove, AddressOf Form1_CursorMove
+            AddHandler m_wtMessenger.NPressureChange, AddressOf Form1_NPressureChange
+            AddHandler m_wtMessenger.CursorChange, AddressOf Form1_CursorChange
+            AddHandler m_wtMessenger.ButtonDown, AddressOf Form1_ButtonDown
+            AddHandler m_wtMessenger.ButtonUp, AddressOf Form1_ButtonUp
+
+            xmax = WinTab.DeviceX.axMax + 1
+            ymax = WinTab.DeviceY.axMax + 1
+            Dim vr As Rectangle = SystemInformation.VirtualScreen
+            scWidth = vr.Width
+            scheight = vr.Height
+            TabletScale = ymax / scheight
+            xTabletScale = xmax / scWidth
+            offScale = TabletScale / times(mul)
+
+            m_wtContext.Open(Handle, True, vr.Left * xTabletScale, vr.Top * TabletScale, xmax, ymax, ContextOption.DEFAULT, RelativeField.None)
+
+            'm_wtContext.Open(Me.Handle, True)
+            Debug.WriteLine("xMax=" + xmax.ToString)
+            Debug.WriteLine("yMax=" + ymax.ToString)
+            PressureMax = WinTab.DeviceNPressure.axMax
+            Debug.WriteLine("Pressure Max=" + PressureMax.ToString)
+        Catch ex As Exception
+            MessageBox.Show("タブレットが正常に動作していません")
+            PressureMax = 255
+        End Try
+
+        Dim myLoc = IO.Path.GetDirectoryName(Reflection.Assembly.GetExecutingAssembly().Location)
+
+        HandCursor = New Cursor(myLoc + "\" + "Resources\Hand.cur")
+        DotCursor = New Cursor(myLoc + "\" + "Resources\Dot_00.cur")
         Me.ClientSize = My.Settings.MyClientSize
         fontname = My.Settings.font
         fontSize = My.Settings.size
@@ -101,40 +146,27 @@ Public Class Form1
         rtl = My.Settings.RTL
         startLeft = My.Settings.StartLeft
 
-        If Not WinTab.LoadWinTab() Then
-            MessageBox.Show("ペンタブレットが見つかりません(WinTab32.dllが見つかりません)。", "WinTab.NET")
-            Throw New WinTabException("WinTab.NETの初期化に失敗しました")
-        End If
-        m_wtMessenger = New WinTabMessenger
-        m_wtContext = New WinTabContext
-        AddHandler m_wtMessenger.CursorMove, AddressOf Form1_CursorMove
-        AddHandler m_wtMessenger.NPressureChange, AddressOf Form1_NPressureChange
-        AddHandler m_wtMessenger.CursorChange, AddressOf Form1_CursorChange
-        AddHandler m_wtMessenger.ButtonDown, AddressOf Form1_ButtonDown
-        AddHandler m_wtMessenger.ButtonUp, AddressOf Form1_ButtonUp
 
-        xmax = WinTab.DeviceX.axMax + 1
-        ymax = WinTab.DeviceY.axMax + 1
-        Dim vr As Rectangle = SystemInformation.VirtualScreen
-        scWidth = vr.Width
-        scheight = vr.Height
-        TabletScale = ymax / scheight
-        xTabletScale = xmax / scWidth
-        offScale = TabletScale / times(mul)
 
-        m_wtContext.Open(Handle, True, vr.Left * xTabletScale, vr.Top * TabletScale, xmax, ymax, ContextOption.DEFAULT, RelativeField.None)
-
-        'm_wtContext.Open(Me.Handle, True)
-        Debug.WriteLine("xMax=" + xmax.ToString)
-        Debug.WriteLine("yMax=" + ymax.ToString)
-        PressureMax = WinTab.DeviceNPressure.axMax
-        Debug.WriteLine("Pressure Max=" + PressureMax.ToString)
         pFactor = PressureMax / 255.0
         buildFontMenu()
         selectPenMenu(pensizes(pensize))
         selectFontMenu(fontname)
         selectSizeMenu(fontSize)
         note = New List(Of Page)
+
+        If My.Application.CommandLineArgs IsNot Nothing Then
+            If My.Application.CommandLineArgs.Count > 0 Then
+                Dim f As String = My.Application.CommandLineArgs(0)
+
+                If File.Exists(f) Then
+                    If IO.Path.GetExtension(f) = ".name" Then
+                        LoadDocument(f)
+                    End If
+                End If
+            End If
+        End If
+
     End Sub
     Public Sub selectPage(p As Page)
         If thePage IsNot Nothing Then
@@ -802,6 +834,9 @@ Public Class Form1
         SaveProg.Close()
     End Sub
     Private Sub LoadDocument(path As String)
+        If note.Count > 0 Then
+            If Not closeDocument() Then Return
+        End If
         If File.Exists(path) Then
             Using zipToOpen As FileStream = New FileStream(path, FileMode.Open)
                 Using archive As ZipArchive = New ZipArchive(zipToOpen, ZipArchiveMode.Read)
@@ -896,7 +931,7 @@ Public Class Form1
                     note.Clear()
                     note = pages
                     For Each p As Page In note
-                        p.setSize(2)
+                        p.setSize(times(mul))
 
                         FlowLayoutPanel1.Controls.Add(p)
                         p.Centering()
@@ -1018,6 +1053,26 @@ Public Class Form1
             End If
         End If
     End Sub
+
+    Private Sub FlowLayoutPanel1_DragDrop(sender As Object, e As DragEventArgs) Handles FlowLayoutPanel1.DragDrop
+        Dim fileName As String() = CType(
+        e.Data.GetData(DataFormats.FileDrop, False),
+        String())
+        Dim f As String = fileName(0)
+        If IO.Path.GetExtension(f) = ".name" Then
+            LoadDocument(f)
+        End If
+
+    End Sub
+
+    Private Sub FlowLayoutPanel1_DragEnter(sender As Object, e As DragEventArgs) Handles FlowLayoutPanel1.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
     Private Sub HorizButton_Click(sender As Object, e As EventArgs) Handles HorizButton.Click
         SelectVertical(False)
     End Sub

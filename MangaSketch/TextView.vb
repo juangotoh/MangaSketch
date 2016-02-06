@@ -1,5 +1,4 @@
 ﻿Imports System.Drawing.Drawing2D
-<Serializable()>
 Public Class TextView
     Dim Parent As Page
     Public x, y As Integer
