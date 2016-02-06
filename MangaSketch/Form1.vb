@@ -76,29 +76,31 @@ Public Class Form1
 
     End Sub
     Public xTabletScale As Double
-    Public TabletScale As Double
+    Public yTabletScale As Double
     Public offScale As Double
     Dim xmax As Integer
     Dim ymax As Integer
     Dim scWidth As Integer
     Dim scheight As Integer
+    Dim scLeft As Integer
+    Dim scTop As Integer
     Public Function TabletXtoScreen(x As Integer) As Integer
-        Return x * scWidth / xmax
+        Return x * scWidth / xmax + scLeft
     End Function
     Public Function TabletYtoScreen(y As Integer) As Integer
-        Return y * scheight / ymax
+        Return y * scheight / ymax + scTop
     End Function
     Public Function ScreenXtoTablet(x As Integer) As Integer
-        Return x * xmax / scWidth
+        Return (x - scLeft) * xmax / scWidth
     End Function
     Public Function ScreenYtoTablet(y As Integer) As Integer
-        Return y * ymax / scheight
+        Return (y - scTop) * ymax / scheight
     End Function
     Public Function TabletXtoOff(x As Integer) As Integer
-        Return x * scWidth * times(mul) / xmax
+        Return (x * scWidth / xmax + scLeft) * times(mul)
     End Function
     Public Function TabletYtOff(y As Integer) As Integer
-        Return y * scheight * times(mul) / ymax
+        Return (y * scheight / ymax + scTop) * times(mul)
     End Function
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -117,15 +119,19 @@ Public Class Form1
 
             xmax = WinTab.DeviceX.axMax + 1
             ymax = WinTab.DeviceY.axMax + 1
+            Dim xmin = WinTab.DeviceX.axMin
+            Dim ymin = WinTab.DeviceY.axMin
             Dim vr As Rectangle = SystemInformation.VirtualScreen
+            scTop = vr.Top
+            scLeft = vr.Left
             scWidth = vr.Width
             scheight = vr.Height
-            TabletScale = ymax / scheight
+            yTabletScale = ymax / scheight
             xTabletScale = xmax / scWidth
-            offScale = TabletScale / times(mul)
+            offScale = yTabletScale / times(mul)
 
-            m_wtContext.Open(Handle, True, vr.Left * xTabletScale, vr.Top * TabletScale, xmax, ymax, ContextOption.DEFAULT, RelativeField.None)
-
+            'm_wtContext.Open(Handle, True, ScreenXtoTablet(vr.Left), ScreenYtoTablet(vr.Top), xmax, ymax, ContextOption.DEFAULT, RelativeField.None)
+            m_wtContext.Open(Handle, True, xmin, ymin, xmax, ymax, ContextOption.DEFAULT, RelativeField.None)
             'm_wtContext.Open(Me.Handle, True)
             Debug.WriteLine("xMax=" + xmax.ToString)
             Debug.WriteLine("yMax=" + ymax.ToString)
@@ -238,7 +244,7 @@ Public Class Form1
 
     Private Sub Form1_CursorMove(e As PacketEventArgs)
         Dim size As Double
-        'Label1.Text = e.pkts.pkX.ToString + ":" + e.pkts.pkY.ToString
+        'Label1.Text = TabletXtoScreen(e.pkts.pkX).ToString + ":" + TabletYtoScreen(e.pkts.pkY).ToString
         If e.pkts.pkNormalPressure > 0 And drawing Then
             If (Control.ModifierKeys And Keys.Control = Keys.Control) Or
             keyPressed = " "c Or keyPressed = "　"c Or
@@ -254,6 +260,7 @@ Public Class Form1
             End If
             curX = e.pkts.pkX
             curY = e.pkts.pkY
+            'Label1.Text = curX.ToString + " : " + curY.ToString
             Dim curPoint As Point = New Point(curX, curY)
             Dim oldPoint As Point = New Point(oldX, oldY)
 
@@ -285,8 +292,8 @@ Public Class Form1
         If e.pkts.pkNormalPressure > 0 And Not drawing Then
             toppest = SystemInformation.VirtualScreen.Bottom
             leftest = SystemInformation.VirtualScreen.Right
-            bottomest = 0
-            rightest = 0
+            bottomest = SystemInformation.VirtualScreen.Top
+            rightest = SystemInformation.VirtualScreen.Left
 
             oldX = e.pkts.pkX
             oldY = e.pkts.pkY

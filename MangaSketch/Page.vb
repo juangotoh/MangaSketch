@@ -136,10 +136,15 @@ Public Class Page
     Public Sub draw(tool As Integer, p As Point, op As Point, pensize As Integer, pressure As Integer)
         Dim lp As Point
         Dim lop As Point
-        lp = PointToClient(p)
-        lop = PointToClient(op)
-        Dim dx As Integer = form.ScreenXtoTablet(lp.X - p.X)
-        Dim dy As Integer = form.ScreenYtoTablet(lp.Y - p.Y)
+        Dim test1 As New Point(0, 0)
+        Dim test2 As Point = Me.PointToClient(test1)
+        Dim dx = test2.X * form.xTabletScale
+        Dim dy = test2.Y * form.yTabletScale
+
+        'lp = PointToClient(p)
+        'lop = PointToClient(op)
+        'Dim dx As Integer = form.ScreenXtoTablet(lp.X - p.X)
+        'Dim dy As Integer = form.ScreenYtoTablet(lp.Y - p.Y)
         lp.X = p.X + dx
         lp.Y = p.Y + dy
         lop.X = op.X + dx
@@ -155,7 +160,7 @@ Public Class Page
             r = x2
         Else
             l = x2
-            t = x1
+            r = x1
         End If
         If y1 < y2 Then
             t = y1
@@ -169,7 +174,8 @@ Public Class Page
         Dim pn As Pen = New Pen(Color.FromArgb(&H7F000000), pensize)
         'g.DrawLine(pn, lop, lp)
 
-        Debug.WriteLine(lp.X.ToString + ":" + lp.Y.ToString)
+        'Debug.WriteLine(lp.X.ToString + ":" + lp.Y.ToString)
+        'Debug.WriteLine(x1.ToString + ":" + y1.ToString)
         drawBuf(tool, lop, lp, pensize, pressure)
         'DrawGuides(g, sizeFactor, screenRect, Nothing)
         Form1.isDirty = True
