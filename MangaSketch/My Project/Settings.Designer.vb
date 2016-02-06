@@ -137,6 +137,54 @@ Namespace My
                 Me("Vertical") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property ExportDpi() As Integer
+            Get
+                Return CType(Me("ExportDpi"),Integer)
+            End Get
+            Set
+                Me("ExportDpi") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+        Public Property ExpoerPaper() As Integer
+            Get
+                Return CType(Me("ExpoerPaper"),Integer)
+            End Get
+            Set
+                Me("ExpoerPaper") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property ExportFolder() As String
+            Get
+                Return CType(Me("ExportFolder"),String)
+            End Get
+            Set
+                Me("ExportFolder") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ExportColor() As Boolean
+            Get
+                Return CType(Me("ExportColor"),Boolean)
+            End Get
+            Set
+                Me("ExportColor") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

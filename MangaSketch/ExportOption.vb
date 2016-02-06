@@ -13,11 +13,13 @@ Public Class ExportOption
     End Sub
 
     Private Sub ExportOption_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ComboBox_dpi.SelectedIndex = 0
+        'ComboBox_dpi.SelectedIndex = 0
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
+        If TextBox_Path.Text.Length > 0 And IO.Directory.Exists(TextBox_Path.Text) Then
+            FolderBrowserDialog1.SelectedPath = TextBox_Path.Text
+        End If
         If FolderBrowserDialog1.ShowDialog = DialogResult.OK Then
             TextBox_Path.Text = FolderBrowserDialog1.SelectedPath
         End If

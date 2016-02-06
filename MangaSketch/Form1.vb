@@ -100,6 +100,7 @@ Public Class Form1
     Public Function TabletYtOff(y As Integer) As Integer
         Return y * scheight * times(mul) / ymax
     End Function
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             If Not WinTab.LoadWinTab() Then
@@ -161,6 +162,7 @@ Public Class Form1
 
                 If File.Exists(f) Then
                     If IO.Path.GetExtension(f) = ".name" Then
+                        closeDocument()
                         LoadDocument(f)
                     End If
                 End If
@@ -559,11 +561,21 @@ Public Class Form1
         ExportOption.TextBox_Path.Text = path
         ExportOption.TextBox_Quality.Text = QualityStr
         ExportOption.TextBox_name.Text = name
-        ExportOption.ComboBox_dpi.SelectedIndex = dpi
-        ExportOption.ComboBox_PaperSelect.SelectedIndex = paper
+        ExportOption.RadioButton_Color.Checked = My.Settings.ExportColor
+        ExportOption.RadioButtonGray.Checked = Not My.Settings.ExportColor
+
+        ExportOption.ComboBox_dpi.SelectedIndex = My.Settings.ExportDpi
+        ExportOption.ComboBox_PaperSelect.SelectedIndex = My.Settings.ExpoerPaper
+        If My.Settings.ExportFolder.Length > 0 Then
+            ExportOption.TextBox_Path.Text = My.Settings.ExportFolder
+        End If
         ExportOption.TextExportCheck.Checked = exportText
         ExportOption.UseGaijiCheck.Checked = GaijiSave
         If ExportOption.ShowDialog() = DialogResult.OK Then
+            My.Settings.ExportDpi = ExportOption.ComboBox_dpi.SelectedIndex
+            My.Settings.ExpoerPaper = ExportOption.ComboBox_PaperSelect.SelectedIndex
+            My.Settings.ExportFolder = ExportOption.TextBox_Path.Text
+            My.Settings.ExportColor = ExportOption.RadioButton_Color.Checked
             Dim Quality As Integer
             Dim outdpi As Integer
             QualityStr = ExportOption.TextBox_Quality.Text
@@ -584,6 +596,8 @@ Public Class Form1
             SaveProg.setStep(1)
             SaveProg.Label1.Text = "JPEG書き出し中..."
             SaveProg.SetValue(0)
+            SaveProg.StartPosition = FormStartPosition.CenterParent
+
             SaveProg.Show(Me)
             Dim l As New List(Of Object)
             l.Add(path + "/" + name)
@@ -593,6 +607,7 @@ Public Class Form1
             l.Add(paper)
             l.Add(exportText)
             l.Add(GaijiSave)
+            l.Add(mihiraki)
             ExportWorker.RunWorkerAsync(l)
 
         End If
@@ -748,6 +763,7 @@ Public Class Form1
         Dim isGray As Boolean = l(3)
         Dim exportText As Boolean = l(5)
         Dim GaijiSave As Boolean = l(6)
+        Dim mihiraki As Integer = l(7)
 
         For i As Integer = 0 To mihiraki - 1
             note(i).exportImage(Path, Quality, outdpi, isGray, paper, exportText, GaijiSave)
@@ -832,6 +848,7 @@ Public Class Form1
     Private Sub SaveWorker_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles SaveWorker.RunWorkerCompleted
         'SaveProg.SetValue(100)
         SaveProg.Close()
+        isDirty = False
     End Sub
     Private Sub LoadDocument(path As String)
         If note.Count > 0 Then
@@ -928,6 +945,7 @@ Public Class Form1
                         Loop
                         num += 1
                     Loop
+                    mihiraki = num
                     note.Clear()
                     note = pages
                     For Each p As Page In note
@@ -938,6 +956,8 @@ Public Class Form1
                     Next
                 End Using
             End Using
+            filename = IO.Path.GetFileNameWithoutExtension(path)
+            SetTitle()
         End If
 
     End Sub

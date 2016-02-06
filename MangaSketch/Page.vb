@@ -95,7 +95,7 @@ Public Class Page
     Public Sub EndEdit()
         Dim tv As TextView = FindSelectedText()
         If tv Is Nothing Then
-            tv = New TextView(lastPoint.X * sizeFactor, lastPoint.Y * sizeFactor, Editor.TextBox1.Text, Form1.fontname, Form1.fontSize, True)
+            tv = New TextView(lastPoint.X * sizeFactor, lastPoint.Y * sizeFactor, Editor.TextBox1.Text, Form1.fontname, Form1.fontSize, Form1.vertical)
             texts.Add(tv)
             unselectAllText()
             tv.selected = True
@@ -484,7 +484,9 @@ Public Class Page
         g.SetClip(buf.GetBounds(GraphicsUnit.Pixel))
         Debug.WriteLine("buf.Width=" + buf.Width.ToString)
         Debug.WriteLine("g.Width=" + g.ClipBounds.Width.ToString)
-        g.DrawImage(buf, 0, 0)
+        Dim brect As New Rectangle(0, 0, buf.Width, buf.Height)
+        Dim crect As New Rectangle(0, 0, eb.Width, eb.Height)
+        g.DrawImage(buf, crect, brect, GraphicsUnit.Pixel)
         DrawGuides(g, 1, sRect, Nothing)
         eb.SetResolution(dpi, dpi)
         Dim leftTexts As String = ""

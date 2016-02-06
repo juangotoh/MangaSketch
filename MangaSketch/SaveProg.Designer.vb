@@ -70,9 +70,6 @@ Partial Class SaveProg
         Me.ProgressBar1.Size = New System.Drawing.Size(266, 23)
         Me.ProgressBar1.TabIndex = 2
         '
-        'BackgroundWorker1
-        '
-        '
         'SaveProg
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
