@@ -1002,7 +1002,7 @@ Public Class Form1
                                 s = reader.ReadLine()
                                 y_ = Integer.Parse(s)
                                 s = reader.ReadLine()
-                                If s = "True" Then
+                                If s = "vertical" Then
                                     direction_ = True
                                 Else
                                     direction_ = False
