@@ -15,7 +15,7 @@ Public Class TextView
         Text = inText
         fontname = fname
         size = fSize
-        vertical = True
+        vertical = isvertical
     End Sub
     Public Function GetLocation() As Point
         Return New Point(x, y)

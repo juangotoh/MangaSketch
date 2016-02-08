@@ -57,6 +57,7 @@ Public Class Form1
     Dim MenuDropping As Boolean = False
     Dim packets As Queue(Of Integer())
     Public Exporting As Boolean
+    Public noDrawOperation As Boolean
 
     Public Sub New()
 
@@ -268,7 +269,7 @@ Public Class Form1
         'Label1.Text = TabletXtoScreen(e.pkts.pkX).ToString + ":" + TabletYtoScreen(e.pkts.pkY).ToString
         If e.pkts.pkNormalPressure > 0 And drawing Then
             If (Control.ModifierKeys And Keys.Control = Keys.Control) Or
-            keyPressed = " "c Or keyPressed = "　"c Or
+            noDrawOperation Or
             MenuDropping Then Return
             If e.pkts.pkStatus And &H10 Then
                 tool = Eraser
@@ -376,7 +377,7 @@ Public Class Form1
             Debug.WriteLine(r.ToString)
             thePage.Invalidate(r)
             drawing = False
-
+            noDrawOperation = False
             'Timer1.Stop()
         End If
         If e.pkts.pkNormalPressure = 0 Then
@@ -1006,6 +1007,7 @@ Public Class Form1
                 End Using
             End Using
             filename = IO.Path.GetFileNameWithoutExtension(path)
+            filePath = filename
             SetTitle()
         End If
 
@@ -1024,6 +1026,7 @@ Public Class Form1
         keyPressed = e.KeyChar
         If keyPressed = "　"c Or keyPressed = " "c Then
             FlowLayoutPanel1.Cursor = HandCursor
+            noDrawOperation = True
         End If
     End Sub
 
