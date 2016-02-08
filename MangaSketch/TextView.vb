@@ -8,7 +8,8 @@ Public Class TextView
     Dim size As Single = 11
     Public bounds As Rectangle
     Public selected As Boolean = False
-    Public Sub New(inx As Integer, iny As Integer, inText As String, fname As String, fSize As Integer, isvertical As Boolean)
+    Public Sub New(parent_ As Page, inx As Integer, iny As Integer, inText As String, fname As String, fSize As Integer, isvertical As Boolean)
+        Parent = parent_
         x = inx
         y = iny
         Text = inText
@@ -83,7 +84,12 @@ Public Class TextView
                 g.DrawString(GaijiConvert(Text), font, Brushes.Black, origin, format)
 
                 If selected Then
-                    g.DrawRectangle(Pens.Cyan, bounds)
+                    If Parent IsNot Nothing Then
+                        If Not Parent.form.Exporting Then
+                            g.DrawRectangle(Pens.Cyan, bounds)
+                        End If
+                    End If
+
                 End If
             End If
 

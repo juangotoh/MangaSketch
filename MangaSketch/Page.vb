@@ -12,7 +12,7 @@ Public Class Page
     Inherits Panel
     Const BMP_WIDTH As Integer = 2150
     Const BMP_HEIGHT As Integer = 1517
-    Dim form As Form1
+    Public form As Form1
     Dim rtl As Boolean
     Dim startLeft As Boolean
     Dim mihirakiNum As Integer
@@ -109,20 +109,21 @@ Public Class Page
         startLeft = isStartLeft
         sizeFactor = sf
         mihirakiNum = mynum
-        Dim length = BMP_WIDTH * BMP_HEIGHT
+
         buf = New Bitmap(BMP_WIDTH, BMP_HEIGHT, PixelFormat.Format8bppIndexed)
         Dim palette As ColorPalette = buf.Palette
-        Dim img_data(length) As Byte
-        Dim i As Integer
-        For i = 0 To length - 1
-            img_data(i) = 255
-        Next
 
+        Dim i As Integer
         For i = 0 To 255
             palette.Entries(i) = Color.FromArgb(i, i, i)
         Next
         buf.Palette = palette
         Dim bmpData As BitmapData = buf.LockBits(New Rectangle(0, 0, BMP_WIDTH, BMP_HEIGHT), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed)
+        Dim img_data(bmpData.Stride * BMP_HEIGHT) As Byte
+        Dim length = img_data.Length
+        For i = 0 To length - 1
+            img_data(i) = 255
+        Next
         Marshal.Copy(img_data, 0, bmpData.Scan0, length)
         Erase img_data
         buf.UnlockBits(bmpData)
@@ -180,7 +181,7 @@ Public Class Page
     Public Sub EndEdit()
         Dim tv As TextView = FindSelectedText()
         If tv Is Nothing Then
-            tv = New TextView(lastPoint.X * sizeFactor, lastPoint.Y * sizeFactor, Editor.TextBox1.Text, Form1.fontname, Form1.fontSize, Form1.vertical)
+            tv = New TextView(Me, lastPoint.X * sizeFactor, lastPoint.Y * sizeFactor, Editor.TextBox1.Text, Form1.fontname, Form1.fontSize, Form1.vertical)
             texts.Add(tv)
             unselectAllText()
             tv.selected = True
@@ -434,8 +435,11 @@ Public Class Page
 
         Dim brect As New Rectangle(left, top, rwidth, rheight)
         Dim drect As New Rectangle(left / sizeFactor, top / sizeFactor, rwidth / sizeFactor, rheight / sizeFactor)
-
-        g.InterpolationMode = Drawing2D.InterpolationMode.High
+        If sizeFactor < 1 Then
+            g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
+        Else
+            g.InterpolationMode = Drawing2D.InterpolationMode.High
+        End If
         g.DrawImage(buf, drect, brect, GraphicsUnit.Pixel)
         'DrawGuides(g, sizeFactor, drect, Nothing)
         g.Dispose()
@@ -509,7 +513,12 @@ Public Class Page
             Dim brect As New Rectangle(0, 0, buf.Width, buf.Height)
             Dim drect As New Rectangle(0, 0, buf.Width / sizeFactor, buf.Height / sizeFactor)
             Try
-                e.Graphics.InterpolationMode = Drawing2D.InterpolationMode.High
+                If sizeFactor < 1 Then
+                    e.Graphics.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
+                Else
+                    e.Graphics.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                End If
+
                 e.Graphics.DrawImage(buf, drect, brect, GraphicsUnit.Pixel)
                 'e.Graphics.DrawImage(buf, rect)
                 e.Graphics.SetClip(rect)
@@ -547,8 +556,12 @@ Public Class Page
             '台詞描画
             tv.Draw(g, sf, r, noDraw)
         Next
+        '内枠
         g.DrawRectangles(p, rects)
-        g.DrawLine(p, pWidth, 0, pWidth, pHeight)
+        If Not form.Exporting Then
+            'ページ分割線、JPEGエクスポート時は描画しない
+            g.DrawLine(p, pWidth, 0, pWidth, pHeight)
+        End If
         Debug.WriteLine("Lines Draw")
         If rtl Then
             If startLeft Then
@@ -665,6 +678,7 @@ Public Class Page
         Debug.WriteLine("g.Width=" + g.ClipBounds.Width.ToString)
         Dim brect As New Rectangle(0, 0, buf.Width, buf.Height)
         Dim crect As New Rectangle(0, 0, eb.Width, eb.Height)
+        g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
         g.DrawImage(buf, crect, brect, GraphicsUnit.Pixel)
         DrawGuides(g, 1, sRect, Nothing)
         eb.SetResolution(dpi, dpi)

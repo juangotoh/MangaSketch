@@ -34,7 +34,7 @@ Public Class Form1
     Const BMP_HEIGHT As Integer = 1517
     Dim times() As Double = {8, 4, 3, 2, 1.5, 1, 0.5} ' 1/8, 1/4. 1/2 1
     Dim pensizes() As Double = {0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 5.0, 10.0}
-    Dim esizes() As Double = {1, 3, 5, 10, 20, 50}
+    Dim esizes() As Double = {1, 3, 5, 10, 20, 30, 50}
     Dim esize As Integer = 3
     Dim mul As Integer = 1
     Dim pensize As Integer = 1
@@ -56,6 +56,7 @@ Public Class Form1
     Public DotCursor As Cursor
     Dim MenuDropping As Boolean = False
     Dim packets As Queue(Of Integer())
+    Public Exporting As Boolean
 
     Public Sub New()
 
@@ -342,7 +343,7 @@ Public Class Form1
                     'curPage.LockPixels()
                 End If
             End If
-            Timer1.Start()
+            'Timer1.Start()
             Debug.WriteLine("Drawing")
         End If
         If e.pkts.pkNormalPressure = 0 And drawing Then
@@ -376,7 +377,7 @@ Public Class Form1
             thePage.Invalidate(r)
             drawing = False
 
-            Timer1.Stop()
+            'Timer1.Stop()
         End If
         If e.pkts.pkNormalPressure = 0 Then
 
@@ -610,6 +611,7 @@ Public Class Form1
         ExportOption.TextExportCheck.Checked = exportText
         ExportOption.UseGaijiCheck.Checked = GaijiSave
         If ExportOption.ShowDialog() = DialogResult.OK Then
+            Exporting = True
             My.Settings.ExportDpi = ExportOption.ComboBox_dpi.SelectedIndex
             My.Settings.ExpoerPaper = ExportOption.ComboBox_PaperSelect.SelectedIndex
             My.Settings.ExportFolder = ExportOption.TextBox_Path.Text
@@ -831,6 +833,7 @@ Public Class Form1
 
     Private Sub ExportWorker_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles ExportWorker.RunWorkerCompleted
         SaveProg.Hide()
+        Exporting = False
     End Sub
 
     Private Sub SaveWorker_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles SaveWorker.DoWork
@@ -984,7 +987,7 @@ Public Class Form1
                                 Else
                                     text_ = " "
                                 End If
-                                Dim v As TextView = New TextView(x_, y_, text_, font_, size_, direction_)
+                                Dim v As TextView = New TextView(p, x_, y_, text_, font_, size_, direction_)
                                 p.texts.Add(v)
                             End Using
                             i = i + 1
