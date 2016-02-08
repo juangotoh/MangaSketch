@@ -24,18 +24,18 @@ Public Class Form1
     Dim oldY As Integer
     Dim drawing As Boolean
     Dim tool As Integer
-    Dim PressureMax As Integer = 0
+    Public PressureMax As Integer = 0
     Dim pFactor As Double
     Const Pencil As Integer = 0
     Const Eraser As Integer = 1
     Private m_wtMessenger As WinTabMessenger
     Private m_wtContext As WinTabContext
-    Const BMP_WIDTH As Integer = 2149
+    Const BMP_WIDTH As Integer = 2150
     Const BMP_HEIGHT As Integer = 1517
     Dim times() As Double = {8, 4, 3, 2, 1.5, 1, 0.5} ' 1/8, 1/4. 1/2 1
-    Dim pensizes() As Double = {0.2, 0.4, 0.8, 1.0, 2.0}
-    Dim esizes() As Double = {3, 5, 10, 20}
-    Dim esize As Integer = 2
+    Dim pensizes() As Double = {0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 5.0, 10.0}
+    Dim esizes() As Double = {1, 3, 5, 10, 20, 50}
+    Dim esize As Integer = 3
     Dim mul As Integer = 1
     Dim pensize As Integer = 1
     Dim mmpen As Double = 0.4
@@ -55,6 +55,8 @@ Public Class Form1
     Public HandCursor As Cursor
     Public DotCursor As Cursor
     Dim MenuDropping As Boolean = False
+    Dim packets As Queue(Of Integer())
+
     Public Sub New()
 
         ' この呼び出しはデザイナーで必要です。
@@ -97,10 +99,10 @@ Public Class Form1
         Return (y - scTop) * ymax / scheight
     End Function
     Public Function TabletXtoOff(x As Integer) As Integer
-        Return (x * scWidth / xmax + scLeft) * times(mul)
+        Return (x * scWidth / xmax * times(mul)) + (scLeft * times(mul))
     End Function
     Public Function TabletYtOff(y As Integer) As Integer
-        Return (y * scheight / ymax + scTop) * times(mul)
+        Return (y * scheight / ymax * times(mul)) + (scTop * times(mul))
     End Function
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -141,7 +143,7 @@ Public Class Form1
             MessageBox.Show("タブレットが正常に動作していません")
             PressureMax = 255
         End Try
-
+        packets = New Queue(Of Integer())
         Dim myLoc = IO.Path.GetDirectoryName(Reflection.Assembly.GetExecutingAssembly().Location)
 
         HandCursor = New Cursor(myLoc + "\" + "Resources\Hand.cur")
@@ -157,7 +159,9 @@ Public Class Form1
 
         pFactor = PressureMax / 255.0
         buildFontMenu()
+        buildPenMenu()
         selectPenMenu(pensizes(pensize))
+        selectEmenu(esizes(esize))
         selectFontMenu(fontname)
         selectSizeMenu(fontSize)
         note = New List(Of Page)
@@ -180,8 +184,14 @@ Public Class Form1
         If thePage IsNot Nothing Then
             If p IsNot thePage Then
                 thePage.unselectAllText()
+                'thePage.CopyToGray()
+
+                'p.CreateColorBits()
+
             End If
-            'thePage.Select()
+        Else
+            'p.CreateColorBits()
+
         End If
         thePage = p
     End Sub
@@ -233,6 +243,14 @@ Public Class Form1
         Next
 
     End Sub
+    Private Sub selectEmenu(size As Integer)
+        Dim num As Integer = ElaserMenu.Items.Count
+        For i As Integer = 0 To num - 1
+            If Integer.Parse(ElaserMenu.Items.Item(i).ToString) = size Then
+                ElaserMenu.SelectedIndex = i
+            End If
+        Next
+    End Sub
     Private Sub Form1_ButtonUp(e As PacketEventArgs)
 
 
@@ -243,6 +261,8 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_CursorMove(e As PacketEventArgs)
+        Dim pk As Integer() = {e.pkts.pkX, e.pkts.pkY, e.pkts.pkNormalPressure}
+
         Dim size As Double
         'Label1.Text = TabletXtoScreen(e.pkts.pkX).ToString + ":" + TabletYtoScreen(e.pkts.pkY).ToString
         If e.pkts.pkNormalPressure > 0 And drawing Then
@@ -258,6 +278,11 @@ Public Class Form1
                 size = mmpen
 
             End If
+            Dim pss(4)() As Integer
+            Dim tmpx = 0, tmpy = 0, tmpPressure = 0
+
+
+
             curX = e.pkts.pkX
             curY = e.pkts.pkY
             'Label1.Text = curX.ToString + " : " + curY.ToString
@@ -267,26 +292,30 @@ Public Class Form1
             Dim penPixel As Integer = mmToPixel(size)
 
             Dim pr As Integer = e.pkts.pkNormalPressure / pFactor
+            'Dim pr As Integer = tmpPressure / 5 / pFactor
             If pr > 255 Then
                 pr = 255
             End If
-            thePage.draw(tool, curPoint, oldPoint, penPixel, pr)
+            'thePage.draw(tool, curPoint, oldPoint, penPixel, pr)
+            thePage.draw(tool, curPoint, oldPoint, penPixel, e.pkts.pkNormalPressure)
             If curPoint.X < leftest Then
-                leftest = curPoint.X
-            ElseIf curPoint.X > rightest Then
-                rightest = curPoint.X
-            End If
-            If curPoint.Y < toppest Then
-                toppest = curPoint.Y
-            ElseIf curPoint.Y > bottomest Then
-                bottomest = curPoint.Y
-            End If
+                    leftest = curPoint.X
+                ElseIf curPoint.X > rightest Then
+                    rightest = curPoint.X
+                End If
+                If curPoint.Y < toppest Then
+                    toppest = curPoint.Y
+                ElseIf curPoint.Y > bottomest Then
+                    bottomest = curPoint.Y
+                End If
 
-            oldX = curX
-            oldY = curY
+                oldX = curX
+                oldY = curY
+
+
         End If
     End Sub
-
+    Dim bitLocked As Boolean = False
     Private Sub Form1_NPressureChange(e As PacketEventArgs)
         Dim size As Double
         If e.pkts.pkNormalPressure > 0 And Not drawing Then
@@ -309,6 +338,8 @@ Public Class Form1
                     Dim curPage As Page = c
                     selectPage(curPage)
                     drawing = True
+                    'bitLocked = True
+                    'curPage.LockPixels()
                 End If
             End If
             Timer1.Start()
@@ -334,12 +365,17 @@ Public Class Form1
             bottomest = TabletYtoScreen(bottomest)
             rightest = TabletXtoScreen(rightest)
             Dim p As Point = New Point(leftest, toppest)
+            'If bitLocked Then
+            '    thePage.UnlockPixels()
+            '    bitLocked = False
+            'End If
             p = thePage.PointToClient(p)
             Dim r As Rectangle = New Rectangle(p.X, p.Y, rightest - leftest + 1, bottomest - toppest + 1)
             r.Inflate(10, 10)
             Debug.WriteLine(r.ToString)
             thePage.Invalidate(r)
             drawing = False
+
             Timer1.Stop()
         End If
         If e.pkts.pkNormalPressure = 0 Then
@@ -434,35 +470,30 @@ Public Class Form1
         Return True
     End Function
     Private Sub CreatePages(pages As Integer)
-        Dim length = BMP_WIDTH * BMP_HEIGHT
-        Dim buf As Bitmap = New Bitmap(BMP_WIDTH, BMP_HEIGHT, PixelFormat.Format8bppIndexed)
-        Dim palette As ColorPalette = buf.Palette
-        Dim img_data(length) As Byte
-        Dim i As Integer
-        For i = 0 To length - 1
-            img_data(i) = 255
-        Next
-        For i = 0 To 255
-            palette.Entries(i) = Color.FromArgb(i, i, i)
-        Next
-        buf.Palette = palette
-        Dim bmpData As BitmapData = buf.LockBits(New Rectangle(0, 0, BMP_WIDTH, BMP_HEIGHT), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed)
-        Dim dst_line As IntPtr
-        For j As Integer = 0 To BMP_HEIGHT - 1
-            dst_line = bmpData.Scan0 + j * bmpData.Stride
-            Marshal.Copy(img_data, j * BMP_WIDTH, dst_line, BMP_WIDTH)
-        Next
-        Erase img_data
-        buf.UnlockBits(bmpData)
-        buf.SetResolution(150, 150)
+        'Dim length = BMP_WIDTH * BMP_HEIGHT
+        'Dim buf As Bitmap = New Bitmap(BMP_WIDTH, BMP_HEIGHT, PixelFormat.Format8bppIndexed)
+        'Dim palette As ColorPalette = buf.Palette
+        'Dim img_data(length) As Byte
+        'Dim i As Integer
+        'For i = 0 To length - 1
+        '    img_data(i) = 255
+        'Next
 
+        'For i = 0 To 255
+        '    palette.Entries(i) = Color.FromArgb(i, i, i)
+        'Next
+        'buf.Palette = palette
+        'Dim bmpData As BitmapData = buf.LockBits(New Rectangle(0, 0, BMP_WIDTH, BMP_HEIGHT), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed)
+        'Marshal.Copy(img_data, 0, bmpData.Scan0, length)
+        'Erase img_data
+        'buf.UnlockBits(bmpData)
+        'buf.SetResolution(150, 150)
         For i = 0 To pages - 1
-            note.Add(New Page(Me, buf, times(mul), rtl, startLeft, i))
+            note.Add(New Page(Me, times(mul), rtl, startLeft, i))
 
             FlowLayoutPanel1.Controls.Add(note(i))
             note(i).Centering()
         Next
-        buf.Dispose()
     End Sub
     Private Sub Form1_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
         m_wtContext.Overlap(True)
@@ -641,6 +672,14 @@ Public Class Form1
             ComboBox_Font.Items.Add(familyName)
             j += 1
         End While
+    End Sub
+    Private Sub buildPenMenu()
+        For Each s As Double In pensizes
+            PenMenu.Items.Add(s.ToString("0.0"))
+        Next
+        For Each s As Integer In esizes
+            ElaserMenu.Items.Add(s.ToString)
+        Next
     End Sub
 
 
@@ -902,7 +941,7 @@ Public Class Form1
                         Using reader As BinaryReader = New BinaryReader(image.Open())
                             Dim b(image.Length) As Byte
                             reader.Read(b, 0, image.Length)
-                            p = New Page(Me, Nothing, 2, rtl, startLeft, num)
+                            p = New Page(Me, 2, rtl, startLeft, num)
                             p.SetImage(b)
                             pages.Add(p)
 
@@ -1098,6 +1137,10 @@ Public Class Form1
         Else
             e.Effect = DragDropEffects.None
         End If
+    End Sub
+
+    Private Sub ElaserMenu_DropDownClosed(sender As Object, e As EventArgs) Handles ElaserMenu.DropDownClosed
+        esize = ElaserMenu.SelectedIndex
     End Sub
 
     Private Sub HorizButton_Click(sender As Object, e As EventArgs) Handles HorizButton.Click

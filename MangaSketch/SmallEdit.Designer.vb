@@ -40,7 +40,6 @@ Partial Class SmallEdit
         Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both
         Me.TextBox1.Size = New System.Drawing.Size(189, 133)
         Me.TextBox1.TabIndex = 0
-        Me.TextBox1.UseWaitCursor = True
         Me.TextBox1.WordWrap = False
         '
         'Button2
@@ -52,7 +51,6 @@ Partial Class SmallEdit
         Me.Button2.TabIndex = 2
         Me.Button2.Text = "キャンセル"
         Me.Button2.UseVisualStyleBackColor = True
-        Me.Button2.UseWaitCursor = True
         '
         'Button3
         '
@@ -64,7 +62,6 @@ Partial Class SmallEdit
         Me.Button3.TabIndex = 3
         Me.Button3.Text = "OK"
         Me.Button3.UseVisualStyleBackColor = True
-        Me.Button3.UseWaitCursor = True
         '
         'SmallEdit
         '
@@ -80,7 +77,6 @@ Partial Class SmallEdit
         Me.MaximumSize = New System.Drawing.Size(400, 300)
         Me.Name = "SmallEdit"
         Me.Size = New System.Drawing.Size(187, 165)
-        Me.UseWaitCursor = True
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

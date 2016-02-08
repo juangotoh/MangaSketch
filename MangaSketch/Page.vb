@@ -10,7 +10,7 @@ Imports System.Reflection
 
 Public Class Page
     Inherits Panel
-    Const BMP_WIDTH As Integer = 2149
+    Const BMP_WIDTH As Integer = 2150
     Const BMP_HEIGHT As Integer = 1517
     Dim form As Form1
     Dim rtl As Boolean
@@ -37,6 +37,65 @@ Public Class Page
     Dim Dragging As Integer = -1
     Dim oldLoc As Point
     Public mouseStillDown As Boolean = False
+    Dim cbuf As Bitmap
+    Dim penBuf As Bitmap
+    Dim bufLocked As Boolean = False
+
+    Public Sub CreateColorBits()
+        cbuf = New Bitmap(buf.Width, buf.Height, PixelFormat.Format24bppRgb)
+        cbuf.SetResolution(150, 150)
+        'penBuf = New Bitmap(buf.Width, buf.Height, PixelFormat.Format8bppIndexed)
+        'Dim plt As ColorPalette = penBuf.Palette
+        'For i = 0 To 255
+        '    plt.Entries(i) = Color.FromArgb(255, 255, 255)
+        'Next
+        Dim g As Graphics = Graphics.FromImage(cbuf)
+        g.FillRectangle(Brushes.White, New Rectangle(0, 0, buf.Width, buf.Height))
+        g.DrawImage(buf, 0, 0)
+        g.FillRectangle(Brushes.Black, New Rectangle(100, 100, 500, 500))
+        g.Dispose()
+    End Sub
+    Public Sub CopyToGray()
+        Dim bmpData As BitmapData = cbuf.LockBits(New Rectangle(0, 0, cbuf.Width, cbuf.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb)
+        Dim ba As Byte() = New Byte(cbuf.Width * cbuf.Height * 3) {}
+        Dim gData As BitmapData = buf.LockBits(New Rectangle(0, 0, buf.Width, buf.Height), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed)
+        Dim ga As Byte() = New Byte(buf.Width * buf.Height) {}
+        Marshal.Copy(bmpData.Scan0, ba, 0, ba.Length)
+        Dim pixelsize As Integer = buf.Width * buf.Height
+        Dim inputStride = bmpData.Stride
+        Dim outputStride = gData.Stride
+        Dim padding As Integer = gData.Stride - buf.Width
+        'For i As Integer = 0 To pixelsize
+        '    ba(i) = ba(i * 3 + i)
+        '    If i Mod (buf.Width - 1) = 0 Then
+        '        i += padding
+        '    End If
+        'Next
+
+        Parallel.For(0, cbuf.Height - 1, Sub(y)
+                                             Dim InputOffset As Integer = y * inputStride
+                                             Dim OutputOffset As Integer = y * outputStride
+                                             Dim count As Integer = 0
+                                             Do
+                                                 If count >= outputStride Then Exit Do
+                                                 If InputOffset >= ba.Length Then Exit Do
+                                                 If OutputOffset >= ga.Length Then Exit Do
+                                                 ga(OutputOffset) = ba(InputOffset)
+                                                 InputOffset += 3
+                                                 OutputOffset += 1
+                                                 count += 1
+
+                                             Loop
+
+
+                                         End Sub)
+
+
+        Marshal.Copy(ga, 0, gData.Scan0, buf.Height * buf.Width)
+        buf.UnlockBits(gData)
+        cbuf.UnlockBits(bmpData)
+
+    End Sub
 
     Public Sub DeleteData()
         buf.Dispose()
@@ -44,15 +103,35 @@ Public Class Page
         texts.Clear()
 
     End Sub
-    Public Sub New(ByRef form_ As Form1, ByRef tBits As Bitmap, ByRef sf As Double, isRtl As Boolean, isStartLeft As Boolean, mynum As Integer)
+    Public Sub New(ByRef form_ As Form1, ByRef sf As Double, isRtl As Boolean, isStartLeft As Boolean, mynum As Integer)
         form = form_
         rtl = isRtl
         startLeft = isStartLeft
+        sizeFactor = sf
         mihirakiNum = mynum
-        If tBits IsNot Nothing Then
-            buf = tBits.Clone
-            setSize(sf)
-        End If
+        Dim length = BMP_WIDTH * BMP_HEIGHT
+        buf = New Bitmap(BMP_WIDTH, BMP_HEIGHT, PixelFormat.Format8bppIndexed)
+        Dim palette As ColorPalette = buf.Palette
+        Dim img_data(length) As Byte
+        Dim i As Integer
+        For i = 0 To length - 1
+            img_data(i) = 255
+        Next
+
+        For i = 0 To 255
+            palette.Entries(i) = Color.FromArgb(i, i, i)
+        Next
+        buf.Palette = palette
+        Dim bmpData As BitmapData = buf.LockBits(New Rectangle(0, 0, BMP_WIDTH, BMP_HEIGHT), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed)
+        Marshal.Copy(img_data, 0, bmpData.Scan0, length)
+        Erase img_data
+        buf.UnlockBits(bmpData)
+        buf.SetResolution(150, 150)
+        setSize(sf)
+        'If tBits IsNot Nothing Then
+        '    buf = tBits.Clone
+        '    setSize(sf)
+        'End If
         Editor = New SmallEdit
         Editor.Visible = False
         Me.DoubleBuffered = True
@@ -67,7 +146,13 @@ Public Class Page
     Public Sub Centering()
         If Parent.Width > Me.Width Then
             Dim pad As Integer = (Parent.Width - Me.Width) / 2
-            Dim newPad As Padding = New Padding(pad, 3, pad, 3)
+            Dim topMargin As Integer = 0
+            If mihirakiNum = 0 Then
+                topMargin = Height
+
+            End If
+            Dim newPad As Padding = New Padding(pad, topMargin, pad, 3)
+
             Me.Margin = newPad
         End If
     End Sub
@@ -180,10 +265,21 @@ Public Class Page
         'DrawGuides(g, sizeFactor, screenRect, Nothing)
         Form1.isDirty = True
     End Sub
-    Private Sub drawBuf(tool As Integer, ByRef startPt As Point, ByRef endPt As Point, penSize As Integer, col As Byte)
+    Private Function pressure(x As Integer) As Integer
+        Dim b As Integer
+        Dim q As Integer
+        Dim c = form.PressureMax
+        b = c / 2
+        q = 64
+        Return q * (x ^ 2 - c * x) / (b ^ 2 - c * b) + 255 * (x ^ 2 - x * b) / (c ^ 2 - c * b)
+    End Function
+    Dim plottedX As Integer
+    Dim plottedY As Integer
+    Private Sub drawBuf(tool As Integer, ByRef startPt As Point, ByRef endPt As Point, penSize As Integer, col As Integer)
         If tool = 1 And Not form.penOK Then
-            Return
+            'Return
         End If
+
         If form.penOK Then form.penOK = False
         'Dim x0 As Integer = startPt.X * sizeFactor - (penSize / 2)
         'Dim y0 As Integer = startPt.Y * sizeFactor - (penSize / 2)
@@ -208,16 +304,81 @@ Public Class Page
         End If
         If x0 < x1 Then sx = stp Else sx = -stp
         If y0 < y1 Then sy = stp Else sy = -stp
+
         Dim err = dx - dy
+        bufLocked = True
+        Dim area As Rectangle = New Rectangle(0, 0, buf.Width, buf.Height)
         Dim bits As BitmapData = buf.LockBits(New Rectangle(0, 0, buf.Width, buf.Height), ImageLockMode.ReadWrite, buf.PixelFormat)
         Dim ptr As IntPtr = bits.Scan0
         Dim pixels As Byte() = New Byte(bits.Stride * buf.Height - 1) {}
         System.Runtime.InteropServices.Marshal.Copy(ptr, pixels, 0, pixels.Length)
         Dim e2 As Integer
+
+
+        col = pressure(col)
         Do
 
             If x0 = x1 And y0 = y1 Then Exit Do
-            plot(pixels, bits.Stride, x0, y0, tool, penSize, col)
+            'plot(pixels, bits.Stride, x0, y0, tool, penSize, col)
+            '----
+
+
+            'If True Then 'x0 >= 0 And x0 <= buf.Width And y0 >= 0 And y0 <= buf.Height Then
+            'Dim ty As Integer
+            'Dim tx As Integer
+            Dim painted(penSize * penSize) As Integer
+            'Dim index As Integer = 0
+            'Dim i As Integer
+            'Dim pos As Integer
+            Dim options As New ParallelOptions()
+            Dim movedX = Math.Abs(plottedX - x0)
+            Dim movedY = Math.Abs(plottedY - y0)
+            If Math.Sqrt(movedX ^ 2 + movedY ^ 2) > penSize / 2 Then
+                Parallel.For(y0, y0 + penSize, Sub(ty)
+                                                   Dim tx As Integer
+                                                   Dim pos As Integer
+                                                   Dim index As Integer = 0
+                                                   For tx = x0 To x0 + penSize - 1
+                                                       If area.Contains(tx, ty) Then
+                                                           pos = ty * bits.Stride + tx
+                                                           'For i = 0 To noPaint.Length - 1
+                                                           '    If tool >= 0 And noPaint(i) = pos Then
+                                                           '        'Return
+                                                           '        Exit For
+                                                           '    End If
+                                                           'Next
+
+                                                           If pos < pixels.Length Then
+                                                               Dim pixel As Integer = pixels(pos)
+                                                               If tool = 0 Then
+                                                                   pixel = pixel * (255 - col) / 255
+                                                               Else
+
+                                                                   pixel = pixel + col / 3
+                                                                   If pixel > 255 Then pixel = 255
+                                                               End If
+
+                                                               If pixel < 0 Then pixel = 0
+                                                               pixels(pos) = pixel
+                                                               painted(index) = pos
+                                                               index = index + 1
+                                                           End If
+
+
+                                                       End If
+
+
+                                                   Next
+                                               End Sub)
+                plottedX = x0
+                plottedY = y0
+            End If
+
+
+            noPaint = painted.Clone
+            'End If
+
+            '-----
             e2 = 2 * err
             If e2 > -dy Then
                 err = err - dy
@@ -238,6 +399,7 @@ Public Class Page
         System.Runtime.InteropServices.Marshal.Copy(pixels, 0, ptr, pixels.Length)
 
         buf.UnlockBits(bits)
+        bufLocked = False
         Erase pixels
         Dim g As Graphics = CreateGraphics()
         Dim left, top As Integer
@@ -272,27 +434,30 @@ Public Class Page
 
         Dim brect As New Rectangle(left, top, rwidth, rheight)
         Dim drect As New Rectangle(left / sizeFactor, top / sizeFactor, rwidth / sizeFactor, rheight / sizeFactor)
+
         g.InterpolationMode = Drawing2D.InterpolationMode.High
         g.DrawImage(buf, drect, brect, GraphicsUnit.Pixel)
+        'DrawGuides(g, sizeFactor, drect, Nothing)
         g.Dispose()
         Invalidate(drect)
     End Sub
-    Private Sub plot(ByRef pixels As Byte(), stride As Integer, x As Integer, y As Integer, tool As Integer, size As Integer, col As Byte)
-        If x < 0 Or x > buf.Width Or y < 0 Or y > buf.Height Then Return
+    Private Sub plot(ByRef pixels As Byte(), stride As Integer, x0 As Integer, y0 As Integer, tool As Integer, size As Integer, col As Byte)
+        If x0 < 0 Or x0 > buf.Width Or y0 < 0 Or y0 > buf.Height Then Return
         Dim ty As Integer
         Dim tx As Integer
         Dim painted(size * size) As Integer
         Dim index As Integer = 0
-        Dim i As Integer
-        For ty = y To y + size - 1
-            For tx = x To x + size - 1
+        'Dim i As Integer
+
+        For ty = y0 To y0 + size - 1
+            For tx = x0 To x0 + size - 1
                 Dim pos As Integer = ty * stride + tx
-                For i = 0 To noPaint.Length - 1
-                    If tool >= 0 And noPaint(i) = pos Then
-                        'Return
-                        Exit For
-                    End If
-                Next
+                'For i = 0 To noPaint.Length - 1
+                '    If tool >= 0 And noPaint(i) = pos Then
+                '        'Return
+                '        Exit For
+                '    End If
+                'Next
                 Try
                     If pos < pixels.Length Then
                         Dim pixel As Integer = pixels(pos)
@@ -336,16 +501,24 @@ Public Class Page
 
     End Sub
     Private Sub Page_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) Handles Me.Paint
+        If bufLocked Then Return
+
         If Not buf Is Nothing Then
             Dim rect As Rectangle = New Rectangle(0, 0, Me.Bounds.Width, Me.Bounds.Height)
             Dim sRect As Rectangle = New Rectangle(0, 0, buf.Width, buf.Height)
             Dim brect As New Rectangle(0, 0, buf.Width, buf.Height)
             Dim drect As New Rectangle(0, 0, buf.Width / sizeFactor, buf.Height / sizeFactor)
-            e.Graphics.InterpolationMode = Drawing2D.InterpolationMode.High
-            e.Graphics.DrawImage(buf, drect, brect, GraphicsUnit.Pixel)
-            'e.Graphics.DrawImage(buf, rect)
-            e.Graphics.SetClip(rect)
-            DrawGuides(e.Graphics, sizeFactor, sRect, Nothing)
+            Try
+                e.Graphics.InterpolationMode = Drawing2D.InterpolationMode.High
+                e.Graphics.DrawImage(buf, drect, brect, GraphicsUnit.Pixel)
+                'e.Graphics.DrawImage(buf, rect)
+                e.Graphics.SetClip(rect)
+                DrawGuides(e.Graphics, sizeFactor, sRect, Nothing)
+            Catch ex As System.InvalidOperationException
+
+            End Try
+
+
         End If
     End Sub
     ''' <summary>

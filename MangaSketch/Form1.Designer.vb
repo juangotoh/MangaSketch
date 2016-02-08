@@ -74,7 +74,10 @@ Partial Class Form1
         Me.削除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.サイズToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripSeparator()
-        Me.削除ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripLabel5 = New System.Windows.Forms.ToolStripLabel()
+        Me.ElaserMenu = New System.Windows.Forms.ToolStripComboBox()
+        Me.ToolStripLabel6 = New System.Windows.Forms.ToolStripLabel()
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.MenuStrip1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.ContextTextMenu.SuspendLayout()
@@ -237,7 +240,7 @@ Partial Class Form1
         'ToolStrip1
         '
         Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel2, Me.PenMenu, Me.ToolStripLabel1, Me.ToolStripSeparator2, Me.ToolStripLabel4, Me.ComboBox_Font, Me.ComboBox_size, Me.ToolStripLabel3, Me.ToolStripSeparator3, Me.HorizButton, Me.VertButton, Me.ToolStripSeparator1, Me.ZoomOutButton, Me.ZoomInButton})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel2, Me.PenMenu, Me.ToolStripLabel1, Me.ToolStripSeparator2, Me.ToolStripLabel5, Me.ElaserMenu, Me.ToolStripLabel6, Me.ToolStripSeparator4, Me.ToolStripLabel4, Me.ComboBox_Font, Me.ComboBox_size, Me.ToolStripLabel3, Me.ToolStripSeparator3, Me.HorizButton, Me.VertButton, Me.ToolStripSeparator1, Me.ZoomOutButton, Me.ZoomInButton})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 24)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(767, 25)
@@ -253,7 +256,6 @@ Partial Class Form1
         'PenMenu
         '
         Me.PenMenu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.PenMenu.Items.AddRange(New Object() {"0.1", "0.2", "0.4", "0.6", "0.8", "1.0", "2.0"})
         Me.PenMenu.Name = "PenMenu"
         Me.PenMenu.Size = New System.Drawing.Size(75, 25)
         '
@@ -389,32 +391,48 @@ Partial Class Form1
         '
         'ContextTextMenu
         '
-        Me.ContextTextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.削除ToolStripMenuItem, Me.サイズToolStripMenuItem, Me.ToolStripMenuItem5, Me.削除ToolStripMenuItem1})
+        Me.ContextTextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.削除ToolStripMenuItem, Me.サイズToolStripMenuItem, Me.ToolStripMenuItem5})
         Me.ContextTextMenu.Name = "ContextTextMenu"
-        Me.ContextTextMenu.Size = New System.Drawing.Size(108, 76)
+        Me.ContextTextMenu.Size = New System.Drawing.Size(136, 54)
         '
         '削除ToolStripMenuItem
         '
         Me.削除ToolStripMenuItem.Name = "削除ToolStripMenuItem"
-        Me.削除ToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
-        Me.削除ToolStripMenuItem.Text = "フォント"
+        Me.削除ToolStripMenuItem.Size = New System.Drawing.Size(135, 22)
+        Me.削除ToolStripMenuItem.Text = "ページ削除..."
         '
         'サイズToolStripMenuItem
         '
         Me.サイズToolStripMenuItem.Name = "サイズToolStripMenuItem"
-        Me.サイズToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
-        Me.サイズToolStripMenuItem.Text = "サイズ"
+        Me.サイズToolStripMenuItem.Size = New System.Drawing.Size(135, 22)
+        Me.サイズToolStripMenuItem.Text = "ページ追加..."
         '
         'ToolStripMenuItem5
         '
         Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
-        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(104, 6)
+        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(132, 6)
         '
-        '削除ToolStripMenuItem1
+        'ToolStripLabel5
         '
-        Me.削除ToolStripMenuItem1.Name = "削除ToolStripMenuItem1"
-        Me.削除ToolStripMenuItem1.Size = New System.Drawing.Size(107, 22)
-        Me.削除ToolStripMenuItem1.Text = "削除"
+        Me.ToolStripLabel5.Name = "ToolStripLabel5"
+        Me.ToolStripLabel5.Size = New System.Drawing.Size(48, 22)
+        Me.ToolStripLabel5.Text = "消しゴム:"
+        '
+        'ElaserMenu
+        '
+        Me.ElaserMenu.Name = "ElaserMenu"
+        Me.ElaserMenu.Size = New System.Drawing.Size(75, 25)
+        '
+        'ToolStripLabel6
+        '
+        Me.ToolStripLabel6.Name = "ToolStripLabel6"
+        Me.ToolStripLabel6.Size = New System.Drawing.Size(27, 22)
+        Me.ToolStripLabel6.Text = "mm"
+        '
+        'ToolStripSeparator4
+        '
+        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 25)
         '
         'Form1
         '
@@ -488,8 +506,11 @@ Partial Class Form1
     Friend WithEvents 削除ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents サイズToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem5 As ToolStripSeparator
-    Friend WithEvents 削除ToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents ヘルプHToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents まんがスケッチについてToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ヒントToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripLabel5 As ToolStripLabel
+    Friend WithEvents ElaserMenu As ToolStripComboBox
+    Friend WithEvents ToolStripLabel6 As ToolStripLabel
+    Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
 End Class
