@@ -36,7 +36,7 @@ Public Class Form1
     Dim pensizes() As Double = {0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 5.0, 10.0}
     Dim esizes() As Double = {1, 3, 5, 10, 20, 30, 50}
     Dim esize As Integer = 3
-    Dim mul As Integer = 1
+    Dim mul As Integer = 2
     Dim pensize As Integer = 1
     Dim mmpen As Double = 0.4
     Dim note As List(Of Page) = New List(Of Page)
@@ -167,7 +167,14 @@ Public Class Form1
         selectFontMenu(fontname)
         selectSizeMenu(fontSize)
         note = New List(Of Page)
+        Dim dummyPanel As New Panel()
+        dummyPanel.Width = 0
+        dummyPanel.Height = 0
+        Dim pad As Padding = New Padding(0, 0, 0, 1000)
+        dummyPanel.Margin = pad
 
+
+        FlowLayoutPanel1.Controls.Add(dummyPanel)
         If My.Application.CommandLineArgs IsNot Nothing Then
             If My.Application.CommandLineArgs.Count > 0 Then
                 Dim f As String = My.Application.CommandLineArgs(0)
@@ -377,7 +384,7 @@ Public Class Form1
             Debug.WriteLine(r.ToString)
             thePage.Invalidate(r)
             drawing = False
-            noDrawOperation = False
+
             'Timer1.Stop()
         End If
         If e.pkts.pkNormalPressure = 0 Then
@@ -461,7 +468,7 @@ Public Class Form1
         mihiraki = 0
         Dim i As Integer
         For i = 0 To note.Count - 1
-            FlowLayoutPanel1.Controls.RemoveAt(0)
+            FlowLayoutPanel1.Controls.RemoveAt(1)
             note(i).DeleteData()
         Next
         note.Clear()
@@ -496,6 +503,7 @@ Public Class Form1
             FlowLayoutPanel1.Controls.Add(note(i))
             note(i).Centering()
         Next
+        FlowLayoutPanel1.ScrollControlIntoView(note(0))
     End Sub
     Private Sub Form1_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
         m_wtContext.Overlap(True)
@@ -551,6 +559,7 @@ Public Class Form1
     Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
         key = 0
         keyPressed = Nothing
+        noDrawOperation = False
         FlowLayoutPanel1.Cursor = DotCursor
     End Sub
 
@@ -566,12 +575,16 @@ Public Class Form1
             note(i).setSize(times(mul))
             note(i).Centering()
         Next
+        FlowLayoutPanel1.ScrollControlIntoView(thePage)
         SetTitle()
     End Sub
 
     Private Sub zoomin()
+        Dim oldScale = times(mul)
+
         If note.Count = 0 Then Return
         mul = mul + 1
+
         If mul > times.Length - 1 Then
             mul = times.Length - 1
             Return
@@ -581,6 +594,7 @@ Public Class Form1
             note(i).setSize(times(mul))
             note(i).Centering()
         Next
+        FlowLayoutPanel1.ScrollControlIntoView(thePage)
         SetTitle()
         Debug.WriteLine(FlowLayoutPanel1.Bounds)
     End Sub
@@ -840,53 +854,65 @@ Public Class Form1
     Private Sub SaveWorker_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles SaveWorker.DoWork
         Dim path As String = e.Argument
         If path.Length = 0 Then Return
-
-        Using zipToOpen As FileStream = New FileStream(path, FileMode.Create)
-            Using archive As ZipArchive = New ZipArchive(zipToOpen, ZipArchiveMode.Create)
-                Dim info As ZipArchiveEntry = archive.CreateEntry("info.txt")
-                Dim documentVersion As String = "1"
-                Using writer As StreamWriter = New StreamWriter(info.Open())
-                    writer.WriteLine("DocumentVersion=" + documentVersion)
-                    writer.WriteLine("Page Right to Left=" + rtl.ToString)
-                    writer.WriteLine("Start Left=" + startLeft.ToString)
-                    writer.WriteLine("Page=" + pagenum.ToString)
-                End Using
-                Dim num As Integer = 0
-                Dim i As Integer
-                Dim max As Integer = note.Count - 1
-                For Each p As Page In note
-
-                    SaveWorker.ReportProgress(num * 100 / max)
-                    Thread.Yield()
-                    Dim folder As String = num.ToString + "\"
-                    Dim imgEntry As ZipArchiveEntry = archive.CreateEntry(folder + "image.raw")
-                    Using writer As New BinaryWriter(imgEntry.Open())
-                        Dim b As Byte() = p.GetRawImage()
-                        writer.Write(b, 0, b.Length - 1)
-                        Erase b
+        Dim saveDir = IO.Path.GetDirectoryName(path)
+        Dim tmpname As String = saveDir + "\" + IO.Path.GetRandomFileName()
+        Try
+            Using zipToOpen As FileStream = New FileStream(tmpname, FileMode.Create)
+                Using archive As ZipArchive = New ZipArchive(zipToOpen, ZipArchiveMode.Create)
+                    Dim info As ZipArchiveEntry = archive.CreateEntry("info.txt")
+                    Dim documentVersion As String = "1"
+                    Using writer As StreamWriter = New StreamWriter(info.Open())
+                        writer.WriteLine("DocumentVersion=" + documentVersion)
+                        writer.WriteLine("Page Right to Left=" + rtl.ToString)
+                        writer.WriteLine("Start Left=" + startLeft.ToString)
+                        writer.WriteLine("Page=" + pagenum.ToString)
                     End Using
-                    i = 0
-                    For Each v As TextView In p.texts
+                    Dim num As Integer = 0
+                    Dim i As Integer
+                    Dim max As Integer = note.Count - 1
+                    For Each p As Page In note
+
                         SaveWorker.ReportProgress(num * 100 / max)
-                        Dim txtEntry As ZipArchiveEntry = archive.CreateEntry(folder + i.ToString + ".txt")
-                        Using writer As StreamWriter = New StreamWriter(txtEntry.Open())
-                            writer.WriteLine(v.GetFont())
-                            writer.WriteLine(v.GetSize().ToString)
-                            Dim loc As Point = v.GetLocation
-                            writer.WriteLine(loc.X.ToString)
-                            writer.WriteLine(loc.Y.ToString)
-                            writer.WriteLine(v.GetDirection())
-                            writer.WriteLine("end")
-                            writer.Write(v.GetText())
+                        Thread.Yield()
+                        Dim folder As String = num.ToString + "\"
+                        Dim imgEntry As ZipArchiveEntry = archive.CreateEntry(folder + "image.raw")
+                        Using writer As New BinaryWriter(imgEntry.Open())
+                            Dim b As Byte() = p.GetRawImage()
+                            writer.Write(b, 0, b.Length - 1)
+                            Erase b
                         End Using
-                        i += 1
+                        i = 0
+                        For Each v As TextView In p.texts
+                            SaveWorker.ReportProgress(num * 100 / max)
+                            Dim txtEntry As ZipArchiveEntry = archive.CreateEntry(folder + i.ToString + ".txt")
+                            Using writer As StreamWriter = New StreamWriter(txtEntry.Open())
+                                writer.WriteLine(v.GetFont())
+                                writer.WriteLine(v.GetSize().ToString)
+                                Dim loc As Point = v.GetLocation
+                                writer.WriteLine(loc.X.ToString)
+                                writer.WriteLine(loc.Y.ToString)
+                                writer.WriteLine(v.GetDirection())
+                                writer.WriteLine("end")
+                                writer.Write(v.GetText())
+                            End Using
+                            i += 1
+                        Next
+
+                        num += 1
+
                     Next
-
-                    num += 1
-
-                Next
+                End Using
             End Using
-        End Using
+            If IO.File.Exists(path) Then
+                File.Delete(path)
+
+            End If
+
+            File.Move(tmpname, path)
+        Catch ex As Exception
+            MessageBox.Show("ファイルの保存に失敗しました")
+        End Try
+
         SaveWorker.ReportProgress(100)
         Thread.Sleep(500)
     End Sub
@@ -1004,10 +1030,11 @@ Public Class Form1
                         FlowLayoutPanel1.Controls.Add(p)
                         p.Centering()
                     Next
+                    FlowLayoutPanel1.ScrollControlIntoView(note(1))
                 End Using
             End Using
+            filePath = path
             filename = IO.Path.GetFileNameWithoutExtension(path)
-            filePath = filename
             SetTitle()
         End If
 

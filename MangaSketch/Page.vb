@@ -149,7 +149,7 @@ Public Class Page
             Dim pad As Integer = (Parent.Width - Me.Width) / 2
             Dim topMargin As Integer = 0
             If mihirakiNum = 0 Then
-                topMargin = Height
+                'topMargin = Height
 
             End If
             Dim newPad As Padding = New Padding(pad, topMargin, pad, 3)
@@ -235,7 +235,7 @@ Public Class Page
         lp.Y = p.Y + dy
         lop.X = op.X + dx
         lop.Y = op.Y + dy
-        lastPoint = lp
+
         Dim x1 As Integer = form.TabletXtoScreen(lp.X)
         Dim y1 As Integer = form.TabletYtoScreen(lp.Y)
         Dim x2 As Integer = form.TabletXtoScreen(lop.X)
@@ -435,11 +435,9 @@ Public Class Page
 
         Dim brect As New Rectangle(left, top, rwidth, rheight)
         Dim drect As New Rectangle(left / sizeFactor, top / sizeFactor, rwidth / sizeFactor, rheight / sizeFactor)
-        If sizeFactor < 1 Then
-            g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
-        Else
-            g.InterpolationMode = Drawing2D.InterpolationMode.High
-        End If
+
+        g.InterpolationMode = Drawing2D.InterpolationMode.High
+
         g.DrawImage(buf, drect, brect, GraphicsUnit.Pixel)
         'DrawGuides(g, sizeFactor, drect, Nothing)
         g.Dispose()
@@ -513,11 +511,9 @@ Public Class Page
             Dim brect As New Rectangle(0, 0, buf.Width, buf.Height)
             Dim drect As New Rectangle(0, 0, buf.Width / sizeFactor, buf.Height / sizeFactor)
             Try
-                If sizeFactor < 1 Then
-                    e.Graphics.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
-                Else
-                    e.Graphics.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                End If
+
+                e.Graphics.InterpolationMode = Drawing2D.InterpolationMode.High
+
 
                 e.Graphics.DrawImage(buf, drect, brect, GraphicsUnit.Pixel)
                 'e.Graphics.DrawImage(buf, rect)
@@ -678,7 +674,7 @@ Public Class Page
         Debug.WriteLine("g.Width=" + g.ClipBounds.Width.ToString)
         Dim brect As New Rectangle(0, 0, buf.Width, buf.Height)
         Dim crect As New Rectangle(0, 0, eb.Width, eb.Height)
-        g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
+        g.InterpolationMode = Drawing2D.InterpolationMode.High
         g.DrawImage(buf, crect, brect, GraphicsUnit.Pixel)
         DrawGuides(g, 1, sRect, Nothing)
         eb.SetResolution(dpi, dpi)
@@ -798,7 +794,8 @@ Public Class Page
 
     End Sub
     Public Function GetRawImage() As Byte()
-        Dim rect As Rectangle = New Rectangle(0, 0, buf.Width, buf.Height)
+        bufLocked = True
+        Dim rect As Rectangle = New Rectangle(0, 0, BMP_WIDTH, BMP_HEIGHT)
         Dim bmpData As BitmapData = buf.LockBits(rect, Imaging.ImageLockMode.ReadOnly, buf.PixelFormat)
         Dim ptr As IntPtr = bmpData.Scan0
         Dim bytes As Integer = bmpData.Stride * buf.Height
@@ -806,6 +803,7 @@ Public Class Page
 
         System.Runtime.InteropServices.Marshal.Copy(ptr, result, 0, bytes)
         buf.UnlockBits(bmpData)
+        bufLocked = False
         Return result
     End Function
     Public Sub SetImage(src As Byte())
@@ -868,7 +866,7 @@ Public Class Page
         Return -1
     End Function
     Public Sub Clear(r As Rectangle)
-        Dim g As Graphics = CreateGraphics()
+        'Dim g As Graphics = CreateGraphics()
         Dim left, top As Integer
         Dim padding As Integer = CInt(sizeFactor)
         'Dim padding As Integer = sizeFactor
@@ -942,6 +940,7 @@ Public Class Page
             End If
         ElseIf Form1.keyPressed = "　"c Or Form1.keyPressed = " "c Then
             m_PanStartPoint = New Point(e.X, e.Y)
+            form.noDrawOperation = True
         End If
         oldLoc = e.Location
     End Sub
@@ -950,7 +949,7 @@ Public Class Page
         'form.Label1.Text = e.Location.ToString
         If mouseStillDown Then
 
-            If (Form1.keyPressed = "　"c Or Form1.keyPressed = " "c) Then
+            If form.noDrawOperation Then
                 Dim deltaX As Integer = (m_PanStartPoint.X - e.X)
                 Dim deltaY As Integer = (m_PanStartPoint.Y - e.Y)
                 form.FlowLayoutPanel1.AutoScrollPosition = New Drawing.Point((deltaX - form.FlowLayoutPanel1.AutoScrollPosition.X), (deltaY - form.FlowLayoutPanel1.AutoScrollPosition.Y))
@@ -1005,7 +1004,9 @@ Public Class Page
         oldLoc = e.Location
         mouseStillDown = False
         Debug.WriteLine("MouseUp")
-
+        form.noDrawOperation = False
+        form.keyPressed = Nothing
+        lastPoint = e.Location
     End Sub
     Private Sub Page_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Me.MouseDoubleClick
         If (Control.ModifierKeys And Keys.Control) = Keys.Control Then
