@@ -162,6 +162,7 @@ Public Class Form1
 
         HandCursor = New Cursor(myLoc + "\" + "Resources\Hand.cur")
         DotCursor = New Cursor(myLoc + "\" + "Resources\Dot_00.cur")
+        FlowLayoutPanel1.Cursor = DotCursor
         Me.ClientSize = My.Settings.MyClientSize
         fontname = My.Settings.font
         fontSize = My.Settings.size
@@ -192,7 +193,7 @@ Public Class Form1
 
                 If File.Exists(f) Then
                     If IO.Path.GetExtension(f) = ".name" Then
-                        closeDocument()
+                        'closeDocument()
                         LoadDocument(f)
                     End If
                 End If
@@ -220,7 +221,7 @@ Public Class Form1
         If thePage IsNot Nothing Then
             Dim v As TextView = thePage.FindSelectedText()
             If v IsNot Nothing Then
-                AddUndo(New Undo(thePage, v, v.GetFont, v.GetSize, v.GetDirection))
+                AddUndo(New Undo(thePage, v, v.GetFont, v.GetSize, v.IsVertical))
                 v.SetFont(font_)
                 Refresh()
             End If
