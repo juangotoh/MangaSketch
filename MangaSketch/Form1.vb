@@ -58,6 +58,11 @@ Public Class Form1
     Dim packets As Queue(Of Integer())
     Public Exporting As Boolean
     Public noDrawOperation As Boolean
+    Public undoList As New List(Of Undo)
+    Public undoIndex As Integer
+    Public tmpBuf As Bitmap
+    Public UndoAble As Boolean = False
+    Public redoAble As Boolean = False
 
     Public Sub New()
 
@@ -268,7 +273,11 @@ Public Class Form1
     Private Sub Form1_ButtonDown(e As PacketEventArgs)
 
     End Sub
-
+    Public Sub ClearRedo()
+        If undoList.Count > 0 Then
+            undoList.RemoveRange(undoIndex + 1, undoList.Count - undoIndex - 1)
+        End If
+    End Sub
     Private Sub Form1_CursorMove(e As PacketEventArgs)
         Dim pk As Integer() = {e.pkts.pkX, e.pkts.pkY, e.pkts.pkNormalPressure}
 
@@ -347,6 +356,7 @@ Public Class Form1
                     Dim curPage As Page = c
                     selectPage(curPage)
                     drawing = True
+                    tmpBuf = curPage.buf.Clone()
                     'bitLocked = True
                     'curPage.LockPixels()
                 End If
@@ -385,6 +395,8 @@ Public Class Form1
             thePage.Invalidate(r)
             drawing = False
 
+            AddUndo(New Undo(thePage, tmpBuf, thePage.buf.Clone()))
+
             'Timer1.Stop()
         End If
         If e.pkts.pkNormalPressure = 0 Then
@@ -398,7 +410,17 @@ Public Class Form1
 
     End Sub
 
-
+    Public Sub AddUndo(undo_ As Undo)
+        ClearRedo()
+        undoList.Add(undo_)
+        UndoAble = True
+        redoAble = False
+        undoIndex = undoList.Count - 1
+        If undoIndex > 10 Then
+            undoList.RemoveAt(0)
+            undoIndex -= 1
+        End If
+    End Sub
     Private Sub ToolStripLabel1_Click(sender As Object, e As EventArgs)
 
     End Sub
@@ -527,7 +549,7 @@ Public Class Form1
         If thePage IsNot Nothing Then
             Dim v As TextView = thePage.FindSelectedText()
             thePage.texts.Remove(v)
-            v = Nothing
+            AddUndo(New Undo(thePage, v, Undo.CMD_DelText))
             Refresh()
         End If
     End Sub
@@ -1174,6 +1196,48 @@ Public Class Form1
 
     Private Sub ElaserMenu_DropDownClosed(sender As Object, e As EventArgs) Handles ElaserMenu.DropDownClosed
         esize = ElaserMenu.SelectedIndex
+    End Sub
+
+    Private Sub 元へ戻すToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 元へ戻すToolStripMenuItem.Click
+        If UndoAble Then
+            undoList(undoIndex).Undo()
+            undoIndex -= 1
+            If undoIndex <= 0 Then
+                undoIndex = 0
+                UndoAble = False
+
+            End If
+            redoAble = True
+        End If
+
+    End Sub
+
+    Private Sub やり直しRToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles やり直しRToolStripMenuItem.Click
+        If redoAble Then
+            If undoIndex + 1 < undoList.Count Then
+                undoList(undoIndex + 1).Redo()
+                undoIndex += 1
+                If undoIndex > undoList.Count Then
+                    redoAble = False
+                End If
+                UndoAble = True
+            End If
+        End If
+
+
+    End Sub
+
+    Private Sub 編集ToolStripMenuItem_DropDownOpening(sender As Object, e As EventArgs) Handles 編集ToolStripMenuItem.DropDownOpening
+        If UndoAble Then
+            元へ戻すToolStripMenuItem.Enabled = True
+        Else
+            元へ戻すToolStripMenuItem.Enabled = False
+        End If
+        If redoAble Then
+            やり直しRToolStripMenuItem.Enabled = True
+        Else
+            やり直しRToolStripMenuItem.Enabled = False
+        End If
     End Sub
 
     Private Sub HorizButton_Click(sender As Object, e As EventArgs) Handles HorizButton.Click

@@ -16,7 +16,7 @@ Public Class Page
     Dim rtl As Boolean
     Dim startLeft As Boolean
     Dim mihirakiNum As Integer
-    Dim buf As Bitmap
+    Public buf As Bitmap
     Dim rects(2) As RectangleF
     Public sizeFactor As Double
     Dim inWidth As Single = 886
@@ -40,6 +40,7 @@ Public Class Page
     Dim cbuf As Bitmap
     Dim penBuf As Bitmap
     Dim bufLocked As Boolean = False
+    Dim DragStartX, DragStartY, DragEndX, DragEndY
 
     Public Sub CreateColorBits()
         cbuf = New Bitmap(buf.Width, buf.Height, PixelFormat.Format24bppRgb)
@@ -188,7 +189,9 @@ Public Class Page
             selectedText = texts.Count - 1
             Refresh()
             Form1.isDirty = True
+            form.AddUndo(New Undo(Me, tv, Undo.CMD_AddText))
         Else
+            form.AddUndo(New Undo(Me, tv, tv.GetText))
             tv.SetText(Editor.TextBox1.Text)
             Refresh()
             Form1.isDirty = True
@@ -915,7 +918,8 @@ Public Class Page
             Dim i As Integer = FindText(e.Location)
             If i >= 0 Then
                 Dim v As TextView = texts(i)
-
+                DragStartX = v.x
+                DragStartY = v.y
 
                 Dim r As Rectangle = v.bounds
                 Dim r2 As Rectangle = New Rectangle(r.Left * sizeFactor, r.Top * sizeFactor, r.Width * sizeFactor, r.Height * sizeFactor)
@@ -992,6 +996,7 @@ Public Class Page
             r2 = Rectangle.Inflate(r2, 1, 1)
             v.x += dx
             v.y += dy
+            form.AddUndo(New Undo(Me, v, DragStartX, DragStartY))
             'Invalidate(r)
             r2.Offset(dx, dy)
             v.selected = True

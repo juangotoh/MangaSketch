@@ -37,9 +37,10 @@ Partial Class Form1
         Me.終了XToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.編集ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.元へ戻すToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.やり直しRToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.コピーToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.切り取りToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.コピーToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.貼り付けToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripSeparator()
         Me.選択されたテキストの削除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -161,7 +162,7 @@ Partial Class Form1
         '
         '編集ToolStripMenuItem
         '
-        Me.編集ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.元へ戻すToolStripMenuItem, Me.ToolStripMenuItem1, Me.コピーToolStripMenuItem, Me.切り取りToolStripMenuItem, Me.貼り付けToolStripMenuItem, Me.ToolStripMenuItem4, Me.選択されたテキストの削除ToolStripMenuItem, Me.テキスト選択解除ToolStripMenuItem})
+        Me.編集ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.元へ戻すToolStripMenuItem, Me.やり直しRToolStripMenuItem, Me.ToolStripMenuItem1, Me.切り取りToolStripMenuItem, Me.コピーToolStripMenuItem, Me.貼り付けToolStripMenuItem, Me.ToolStripMenuItem4, Me.選択されたテキストの削除ToolStripMenuItem, Me.テキスト選択解除ToolStripMenuItem})
         Me.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem"
         Me.編集ToolStripMenuItem.Size = New System.Drawing.Size(57, 20)
         Me.編集ToolStripMenuItem.Text = "編集(&E)"
@@ -171,33 +172,40 @@ Partial Class Form1
         Me.元へ戻すToolStripMenuItem.Name = "元へ戻すToolStripMenuItem"
         Me.元へ戻すToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Z), System.Windows.Forms.Keys)
         Me.元へ戻すToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
-        Me.元へ戻すToolStripMenuItem.Text = "元へ戻す"
+        Me.元へ戻すToolStripMenuItem.Text = "取り消し(&U)"
+        '
+        'やり直しRToolStripMenuItem
+        '
+        Me.やり直しRToolStripMenuItem.Name = "やり直しRToolStripMenuItem"
+        Me.やり直しRToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Y), System.Windows.Forms.Keys)
+        Me.やり直しRToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
+        Me.やり直しRToolStripMenuItem.Text = "やり直し(&R)"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
         Me.ToolStripMenuItem1.Size = New System.Drawing.Size(216, 6)
         '
-        'コピーToolStripMenuItem
-        '
-        Me.コピーToolStripMenuItem.Name = "コピーToolStripMenuItem"
-        Me.コピーToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.コピーToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
-        Me.コピーToolStripMenuItem.Text = "コピー"
-        '
         '切り取りToolStripMenuItem
         '
         Me.切り取りToolStripMenuItem.Name = "切り取りToolStripMenuItem"
         Me.切り取りToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
         Me.切り取りToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
-        Me.切り取りToolStripMenuItem.Text = "切り取り"
+        Me.切り取りToolStripMenuItem.Text = "切り取り(&T)"
+        '
+        'コピーToolStripMenuItem
+        '
+        Me.コピーToolStripMenuItem.Name = "コピーToolStripMenuItem"
+        Me.コピーToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
+        Me.コピーToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
+        Me.コピーToolStripMenuItem.Text = "コピー(&C)"
         '
         '貼り付けToolStripMenuItem
         '
         Me.貼り付けToolStripMenuItem.Name = "貼り付けToolStripMenuItem"
         Me.貼り付けToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.P), System.Windows.Forms.Keys)
         Me.貼り付けToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
-        Me.貼り付けToolStripMenuItem.Text = "貼り付け"
+        Me.貼り付けToolStripMenuItem.Text = "貼り付け(&P)"
         '
         'ToolStripMenuItem4
         '
@@ -514,4 +522,5 @@ Partial Class Form1
     Friend WithEvents ElaserMenu As ToolStripComboBox
     Friend WithEvents ToolStripLabel6 As ToolStripLabel
     Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
+    Friend WithEvents やり直しRToolStripMenuItem As ToolStripMenuItem
 End Class
