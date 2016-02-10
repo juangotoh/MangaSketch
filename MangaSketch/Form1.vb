@@ -174,10 +174,9 @@ Public Class Form1
         note = New List(Of Page)
         Dim dummyPanel As New Panel()
         dummyPanel.Width = 0
-        dummyPanel.Height = 0
-        Dim pad As Padding = New Padding(0, 0, 0, 1000)
-        dummyPanel.Margin = pad
+        dummyPanel.Height = 1000
 
+        Me.WindowState = My.Settings.WindowState
 
         FlowLayoutPanel1.Controls.Add(dummyPanel)
         If My.Application.CommandLineArgs IsNot Nothing Then
@@ -214,6 +213,7 @@ Public Class Form1
         If thePage IsNot Nothing Then
             Dim v As TextView = thePage.FindSelectedText()
             If v IsNot Nothing Then
+                AddUndo(New Undo(thePage, v, v.GetFont, v.GetSize, v.GetDirection))
                 v.SetFont(font_)
                 Refresh()
             End If
@@ -224,10 +224,15 @@ Public Class Form1
         If thePage IsNot Nothing Then
             Dim v As TextView = thePage.FindSelectedText()
             If v IsNot Nothing Then
+                AddUndo(New Undo(thePage, v, v.GetFont, v.GetSize, v.IsVertical()))
                 v.SetSize(size_)
                 Refresh()
             End If
         End If
+    End Sub
+    Public Sub selectDirectionButton(direction As Boolean)
+        VertButton.Checked = direction
+        HorizButton.Checked = Not direction
     End Sub
     Public Sub selectFontMenu(name As String)
         Dim num As Integer = ComboBox_Font.Items.Count
@@ -317,18 +322,18 @@ Public Class Form1
             'thePage.draw(tool, curPoint, oldPoint, penPixel, pr)
             thePage.draw(tool, curPoint, oldPoint, penPixel, e.pkts.pkNormalPressure)
             If curPoint.X < leftest Then
-                    leftest = curPoint.X
-                ElseIf curPoint.X > rightest Then
-                    rightest = curPoint.X
-                End If
-                If curPoint.Y < toppest Then
-                    toppest = curPoint.Y
-                ElseIf curPoint.Y > bottomest Then
-                    bottomest = curPoint.Y
-                End If
+                leftest = curPoint.X
+            ElseIf curPoint.X > rightest Then
+                rightest = curPoint.X
+            End If
+            If curPoint.Y < toppest Then
+                toppest = curPoint.Y
+            ElseIf curPoint.Y > bottomest Then
+                bottomest = curPoint.Y
+            End If
 
-                oldX = curX
-                oldY = curY
+            oldX = curX
+            oldY = curY
 
 
         End If
@@ -1139,6 +1144,8 @@ Public Class Form1
             My.Settings.RTL = rtl
             My.Settings.StartLeft = startLeft
             My.Settings.Vertical = vertical
+            My.Settings.WindowState = Me.WindowState
+            My.Settings.restoreBounds = Me.RestoreBounds
         End If
 
     End Sub
@@ -1166,6 +1173,7 @@ Public Class Form1
         If thePage IsNot Nothing Then
             Dim v As TextView = thePage.FindSelectedText()
             If v IsNot Nothing Then
+                AddUndo(New Undo(thePage, v, v.GetFont, v.GetSize, v.IsVertical))
                 v.SetDirection(vert)
                 Dim g As Graphics = thePage.CreateGraphics()
                 Refresh()

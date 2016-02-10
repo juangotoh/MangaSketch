@@ -56,7 +56,7 @@
         undoSize = size_
         redoSize = text.GetSize()
         undoDirection = direction_
-        redoDirection = text.GetDirection
+        redoDirection = text.IsVertical()
         task = CMD_Font
     End Sub
 
@@ -85,6 +85,12 @@
                     text.SetFont(undoFont)
                     text.SetSize(undoSize)
                     text.SetDirection(undoDirection)
+                    If text.selected Then
+                        page.form.selectFontMenu(undoFont)
+                        page.form.selectSizeMenu(undoSize)
+                        page.form.selectDirectionButton(undoDirection)
+                    End If
+
                 Case CMD_EditText
                     text.SetText(undoText)
             End Select
@@ -110,6 +116,11 @@
                     text.SetFont(redoFont)
                     text.SetSize(redoSize)
                     text.SetDirection(redoDirection)
+                    If text.selected Then
+                        page.form.selectFontMenu(redoFont)
+                        page.form.selectSizeMenu(redoSize)
+                        page.form.selectDirectionButton(redoDirection)
+                    End If
                 Case CMD_EditText
                     text.SetText(redoText)
             End Select
