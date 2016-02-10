@@ -63,6 +63,13 @@ Public Class Form1
     Public tmpBuf As Bitmap
     Public UndoAble As Boolean = False
     Public redoAble As Boolean = False
+    Dim afterSave As Integer = 0
+    Dim afterClose As Integer
+    Const DO_QUIT As Integer = 1
+    Const DO_CLOSE As Integer = 2
+    Const DO_LOAD As Integer = 3
+    Const DO_NOTHING As Integer = 0
+    Dim prePath As String
 
     Public Sub New()
 
@@ -431,7 +438,7 @@ Public Class Form1
     End Sub
 
     Private Sub 新規ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 新規ToolStripMenuItem.Click
-        If closeDocument() Then
+        If closeDocument() = 0 Then
             Dim nd As New NewDocumentDialog()
             nd.RadioButton_rtl.Checked = My.Settings.RTL
             nd.RadioButton_ltr.Checked = Not My.Settings.RTL
@@ -477,18 +484,21 @@ Public Class Form1
         CreatePages(mihiraki)
 
     End Sub
-    Private Function closeDocument() As Boolean
+    Dim saving As Boolean = False
+    Private Function closeDocument() As Integer
         If isDirty Then
             '書類を保存するかどうか聞いて適切に処理
             SaveOrNot.Label1.Text = """" + filename + """" + "を保存しますか？"
             SaveOrNot.ShowDialog()
-            If SaveOrNot.DialogResult = DialogResult.Cancel Then Return False
+            If SaveOrNot.DialogResult = DialogResult.Cancel Then Return -1
             If SaveOrNot.DialogResult = DialogResult.OK Then
+                saving = True
                 If filePath.Length > 0 Then
                     Save(filePath)
                 Else
                     Save(GetSaveFileName())
                 End If
+                Return 1
             End If
         End If
         pagenum = 0
@@ -503,7 +513,7 @@ Public Class Form1
         filename = "名称未設定"
         filePath = ""
         SetTitle()
-        Return True
+        Return 0
     End Function
     Private Sub CreatePages(pages As Integer)
         'Dim length = BMP_WIDTH * BMP_HEIGHT
@@ -769,13 +779,14 @@ Public Class Form1
 
     Private Sub 開くToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 開くToolStripMenuItem.Click
 
-        closeDocument()
+
 
         Dim path As String = ""
         OpenFileDialog1.Filter = "まんがスケッチ書類(*.name)|*.name|すべてのファイル(*.*)|*.*"
         If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
             Dim fname As String = OpenFileDialog1.FileName
             LoadDocument(fname)
+            Return
         End If
     End Sub
     Private Function GetSaveFileName()
@@ -826,13 +837,20 @@ Public Class Form1
     End Sub
 
     Private Sub 終了XToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 終了XToolStripMenuItem.Click
-        If closeDocument() Then
+        Dim result As Integer = closeDocument()
+        If result = 0 Then
             Close()
+        ElseIf result = 1 Then
+            afterSave = DO_CLOSE
+            afterClose = DO_QUIT
         End If
     End Sub
 
     Private Sub 閉じるToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 閉じるToolStripMenuItem.Click
-        closeDocument()
+        Dim result As Integer = closeDocument()
+        If result = 1 Then
+            afterSave = DO_CLOSE
+        End If
     End Sub
     Private Sub SetTitle()
         Dim fn As String = ""
@@ -952,10 +970,31 @@ Public Class Form1
         'SaveProg.SetValue(100)
         SaveProg.Close()
         isDirty = False
+        saving = False
+        If afterSave = DO_CLOSE Then
+            closeDocument()
+            If afterClose = DO_LOAD Then
+                Me.LoadDocument(prePath)
+            ElseIf afterClose = DO_QUIT Then
+                Me.Close()
+            End If
+            afterSave = DO_NOTHING
+        End If
+
     End Sub
     Private Sub LoadDocument(path As String)
+        Dim result As Integer
         If note.Count > 0 Then
-            If Not closeDocument() Then Return
+            result = closeDocument()
+            If result = -1 Then
+                Return
+            ElseIf result = 1 Then
+                afterSave = DO_CLOSE
+                afterClose = DO_LOAD
+                prePath = path
+                Return
+            End If
+            If result = -1 Then Return
         End If
         If File.Exists(path) Then
             Using zipToOpen As FileStream = New FileStream(path, FileMode.Open)
@@ -1135,8 +1174,15 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        If Not closeDocument() Then
+        Dim result = closeDocument()
+        If result = -1 Then
             e.Cancel = True
+            Return
+        ElseIf result = 1 Then
+            afterSave = DO_CLOSE
+            afterClose = DO_QUIT
+            e.Cancel = True
+            Return
         Else
             My.Settings.MyClientSize = Me.ClientSize
             My.Settings.font = fontname
