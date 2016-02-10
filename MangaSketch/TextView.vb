@@ -150,6 +150,7 @@ Public Class TextView
         If testy > testheight Then testheight = testy
         font.Dispose()
         hFont.Dispose()
+        testheight += cHeight * 0.2
         Return New Size(testwidth, testheight)
     End Function
     Private Sub MyDrawString(g As Graphics, s As String, loc As Point, sf As Double)
@@ -168,7 +169,8 @@ Public Class TextView
         Dim hankaku As Boolean
         Dim hanstr As String = ""
         Dim dloc As New Point(loc.X - cWidth, loc.Y)
-
+        Dim fmt As StringFormat
+        fmt = New StringFormat(StringFormatFlags.DirectionVertical)
         For Each c As Char In text2
             If c >= " " And c <= "~" Then
                 hankaku = True
@@ -180,7 +182,7 @@ Public Class TextView
                     Dim hansize As SizeF = g.MeasureString(hanstr, hFont)
                     Dim hScale As Single = cWidth / hansize.Width
                     g.ScaleTransform(hScale, 1)
-                    Dim hloc = New Point(dloc.X / hScale, dloc.Y)
+                    Dim hloc = New Point(dloc.X / hScale, dloc.Y + cHeight * 0.1)
                     g.DrawString(hanstr, hFont, Brushes.Black, hloc)
                     g.ResetTransform()
                     hanstr = ""
@@ -192,7 +194,7 @@ Public Class TextView
                     dloc.X -= cWidth
                     dloc.Y = loc.Y
                 Else
-                    g.DrawString(c, font, Brushes.Black, dloc)
+                    g.DrawString(c, font, Brushes.Black, dloc, fmt)
                     dloc.Y += cHeight
                 End If
 
@@ -211,6 +213,7 @@ Public Class TextView
         End If
         font.Dispose()
         hFont.Dispose()
+        fmt.Dispose()
     End Sub
 
     Public Function GaijiConvert(text As String) As String
