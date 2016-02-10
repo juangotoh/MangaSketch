@@ -551,10 +551,7 @@ Public Class Page
         pHeight = g.ClipBounds.Height
         rects(0) = New RectangleF((pWidth - rWidth) / 2.0, (pHeight - rHeight) / 2.0, rWidth, rHeight)
         rects(1) = New RectangleF((pWidth - rWidth) / 2.0 + pWidth, (pHeight - rHeight) / 2.0, rWidth, rHeight)
-        For Each tv As TextView In texts
-            '台詞描画
-            tv.Draw(g, sf, r, noDraw)
-        Next
+
         '内枠
         g.DrawRectangles(p, rects)
         If Not form.Exporting Then
@@ -632,7 +629,10 @@ Public Class Page
         rightY = g.ClipBounds.Height - rightSize.Height
         g.DrawString(leftStr, font, Brushes.Black, leftX, leftY)
         g.DrawString(rightStr, font, Brushes.Black, rightX, rightY)
-
+        For Each tv As TextView In texts
+            '台詞描画
+            tv.Draw(g, sf, r, noDraw)
+        Next
 
     End Sub
 
