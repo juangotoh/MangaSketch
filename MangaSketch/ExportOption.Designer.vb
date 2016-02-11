@@ -46,6 +46,8 @@ Partial Class ExportOption
         Me.UseGaijiCheck = New System.Windows.Forms.CheckBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Label7 = New System.Windows.Forms.Label()
+        Me.RubyCheck = New System.Windows.Forms.CheckBox()
+        Me.RubyType = New System.Windows.Forms.ComboBox()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
@@ -58,7 +60,7 @@ Partial Class ExportOption
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(215, 212)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(306, 209)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -192,12 +194,12 @@ Partial Class ExportOption
         '
         Me.TextBox_Path.Location = New System.Drawing.Point(70, 175)
         Me.TextBox_Path.Name = "TextBox_Path"
-        Me.TextBox_Path.Size = New System.Drawing.Size(205, 19)
+        Me.TextBox_Path.Size = New System.Drawing.Size(288, 19)
         Me.TextBox_Path.TabIndex = 10
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(283, 173)
+        Me.Button1.Location = New System.Drawing.Point(364, 173)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(54, 23)
         Me.Button1.TabIndex = 11
@@ -254,13 +256,35 @@ Partial Class ExportOption
         Me.Label7.TabIndex = 16
         Me.Label7.Text = "_001.jpg"
         '
+        'RubyCheck
+        '
+        Me.RubyCheck.AutoSize = True
+        Me.RubyCheck.Location = New System.Drawing.Point(234, 79)
+        Me.RubyCheck.Name = "RubyCheck"
+        Me.RubyCheck.Size = New System.Drawing.Size(94, 16)
+        Me.RubyCheck.TabIndex = 17
+        Me.RubyCheck.Text = "ルビを書き出す"
+        Me.RubyCheck.UseVisualStyleBackColor = True
+        '
+        'RubyType
+        '
+        Me.RubyType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.RubyType.FormattingEnabled = True
+        Me.RubyType.Items.AddRange(New Object() {"青空文庫形式", "括弧書き"})
+        Me.RubyType.Location = New System.Drawing.Point(334, 77)
+        Me.RubyType.Name = "RubyType"
+        Me.RubyType.Size = New System.Drawing.Size(100, 20)
+        Me.RubyType.TabIndex = 18
+        '
         'ExportOption
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(373, 250)
+        Me.ClientSize = New System.Drawing.Size(464, 247)
+        Me.Controls.Add(Me.RubyType)
+        Me.Controls.Add(Me.RubyCheck)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.UseGaijiCheck)
         Me.Controls.Add(Me.TextExportCheck)
@@ -315,4 +339,6 @@ Partial Class ExportOption
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents UseGaijiCheck As CheckBox
     Friend WithEvents Label7 As Label
+    Friend WithEvents RubyCheck As CheckBox
+    Friend WithEvents RubyType As ComboBox
 End Class

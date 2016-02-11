@@ -56,10 +56,8 @@ Public Class TextView
 
     Public Sub Draw(g As Graphics, sf As Double, r As Rectangle, noDraw As TextView)
         g.PageUnit = GraphicsUnit.Pixel
-        Dim fontSuffix As String = ""
+        Dim fmt As StringFormat
         Dim pixSize As Double = size * 150 / 72 / sf
-        If vertical Then fontSuffix = "@"
-        Dim font As New Font(fontSuffix + fontname, pixSize, FontStyle.Regular, GraphicsUnit.Pixel)
         Dim hFont As New Font(fontname, pixSize, FontStyle.Regular, GraphicsUnit.Pixel)
         Dim CharSize As SizeF = g.MeasureString("鬱", hFont, 100, StringFormat.GenericTypographic)
         Dim cWidth = CharSize.Width
@@ -69,28 +67,30 @@ Public Class TextView
         Dim origin As Point = New Point(x / sf, y / sf)
         Dim format As StringFormat
         If vertical Then
-
-            format = New StringFormat(StringFormatFlags.DirectionRightToLeft Or StringFormatFlags.DirectionVertical)
             'Dim tSize As SizeF = g.MeasureString(GaijiConvert(Text), font, origin, format)
             Dim tsize As SizeF = myMeasureString(g, sf)
             Dim oSize As Size = New Size(tSize.Width, tSize.Height)
             Dim rorigin As Point = New Point(origin.X - tSize.Width, origin.Y)
             bounds = New Rectangle(rorigin, oSize)
-
+            bounds.Width += cWidth / 2
+            fmt = New StringFormat(StringFormatFlags.DirectionVertical Or StringFormatFlags.DirectionRightToLeft)
         Else
+            fmt = New StringFormat
             format = New StringFormat()
-            Dim tSize As SizeF = g.MeasureString(GaijiConvert(Text), font)
+            Dim tSize As SizeF = g.MeasureString(GaijiConvert(RemoveRuby(Text)), hFont)
             Dim oSize As Size = New Size(tSize.Width, tSize.Height)
             bounds = New Rectangle(origin, oSize)
-
+            bounds.Height += cHeight / 2
+            bounds.Offset(0, -cHeight / 2)
         End If
         If r.IntersectsWith(bounds) And noDraw Is Nothing Then
             If noDraw IsNot Me Then
                 g.FillRectangle(New SolidBrush(Color.FromArgb(196, 255, 255, 255)), bounds)
                 If vertical Then
-                    MyDrawString(g, GaijiConvert(Text), origin, sf)
+                    MyDrawString(g, GaijiConvert(Text), origin, sf, fmt)
                 Else
-                    g.DrawString(GaijiConvert(Text), font, Brushes.Black, origin, format)
+                    MyDrawString(g, GaijiConvert(Text), origin, sf, fmt)
+                    'g.DrawString(GaijiConvert(Text), hFont, Brushes.Black, origin)
                 End If
                 If selected Then
                     If Parent IsNot Nothing Then
@@ -103,33 +103,43 @@ Public Class TextView
             End If
 
         End If
-        format.Dispose()
-        font.Dispose()
+        fmt.Dispose()
         hFont.Dispose()
     End Sub
     Private Function myMeasureString(g As Graphics, sf As Double) As Size
-        Dim fontSuffix As String = ""
+        Dim fmt As StringFormat = StringFormat.GenericTypographic
         Dim pixSize As Double = size * 150 / 72 / sf
-        If vertical Then fontSuffix = "@"
-        Dim font As New Font(fontSuffix + fontname, pixSize, FontStyle.Regular, GraphicsUnit.Pixel)
         Dim hFont As New Font(fontname, pixSize, FontStyle.Regular, GraphicsUnit.Pixel)
-        Dim CharSize As SizeF = g.MeasureString("鬱", hFont, 100)
+        Dim CharSize As SizeF = g.MeasureString("鬱", hFont)
         Dim cWidth = CharSize.Width
         Dim cHeight = pixSize
         Dim text2 = GaijiConvert(Text)
         Dim testheight As Single = 0
         Dim testwidth As Single = 0
+        Dim testx = 0
         Dim testy = 0
         Dim hankaku As Boolean
+        Dim ruby As Boolean
         testwidth = cWidth
         For Each c As Char In text2
-            If c >= " " And c <= "~" Then
+            If c = "｜" Then
+
+            ElseIf c = "《" Then
+                ruby = True
+
+            ElseIf c = "》" Then
+                ruby = False
+
+            ElseIf c >= " " And c <= "~" Then
                 hankaku = True
 
             Else
                 If hankaku Then
                     hankaku = False
-                    testy += cHeight
+                    If Not ruby Then
+                        testy += cHeight
+                    End If
+
                 End If
                 If c = vbCr Then
                     'skip CR
@@ -138,7 +148,10 @@ Public Class TextView
                     If testy > testheight Then testheight = testy
                     testy = 0
                 Else
-                    testy += cHeight
+                    If Not ruby Then
+                        testy += cHeight
+                    End If
+
                 End If
 
             End If
@@ -148,19 +161,21 @@ Public Class TextView
             testy += cHeight
         End If
         If testy > testheight Then testheight = testy
-        font.Dispose()
         hFont.Dispose()
         testheight += cHeight * 0.2
         Return New Size(testwidth, testheight)
     End Function
-    Private Sub MyDrawString(g As Graphics, s As String, loc As Point, sf As Double)
+    Private Sub MyDrawString(g As Graphics, s As String, loc As Point, sf As Double, fmt As StringFormat)
         Dim fontSuffix As String = ""
         Dim pixSize As Double = size * 150 / 72 / sf
-        If vertical Then fontSuffix = "@"
-        Dim font As New Font(fontSuffix + fontname, pixSize, FontStyle.Regular, GraphicsUnit.Pixel)
         Dim hFont As New Font(fontname, pixSize, FontStyle.Regular, GraphicsUnit.Pixel)
-        Dim CharSize As SizeF = g.MeasureString("鬱", hFont, 100)
+        Dim rubyFont As New Font(fontname, pixSize / 2, FontStyle.Regular, GraphicsUnit.Pixel)
+        Dim CharSize As SizeF = g.MeasureString("鬱", hFont)
+        Dim CharSize2 As SizeF = g.MeasureString("鬱", hFont, 0, StringFormat.GenericTypographic)
         Dim cWidth = CharSize.Width
+        Dim cWidth2 = CharSize2.Width
+        Dim lHeight = CharSize.Height
+        Dim pad As Single = (cWidth - cWidth2) / 2
         Dim cHeight = pixSize
         Dim text2 = GaijiConvert(Text)
         Dim testheight As Single = 0
@@ -168,54 +183,123 @@ Public Class TextView
         Dim testy = 0
         Dim hankaku As Boolean
         Dim hanstr As String = ""
-        Dim dloc As New Point(loc.X - cWidth, loc.Y)
-        Dim fmt As StringFormat
-        fmt = New StringFormat(StringFormatFlags.DirectionVertical)
+        Dim rStart As Integer = 0
+        Dim rStop As Integer = 0
+        Dim ruby As Boolean = False
+        Dim rubyStr As String = ""
+        Dim dloc As New Point(loc.X, loc.Y)
+
         For Each c As Char In text2
-            If c >= " " And c <= "~" Then
+            If c = "｜" Then
+                If vertical Then
+                    rStart = dloc.Y
+                Else
+                    rStart = dloc.X
+                End If
+
+            ElseIf c = "《" Then
+                ruby = True
+                If vertical Then
+                    rStop = dloc.Y
+                Else
+                    rStop = dloc.X
+                End If
+                c = ""
+            ElseIf c = "》" Then
+                ruby = False
+                Dim rSize As SizeF = g.MeasureString(rubyStr, rubyFont, 0, fmt)
+
+                If vertical Then
+
+                    Dim startOffset = ((rStop - rStart) - rSize.Height) / 2
+                    Dim rLoc As New Point(dloc.X + cWidth2 / 2 - pad / 2, rStart + startOffset)
+                    g.DrawString(rubyStr, rubyFont, Brushes.Black, rLoc, fmt)
+                Else
+                    Dim startOffset = ((rStop - rStart) - rSize.Width) / 2
+                    Dim rLoc As New Point(rStart + startOffset, dloc.Y - cHeight / 2 + pad / 2)
+                    g.DrawString(rubyStr, rubyFont, Brushes.Black, rLoc, fmt)
+                End If
+                rubyStr = ""
+            ElseIf c >= " " And c <= "~" Then
                 hankaku = True
                 hanstr += c
             Else
                 If hankaku Then
                     hankaku = False
-                    'draw hanstr here
-                    Dim hansize As SizeF = g.MeasureString(hanstr, hFont)
-                    Dim hScale As Single = cWidth / hansize.Width
-                    g.ScaleTransform(hScale, 1)
-                    Dim hloc = New Point(dloc.X / hScale, dloc.Y + cHeight * 0.1)
-                    g.DrawString(hanstr, hFont, Brushes.Black, hloc)
-                    g.ResetTransform()
-                    hanstr = ""
-                    dloc.Y += cHeight
+                    If Not ruby Then
+                        'draw hanstr here
+                        drawHankakuStr(g, hanstr, hFont, cWidth2, cWidth, cHeight, dloc)
+
+                        hanstr = ""
+                        If vertical Then
+                            dloc.Y += cHeight
+                        Else
+                            dloc.X += cWidth2
+                        End If
+                    End If
+
+
                 End If
                 If c = vbCr Then
                     'skip CR
                 ElseIf c = vbLf Then
-                    dloc.X -= cWidth
-                    dloc.Y = loc.Y
+
+                    If vertical Then
+                        dloc.X -= cWidth
+                        dloc.Y = loc.Y
+                    Else
+                        dloc.Y += lHeight
+                        dloc.X = loc.X
+                    End If
+
                 Else
-                    g.DrawString(c, font, Brushes.Black, dloc, fmt)
-                    dloc.Y += cHeight
+                    If Not ruby Then
+                        g.DrawString(c, hFont, Brushes.Black, dloc, fmt)
+                        If vertical Then
+                            dloc.Y += cHeight
+                        Else
+                            dloc.X += cWidth2
+                        End If
+                    End If
+
+
                 End If
 
             End If
+            If ruby Then rubyStr += c
         Next
         If hankaku Then
             hankaku = False
-            Dim hansize As SizeF = g.MeasureString(hanstr, hFont)
-            Dim hScale As Single = cWidth / hansize.Width
-            g.ScaleTransform(hScale, 1)
-            Dim hloc = New Point(dloc.X / hScale, dloc.Y)
-            g.DrawString(hanstr, hFont, Brushes.Black, hloc)
-            g.ResetTransform()
-            hanstr = ""
-            dloc.Y += cHeight
+            If Not ruby Then
+                drawHankakuStr(g, hanstr, hFont, cWidth2, cWidth, cHeight, dloc)
+                hanstr = ""
+                If vertical Then
+                    dloc.Y += cHeight
+                Else
+                    dloc.X += cWidth2
+                End If
+            End If
+
         End If
-        font.Dispose()
         hFont.Dispose()
         fmt.Dispose()
     End Sub
+    Private Sub drawHankakuStr(g As Graphics, hanstr As String, hfont As Font, cWidth2 As Single, cWidth As Single, cheight As Single, ByRef dLoc As Point)
+        Dim hansize As SizeF = g.MeasureString(hanstr, hfont, 0, StringFormat.GenericTypographic)
+        Dim hansize2 As SizeF = g.MeasureString(hanstr, hfont)
+        Dim hScale As Single = cWidth2 / hansize.Width
+        Dim pad As Single = (cWidth - cWidth2) / 2.0F
+        If vertical Then
+            g.ScaleTransform(hScale, 1)
+            Dim hloc = New Point((dLoc.X - cWidth + pad) / hScale, dLoc.Y + cheight * 0.1)
+            g.DrawString(hanstr, hfont, Brushes.Black, hloc)
+            g.ResetTransform()
+        Else
+            g.DrawString(hanstr, hfont, Brushes.Black, dLoc)
+            dLoc.X += hansize.Width - cWidth2 + pad
+        End If
 
+    End Sub
     Public Function GaijiConvert(text As String) As String
         Dim result As String = text
         Dim Iwa() As String = {"", "", "", "", ""}
@@ -248,6 +332,25 @@ Public Class TextView
                 result = result.Replace(Ryo(4), "")
             End If
         End If
+        Return result
+    End Function
+    Public Function RemoveRuby(Str As String) As String
+        Dim result As String
+        result = System.Text.RegularExpressions.Regex.Replace(Str, "《.*?》", "")
+        result = result.Replace("｜", "")
+        Return result
+    End Function
+
+    ''' <summary>
+    ''' 青空形式のルビを括弧書きに変換
+    ''' </summary>
+    ''' <param name="str">入力文字列</param>
+    ''' <returns>返還後の文字列</returns>
+    Public Function ConvertRuby(str As String) As String
+        Dim result As String
+        result = str.Replace("｜", "")
+        result = result.Replace("《", "（")
+        result = result.Replace("》", "）")
         Return result
     End Function
 End Class

@@ -1,25 +1,6 @@
 ﻿<Serializable()>
 Public Class SmallEdit
-    Private Sub Button1_Click(sender As Object, e As EventArgs) 
-        Dim str As String = TextBox1.Text
-        Dim st As Integer = TextBox1.SelectionStart
-        Dim slen As Integer = TextBox1.SelectionLength
-        Dim rb As String = TextBox1.SelectedText
-        Dim rt As String
-        If rb.Length > 0 Then
-            Dim rd As New RubyDialog()
-            rd.SetRB(rb)
-            If rd.ShowDialog(Me) = DialogResult.OK Then
-                rt = rd.TextBox1.Text
-                If rt.Length > 0 Then
-                    Dim left As String = str.Substring(0, st)
-                    Dim right As String = str.Substring(st + slen)
-                    TextBox1.Text = left + "｜" + rb + "《" + rt + "》" + right
-                End If
-            End If
-        End If
-        TextBox1.Select()
-    End Sub
+
 
     Private Sub TextBox1_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBox1.KeyDown
         If e.KeyCode = Keys.Escape Then
@@ -53,5 +34,30 @@ Public Class SmallEdit
         Dim p As Page = Parent
         p.EndEdit()
         Hide()
+    End Sub
+
+    Private Sub AddRuby()
+        Dim str As String = TextBox1.Text
+        Dim st As Integer = TextBox1.SelectionStart
+        Dim slen As Integer = TextBox1.SelectionLength
+        Dim rb As String = TextBox1.SelectedText
+        Dim rt As String
+        If rb.Length > 0 Then
+            Dim rd As New RubyDialog()
+            rd.SetRB(rb)
+            If rd.ShowDialog(Me) = DialogResult.OK Then
+                rt = rd.TextBox1.Text
+                If rt.Length > 0 Then
+                    Dim left As String = str.Substring(0, st)
+                    Dim right As String = str.Substring(st + slen)
+                    TextBox1.Text = left + "｜" + rb + "《" + rt + "》" + right
+                End If
+            End If
+        End If
+        TextBox1.Select()
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        AddRuby()
     End Sub
 End Class

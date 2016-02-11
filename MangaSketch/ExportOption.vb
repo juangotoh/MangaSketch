@@ -28,8 +28,12 @@ Public Class ExportOption
     Private Sub TextExportCheck_CheckedChanged(sender As Object, e As EventArgs) Handles TextExportCheck.CheckedChanged
         If TextExportCheck.Checked Then
             UseGaijiCheck.Enabled = True
+            RubyCheck.Enabled = True
+            RubyType.Enabled = True
         Else
             UseGaijiCheck.Enabled = False
+            RubyCheck.Enabled = False
+            RubyType.Enabled = False
         End If
     End Sub
 End Class

@@ -17,6 +17,6 @@ Public Class RubyDialog
     End Sub
 
     Private Sub RubyDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        TextBox1.Select()
     End Sub
 End Class

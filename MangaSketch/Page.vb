@@ -691,21 +691,36 @@ Public Class Page
                 If rightTexts.Length > 0 Then
                     rightTexts += ControlChars.CrLf + ControlChars.CrLf
                 End If
-                If gaijiSave Then
-                    rightTexts += v.GaijiConvert(v.GetText())
+                Dim name As String = v.GetText()
+                If My.Settings.ExportRuby Then
+                    If My.Settings.RubyType = 1 Then
+                        name = v.ConvertRuby(name)
+                    End If
                 Else
-                    rightTexts += v.GetText()
+                    name = v.RemoveRuby(name)
                 End If
-
+                If gaijiSave Then
+                    name = v.GaijiConvert(name)
+                End If
+                rightTexts += name
             Else
                 If leftTexts.Length > 0 Then
                     leftTexts += ControlChars.CrLf + ControlChars.CrLf
                 End If
-                If gaijiSave Then
-                    leftTexts += v.GaijiConvert(v.GetText())
+                Dim name As String = v.GetText()
+                If My.Settings.ExportRuby Then
+                    If My.Settings.RubyType = 1 Then
+                        name = v.ConvertRuby(name)
+                    End If
                 Else
-                    leftTexts += v.GetText()
+                    name = v.RemoveRuby(name)
                 End If
+                If gaijiSave Then
+                    name = v.GaijiConvert(name)
+                End If
+
+                leftTexts += name
+
 
             End If
         Next
@@ -745,6 +760,7 @@ Public Class Page
 
     End Sub
     Public Sub saveJPEG(b As Bitmap, name As String, q As Integer, gray As Boolean, dpi As Short)
+        Dim buf As Bitmap = Invoke(New GetOffScreenDelegate(AddressOf getOffScreen))
         Dim rect As New Rectangle(0, 0, b.Width, b.Height)
         Dim bmpData As BitmapData = b.LockBits(rect, Imaging.ImageLockMode.ReadOnly, b.PixelFormat)
         Dim ptr As IntPtr = bmpData.Scan0
@@ -796,6 +812,7 @@ Public Class Page
         bmpData = Nothing
 
     End Sub
+    Delegate Function GetRawImageDelegate() As Byte()
     Public Function GetRawImage() As Byte()
         bufLocked = True
         Dim rect As Rectangle = New Rectangle(0, 0, BMP_WIDTH, BMP_HEIGHT)
@@ -1047,4 +1064,8 @@ Public Class Page
 
     End Sub
     ' 何もしない
+    Delegate Function GetOffScreenDelegate() As Bitmap
+    Function getOffScreen() As Bitmap
+        Return buf
+    End Function
 End Class

@@ -663,12 +663,16 @@ Public Class Form1
         End If
         ExportOption.TextExportCheck.Checked = exportText
         ExportOption.UseGaijiCheck.Checked = GaijiSave
+        ExportOption.RubyCheck.Checked = My.Settings.ExportRuby
+        ExportOption.RubyType.SelectedIndex = My.Settings.RubyType
         If ExportOption.ShowDialog() = DialogResult.OK Then
             Exporting = True
             My.Settings.ExportDpi = ExportOption.ComboBox_dpi.SelectedIndex
             My.Settings.ExpoerPaper = ExportOption.ComboBox_PaperSelect.SelectedIndex
             My.Settings.ExportFolder = ExportOption.TextBox_Path.Text
             My.Settings.ExportColor = ExportOption.RadioButton_Color.Checked
+            My.Settings.ExportRuby = ExportOption.RubyCheck.Checked
+            My.Settings.RubyType = ExportOption.RubyType.SelectedIndex
             Dim Quality As Integer
             Dim outdpi As Integer
             QualityStr = ExportOption.TextBox_Quality.Text
@@ -923,7 +927,8 @@ Public Class Form1
                         Dim folder As String = num.ToString + "\"
                         Dim imgEntry As ZipArchiveEntry = archive.CreateEntry(folder + "image.raw")
                         Using writer As New BinaryWriter(imgEntry.Open())
-                            Dim b As Byte() = p.GetRawImage()
+                            'Dim b As Byte() = p.GetRawImage()
+                            Dim b As Byte() = p.Invoke(New Page.GetRawImageDelegate(AddressOf p.GetRawImage))
                             writer.Write(b, 0, b.Length - 1)
                             Erase b
                         End Using
