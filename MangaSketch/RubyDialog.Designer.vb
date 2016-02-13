@@ -75,6 +75,7 @@ Partial Class RubyDialog
         '
         'TextBox1
         '
+        Me.TextBox1.ImeMode = System.Windows.Forms.ImeMode.Hiragana
         Me.TextBox1.Location = New System.Drawing.Point(14, 12)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(170, 19)
@@ -90,7 +91,7 @@ Partial Class RubyDialog
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TableLayoutPanel1)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "RubyDialog"

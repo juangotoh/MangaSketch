@@ -27,7 +27,7 @@ Public Class Page
     Dim bits As BitmapData
     Dim ptr As IntPtr
     Dim pixels As Byte()
-    Public Editor As SmallEdit
+    Public Editor As smallEditForm
     Public lastPoint As New Point(100, 100)
     Dim leftNum As Integer = -1
     Dim rightNum As Integer = -1
@@ -134,10 +134,10 @@ Public Class Page
         '    buf = tBits.Clone
         '    setSize(sf)
         'End If
-        Editor = New SmallEdit
+        Editor = New smallEditForm
         Editor.Visible = False
         Me.DoubleBuffered = True
-        Me.Controls.Add(Editor)
+        'Me.Controls.Add(Editor)
         Me.ImeMode = ImeMode.Alpha
     End Sub
     Public Sub setSize(sf As Double)
@@ -159,7 +159,7 @@ Public Class Page
         End If
     End Sub
     Public Sub Edit(v As TextView, p As Point)
-        Me.Controls.Add(Editor)
+        'Me.Controls.Add(Editor)
         lastPoint = p
         Dim x As Integer = p.X - (Editor.Width / 2)
         Dim y As Integer = p.Y - (Editor.Height / 2)
@@ -176,8 +176,15 @@ Public Class Page
         Else
             Editor.TextBox1.Text = ""
         End If
+        Dim thePoint As New Point(x, y)
+        thePoint = PointToScreen(thePoint)
+        Editor.StartPosition = FormStartPosition.Manual
         Editor.Location = New Point(x, y)
-        Editor.Show()
+        Editor.Left = thePoint.X
+        Editor.Top = thePoint.Y
+        If Editor.ShowDialog() = DialogResult.OK Then
+            EndEdit()
+        End If
     End Sub
     Public Sub EndEdit()
         Dim tv As TextView = FindSelectedText()
@@ -285,14 +292,6 @@ Public Class Page
         End If
 
         If form.penOK Then form.penOK = False
-        'Dim x0 As Integer = startPt.X * sizeFactor - (penSize / 2)
-        'Dim y0 As Integer = startPt.Y * sizeFactor - (penSize / 2)
-        'Dim x1 As Integer = endPt.X * sizeFactor - (penSize / 2)
-        'Dim y1 As Integer = endPt.Y * sizeFactor - (penSize / 2)
-        'Dim x0 As Integer = startPt.X / form.xTabletScale * sizeFactor - (penSize / 2)
-        'Dim y0 As Integer = startPt.Y / form.TabletScale * sizeFactor - (penSize / 2)
-        'Dim x1 As Integer = endPt.X / form.xTabletScale * sizeFactor - (penSize / 2)
-        'Dim y1 As Integer = endPt.Y / form.TabletScale * sizeFactor - (penSize / 2)
         Dim x0 As Integer = form.TabletXtoOff(startPt.X) - (penSize / 2)
         Dim y0 As Integer = form.TabletYtOff(startPt.Y) - (penSize / 2)
         Dim x1 As Integer = form.TabletXtoOff(endPt.X) - (penSize / 2)
@@ -356,6 +355,7 @@ Public Class Page
                                                                Dim pixel As Integer = pixels(pos)
                                                                If tool = 0 Then
                                                                    pixel = pixel * (255 - col) / 255
+                                                                   'pixel = 255 - col
                                                                Else
 
                                                                    pixel = pixel + col / 3
@@ -468,6 +468,7 @@ Public Class Page
                         Dim pixel As Integer = pixels(pos)
                         If tool = 0 Then
                             pixel = pixel * (255 - col / 2) / 255
+
                         Else
                             pixel = pixel + col / 3
                             If pixel > 255 Then pixel = 255

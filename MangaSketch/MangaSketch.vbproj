@@ -207,6 +207,12 @@
     <Compile Include="SmallEdit.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="smallEditForm.Designer.vb">
+      <DependentUpon>smallEditForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="smallEditForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TextView.vb" />
     <Compile Include="Tips.Designer.vb">
       <DependentUpon>Tips.vb</DependentUpon>
@@ -251,6 +257,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SmallEdit.resx">
       <DependentUpon>SmallEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="smallEditForm.resx">
+      <DependentUpon>smallEditForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tips.resx">
       <DependentUpon>Tips.vb</DependentUpon>
