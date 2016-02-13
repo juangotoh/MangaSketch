@@ -201,12 +201,6 @@
     <Compile Include="SaveOrNot.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SmallEdit.Designer.vb">
-      <DependentUpon>SmallEdit.vb</DependentUpon>
-    </Compile>
-    <Compile Include="SmallEdit.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="smallEditForm.Designer.vb">
       <DependentUpon>smallEditForm.vb</DependentUpon>
     </Compile>
@@ -254,9 +248,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SaveOrNot.resx">
       <DependentUpon>SaveOrNot.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SmallEdit.resx">
-      <DependentUpon>SmallEdit.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="smallEditForm.resx">
       <DependentUpon>smallEditForm.vb</DependentUpon>

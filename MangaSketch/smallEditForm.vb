@@ -1,5 +1,5 @@
 ﻿Public Class smallEditForm
-    Dim parent As Page
+
     Private Sub smallEditForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         TextBox1.Select()
     End Sub
@@ -16,10 +16,9 @@
     Private Sub TextBox1_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox1.KeyPress
         If e.KeyChar = ChrW(Keys.Return) And (Control.ModifierKeys And Keys.Shift) = Keys.Shift Then
             e.Handled = True
-            Dim p As Page = parent
+
             Me.DialogResult = DialogResult.OK
-            'p.EndEdit()
-            Hide()
+            EndEdit()
             Form1.ImeMode = ImeMode.Alpha
         End If
     End Sub
@@ -29,12 +28,19 @@
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Dim p As Page = parent
         Me.DialogResult = DialogResult.OK
-        'p.EndEdit()
-        Hide()
+        EndEdit()
     End Sub
-
+    Private Sub EndEdit()
+        If Me.DialogResult = DialogResult.OK Then
+            If TextBox1.Text.Length > 0 Then
+                Hide()
+            Else
+                Me.DialogResult = DialogResult.Cancel
+                Hide()
+            End If
+        End If
+    End Sub
     Private Sub AddRuby()
         Dim str As String = TextBox1.Text
         Dim st As Integer = TextBox1.SelectionStart

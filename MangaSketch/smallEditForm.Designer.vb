@@ -46,6 +46,7 @@ Partial Class smallEditForm
         'Button1
         '
         Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button1.CausesValidation = False
         Me.Button1.Location = New System.Drawing.Point(6, 100)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(53, 20)
@@ -56,6 +57,7 @@ Partial Class smallEditForm
         'Button2
         '
         Me.Button2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Button2.CausesValidation = False
         Me.Button2.Location = New System.Drawing.Point(65, 100)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(73, 20)
@@ -66,6 +68,7 @@ Partial Class smallEditForm
         'Button3
         '
         Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Button3.CausesValidation = False
         Me.Button3.Location = New System.Drawing.Point(144, 100)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(52, 20)

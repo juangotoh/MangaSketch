@@ -27,7 +27,6 @@ Public Class Page
     Dim bits As BitmapData
     Dim ptr As IntPtr
     Dim pixels As Byte()
-    Public Editor As smallEditForm
     Public lastPoint As New Point(100, 100)
     Dim leftNum As Integer = -1
     Dim rightNum As Integer = -1
@@ -134,8 +133,6 @@ Public Class Page
         '    buf = tBits.Clone
         '    setSize(sf)
         'End If
-        Editor = New smallEditForm
-        Editor.Visible = False
         Me.DoubleBuffered = True
         'Me.Controls.Add(Editor)
         Me.ImeMode = ImeMode.Alpha
@@ -159,7 +156,7 @@ Public Class Page
         End If
     End Sub
     Public Sub Edit(v As TextView, p As Point)
-        'Me.Controls.Add(Editor)
+        Dim Editor = smallEditForm
         lastPoint = p
         Dim x As Integer = p.X - (Editor.Width / 2)
         Dim y As Integer = p.Y - (Editor.Height / 2)
@@ -179,36 +176,30 @@ Public Class Page
         Dim thePoint As New Point(x, y)
         thePoint = PointToScreen(thePoint)
         Editor.StartPosition = FormStartPosition.Manual
-        Editor.Location = New Point(x, y)
         Editor.Left = thePoint.X
         Editor.Top = thePoint.Y
         If Editor.ShowDialog() = DialogResult.OK Then
-            EndEdit()
-        End If
-    End Sub
-    Public Sub EndEdit()
-        Dim tv As TextView = FindSelectedText()
-        If tv Is Nothing Then
-            tv = New TextView(Me, lastPoint.X * sizeFactor, lastPoint.Y * sizeFactor, Editor.TextBox1.Text, Form1.fontname, Form1.fontSize, Form1.vertical)
-            texts.Add(tv)
-            unselectAllText()
-            tv.selected = True
-            selectedText = texts.Count - 1
-            Refresh()
-            Form1.isDirty = True
-            form.AddUndo(New Undo(Me, tv, Undo.CMD_AddText))
-        Else
-            form.AddUndo(New Undo(Me, tv, tv.GetText))
-            tv.SetText(Editor.TextBox1.Text)
-            Refresh()
-            Form1.isDirty = True
-        End If
+            Dim tv As TextView = FindSelectedText()
+            If tv Is Nothing Then
+                tv = New TextView(Me, lastPoint.X * sizeFactor, lastPoint.Y * sizeFactor, Editor.TextBox1.Text, Form1.fontname, Form1.fontSize, Form1.vertical)
+                texts.Add(tv)
+                unselectAllText()
+                tv.selected = True
+                selectedText = texts.Count - 1
+                Refresh()
+                Form1.isDirty = True
+                form.AddUndo(New Undo(Me, tv, Undo.CMD_AddText))
+            Else
+                form.AddUndo(New Undo(Me, tv, tv.GetText))
+                tv.SetText(Editor.TextBox1.Text)
+                Refresh()
+                Form1.isDirty = True
+            End If
 
-        Editor.Hide()
-        Editor.TextBox1.ImeMode = ImeMode.Alpha
-        'Me.Select()
-        Me.ImeMode = ImeMode.Alpha
+        End If
+        ImeMode = ImeMode.Alpha
     End Sub
+
     Public Sub unselectAllText()
         For Each v As TextView In texts
             If v.selected Then
