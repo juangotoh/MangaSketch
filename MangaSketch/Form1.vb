@@ -202,19 +202,19 @@ Public Class Form1
 
     End Sub
     Public Sub selectPage(p As Page)
-        If thePage IsNot Nothing Then
-            If p IsNot thePage Then
-                thePage.unselectAllText()
-                'thePage.CopyToGray()
+        If Not MenuDropping Then
+            If thePage IsNot Nothing Then
+                If p IsNot thePage Then
 
-                'p.CreateColorBits()
+                    thePage.unselectAllText()
+
+                End If
+            Else
 
             End If
-        Else
-            'p.CreateColorBits()
-
+            thePage = p
         End If
-        thePage = p
+
     End Sub
     Private Sub SetFont(font_ As String)
         fontname = font_
@@ -439,6 +439,7 @@ Public Class Form1
     End Sub
 
     Private Sub 新規ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 新規ToolStripMenuItem.Click
+        'System.Diagnostics.Process.Start(Application.ExecutablePath)
         If closeDocument() = 0 Then
             Dim nd As New NewDocumentDialog()
             nd.RadioButton_rtl.Checked = My.Settings.RTL
@@ -535,6 +536,9 @@ Public Class Form1
         'Erase img_data
         'buf.UnlockBits(bmpData)
         'buf.SetResolution(150, 150)
+        If note.Count > 0 Then
+            note = New List(Of Page)
+        End If
         For i = 0 To pages - 1
             note.Add(New Page(Me, times(mul), rtl, startLeft, i))
 

@@ -143,17 +143,19 @@ Public Class Page
         Refresh()
     End Sub
     Public Sub Centering()
-        If Parent.Width > Me.Width Then
-            Dim pad As Integer = (Parent.Width - Me.Width) / 2
-            Dim topMargin As Integer = 0
-            If mihirakiNum = 0 Then
-                'topMargin = Height
+        Dim newPad As New Padding(2000, 0, 2000, 3)
+        Me.Margin = newPad
+        'If Parent.Width > Me.Width Then
+        '    Dim pad As Integer = (Parent.Width - Me.Width) / 2
+        '    Dim topMargin As Integer = 0
+        '    If mihirakiNum = 0 Then
+        '        'topMargin = Height
 
-            End If
-            Dim newPad As Padding = New Padding(pad, topMargin, pad, 3)
+        '    End If
+        '    Dim newPad As Padding = New Padding(pad, topMargin, pad, 3)
 
-            Me.Margin = newPad
-        End If
+        '    Me.Margin = newPad
+        'End If
     End Sub
     Public Sub Edit(v As TextView, p As Point)
         Dim Editor = smallEditForm
