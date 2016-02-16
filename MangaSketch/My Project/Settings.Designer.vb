@@ -233,6 +233,30 @@ Namespace My
                 Me("RubyType") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property UseGaiji() As Boolean
+            Get
+                Return CType(Me("UseGaiji"),Boolean)
+            End Get
+            Set
+                Me("UseGaiji") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property GaijiSlant() As Boolean
+            Get
+                Return CType(Me("GaijiSlant"),Boolean)
+            End Get
+            Set
+                Me("GaijiSlant") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

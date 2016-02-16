@@ -43,6 +43,9 @@ Partial Class Form1
         Me.コピーToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.貼り付けToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripSeparator()
+        Me.GaijiToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.GaijiSlantToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem6 = New System.Windows.Forms.ToolStripSeparator()
         Me.選択されたテキストの削除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.テキスト選択解除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ヘルプHToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -79,6 +82,7 @@ Partial Class Form1
         Me.削除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.サイズToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.MenuStrip1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.ContextTextMenu.SuspendLayout()
@@ -162,7 +166,7 @@ Partial Class Form1
         '
         '編集ToolStripMenuItem
         '
-        Me.編集ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.元へ戻すToolStripMenuItem, Me.やり直しRToolStripMenuItem, Me.ToolStripMenuItem1, Me.切り取りToolStripMenuItem, Me.コピーToolStripMenuItem, Me.貼り付けToolStripMenuItem, Me.ToolStripMenuItem4, Me.選択されたテキストの削除ToolStripMenuItem, Me.テキスト選択解除ToolStripMenuItem})
+        Me.編集ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.元へ戻すToolStripMenuItem, Me.やり直しRToolStripMenuItem, Me.ToolStripMenuItem1, Me.切り取りToolStripMenuItem, Me.コピーToolStripMenuItem, Me.貼り付けToolStripMenuItem, Me.ToolStripMenuItem4, Me.GaijiToolStripMenuItem, Me.GaijiSlantToolStripMenuItem, Me.ToolStripMenuItem6, Me.選択されたテキストの削除ToolStripMenuItem, Me.テキスト選択解除ToolStripMenuItem})
         Me.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem"
         Me.編集ToolStripMenuItem.Size = New System.Drawing.Size(57, 20)
         Me.編集ToolStripMenuItem.Text = "編集(&E)"
@@ -171,59 +175,78 @@ Partial Class Form1
         '
         Me.元へ戻すToolStripMenuItem.Name = "元へ戻すToolStripMenuItem"
         Me.元へ戻すToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Z), System.Windows.Forms.Keys)
-        Me.元へ戻すToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
+        Me.元へ戻すToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
         Me.元へ戻すToolStripMenuItem.Text = "取り消し(&U)"
         '
         'やり直しRToolStripMenuItem
         '
         Me.やり直しRToolStripMenuItem.Name = "やり直しRToolStripMenuItem"
         Me.やり直しRToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Y), System.Windows.Forms.Keys)
-        Me.やり直しRToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
+        Me.やり直しRToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
         Me.やり直しRToolStripMenuItem.Text = "やり直し(&R)"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(216, 6)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(219, 6)
         '
         '切り取りToolStripMenuItem
         '
         Me.切り取りToolStripMenuItem.Name = "切り取りToolStripMenuItem"
         Me.切り取りToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.切り取りToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
+        Me.切り取りToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
         Me.切り取りToolStripMenuItem.Text = "切り取り(&T)"
         '
         'コピーToolStripMenuItem
         '
         Me.コピーToolStripMenuItem.Name = "コピーToolStripMenuItem"
         Me.コピーToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.コピーToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
+        Me.コピーToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
         Me.コピーToolStripMenuItem.Text = "コピー(&C)"
         '
         '貼り付けToolStripMenuItem
         '
         Me.貼り付けToolStripMenuItem.Name = "貼り付けToolStripMenuItem"
         Me.貼り付けToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.P), System.Windows.Forms.Keys)
-        Me.貼り付けToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
+        Me.貼り付けToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
         Me.貼り付けToolStripMenuItem.Text = "貼り付け(&P)"
         '
         'ToolStripMenuItem4
         '
         Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
-        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(216, 6)
+        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(219, 6)
+        '
+        'GaijiToolStripMenuItem
+        '
+        Me.GaijiToolStripMenuItem.Name = "GaijiToolStripMenuItem"
+        Me.GaijiToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
+        Me.GaijiToolStripMenuItem.Text = "コミックフォントで外字を使用(&G)"
+        Me.GaijiToolStripMenuItem.ToolTipText = "一部コミックフォントで、「!!」「～」などを外字で置き換えます"
+        '
+        'GaijiSlantToolStripMenuItem
+        '
+        Me.GaijiSlantToolStripMenuItem.Name = "GaijiSlantToolStripMenuItem"
+        Me.GaijiSlantToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
+        Me.GaijiSlantToolStripMenuItem.Text = "外字の「!」を傾ける(&I)"
+        Me.GaijiSlantToolStripMenuItem.ToolTipText = "外字置き換え時、傾いた「!」「!!」「!!!」を使用します"
+        '
+        'ToolStripMenuItem6
+        '
+        Me.ToolStripMenuItem6.Name = "ToolStripMenuItem6"
+        Me.ToolStripMenuItem6.Size = New System.Drawing.Size(219, 6)
         '
         '選択されたテキストの削除ToolStripMenuItem
         '
         Me.選択されたテキストの削除ToolStripMenuItem.Name = "選択されたテキストの削除ToolStripMenuItem"
         Me.選択されたテキストの削除ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.選択されたテキストの削除ToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
+        Me.選択されたテキストの削除ToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
         Me.選択されたテキストの削除ToolStripMenuItem.Text = "選択されたテキストの削除"
         '
         'テキスト選択解除ToolStripMenuItem
         '
         Me.テキスト選択解除ToolStripMenuItem.Name = "テキスト選択解除ToolStripMenuItem"
         Me.テキスト選択解除ToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
-        Me.テキスト選択解除ToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
+        Me.テキスト選択解除ToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
         Me.テキスト選択解除ToolStripMenuItem.Text = "テキスト選択解除"
         '
         'ヘルプHToolStripMenuItem
@@ -340,7 +363,7 @@ Partial Class Form1
         Me.HorizButton.Name = "HorizButton"
         Me.HorizButton.Size = New System.Drawing.Size(23, 22)
         Me.HorizButton.Text = "VertButton"
-        Me.HorizButton.ToolTipText = "縦書き"
+        Me.HorizButton.ToolTipText = "横書き"
         '
         'VertButton
         '
@@ -353,7 +376,7 @@ Partial Class Form1
         Me.VertButton.Name = "VertButton"
         Me.VertButton.Size = New System.Drawing.Size(23, 22)
         Me.VertButton.Text = "HorizButton"
-        Me.VertButton.ToolTipText = "横書き"
+        Me.VertButton.ToolTipText = "縦書き"
         '
         'ToolStripSeparator1
         '
@@ -523,4 +546,8 @@ Partial Class Form1
     Friend WithEvents ToolStripLabel6 As ToolStripLabel
     Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
     Friend WithEvents やり直しRToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents GaijiToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem6 As ToolStripSeparator
+    Friend WithEvents GaijiSlantToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolTip1 As ToolTip
 End Class

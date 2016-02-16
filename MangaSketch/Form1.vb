@@ -666,6 +666,11 @@ Public Class Form1
             ExportOption.TextBox_Path.Text = My.Settings.ExportFolder
         End If
         ExportOption.TextExportCheck.Checked = exportText
+        If My.Settings.UseGaiji Then
+            ExportOption.UseGaijiCheck.Enabled = True
+        Else
+            ExportOption.UseGaijiCheck.Enabled = False
+        End If
         ExportOption.UseGaijiCheck.Checked = GaijiSave
         ExportOption.RubyCheck.Checked = My.Settings.ExportRuby
         ExportOption.RubyType.SelectedIndex = My.Settings.RubyType
@@ -920,6 +925,8 @@ Public Class Form1
                         writer.WriteLine("Page Right to Left=" + rtl.ToString)
                         writer.WriteLine("Start Left=" + startLeft.ToString)
                         writer.WriteLine("Page=" + pagenum.ToString)
+                        writer.WriteLine("Gaiji=" + My.Settings.UseGaiji.ToString)
+                        writer.WriteLine("Slant=" + My.Settings.GaijiSlant.ToString)
                     End Using
                     Dim num As Integer = 0
                     Dim i As Integer
@@ -1034,6 +1041,18 @@ Public Class Form1
                                 End If
                             ElseIf key = "Page" Then
                                 pagenum = Integer.Parse(value)
+                            ElseIf key = "Gaiji" Then
+                                If value = "True" Then
+                                    My.Settings.UseGaiji = True
+                                Else
+                                    My.Settings.UseGaiji = False
+                                End If
+                            ElseIf key = "Slant" Then
+                                If value = "True" Then
+                                    My.Settings.GaijiSlant = True
+                                Else
+                                    My.Settings.GaijiSlant = False
+                                End If
                             End If
                         Loop
                     End Using
@@ -1302,6 +1321,49 @@ Public Class Form1
         Else
             やり直しRToolStripMenuItem.Enabled = False
         End If
+        If My.Settings.UseGaiji Then
+            GaijiToolStripMenuItem.Checked = True
+            GaijiSlantToolStripMenuItem.Enabled = True
+
+        Else
+            GaijiToolStripMenuItem.Checked = False
+            GaijiSlantToolStripMenuItem.Enabled = False
+
+        End If
+        If My.Settings.GaijiSlant Then
+            GaijiSlantToolStripMenuItem.Checked = True
+
+        Else
+            GaijiSlantToolStripMenuItem.Checked = False
+
+        End If
+    End Sub
+    Public Sub setGaiji(useGaiji As Boolean, isSlant As Boolean)
+        If useGaiji Then
+            My.Settings.UseGaiji = True
+        Else
+            My.Settings.UseGaiji = False
+        End If
+        Refresh()
+    End Sub
+
+
+    Private Sub GaijiToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GaijiToolStripMenuItem.Click
+        If My.Settings.UseGaiji Then
+            My.Settings.UseGaiji = False
+        Else
+            My.Settings.UseGaiji = True
+        End If
+        Refresh()
+    End Sub
+
+    Private Sub GaijiSlantToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GaijiSlantToolStripMenuItem.Click
+        If My.Settings.GaijiSlant Then
+            My.Settings.GaijiSlant = False
+        Else
+            My.Settings.GaijiSlant = True
+        End If
+        Refresh()
     End Sub
 
     Private Sub HorizButton_Click(sender As Object, e As EventArgs) Handles HorizButton.Click

@@ -288,10 +288,16 @@ Public Class TextView
         Dim hansize As SizeF = g.MeasureString(hanstr, hfont, 0, StringFormat.GenericTypographic)
         Dim hansize2 As SizeF = g.MeasureString(hanstr, hfont)
         Dim hScale As Single = cWidth2 / hansize.Width
+        Dim hanPad As Single = 0
+        If hScale > 1 Then
+            hScale = 1
+            hanPad = (cWidth2 - hansize.Width) / 2
+        End If
+
         Dim pad As Single = (cWidth - cWidth2) / 2.0F
         If vertical Then
             g.ScaleTransform(hScale, 1)
-            Dim hloc = New Point((dLoc.X - cWidth + pad) / hScale, dLoc.Y + cheight * 0.1)
+            Dim hloc = New Point((dLoc.X - cWidth + pad + hanPad) / hScale, dLoc.Y + cheight * 0.1)
             g.DrawString(hanstr, hfont, Brushes.Black, hloc)
             g.ResetTransform()
         Else
@@ -302,34 +308,52 @@ Public Class TextView
     End Sub
     Public Function GaijiConvert(text As String) As String
         Dim result As String = text
-        Dim Iwa() As String = {"", "", "", "", ""}
-        Dim Ryo() As String = {"", "", "", "", ""}
-        If fontname = "I-OTFアンチックStd B" Or
-            fontname = "IWAアンチックB" Or
-            fontname = "IWApアンチックB" Then
-            result = result.Replace("!!!", Iwa(2))
-            result = result.Replace("!!", Iwa(1))
-            result = result.Replace("!?", Iwa(3))
-            result = result.Replace("!", Iwa(0))
-            result = result.Replace("～", Iwa(4))
-            If vertical Then
-                result = result.Replace(Iwa(4), "")
+        If My.Settings.UseGaiji Then
+            Dim IwaR() As String = {"！", "", "", "", "", ""}
+            Dim IwaS() As String = {"", "", "", "", "", ""}
+            Dim RyoR() As String = {"！", "", "", "", "", ""}
+            Dim RyoS() As String = {"", "", "", "", "", ""}
+            Dim Iwa() As String
+            Dim Ryo() As String
+            If My.Settings.GaijiSlant Then
+                Iwa = IwaS
+                Ryo = RyoS
+            Else
+                Iwa = IwaR
+                Ryo = RyoR
             End If
-        ElseIf fontname.IndexOf("リョービ アンチック") >= 0 Or
-                fontname.IndexOf("リョービ フキダシック") >= 0 Or
-                fontname.IndexOf("リョービ ミダシック") >= 0 Or
-                fontname.IndexOf("リョービ レタリック") >= 0 Or
-               fontname.IndexOf("TBアンチック") >= 0 Or
-               fontname.IndexOf("TBフキダシック") >= 0 Or
-               fontname.IndexOf("TBミダシック") >= 0 Or
-               fontname.IndexOf("TBレタリック") >= 0 Then
-            result = result.Replace("!!!", Ryo(2))
-            result = result.Replace("!!", Ryo(1))
-            result = result.Replace("!?", Ryo(3))
-            result = result.Replace("!", Ryo(0))
-            result = result.Replace("～", Ryo(4))
-            If vertical Then
-                result = result.Replace(Ryo(4), "")
+            If fontname = "I-OTFアンチックStd B" Or
+                fontname = "IWAアンチックB" Or
+                fontname = "IWApアンチックB" Then
+                result = result.Replace("!!!", Iwa(2))
+                result = result.Replace("!!", Iwa(1))
+                result = result.Replace("!?", Iwa(3))
+                result = result.Replace("??", Iwa(4))
+                result = result.Replace("!", Iwa(0))
+                result = result.Replace("～", Iwa(5))
+                If vertical Then
+                    result = result.Replace(Iwa(5), "")
+                End If
+            ElseIf fontname.IndexOf("リョービ アンチック") >= 0 Or
+                    fontname.IndexOf("リョービ フキダシック") >= 0 Or
+                    fontname.IndexOf("リョービ ミダシック") >= 0 Or
+                    fontname.IndexOf("リョービ レタリック") >= 0 Or
+                   fontname.IndexOf("TBアンチック") >= 0 Or
+                   fontname.IndexOf("TBフキダシック") >= 0 Or
+                   fontname.IndexOf("TBミダシック") >= 0 Or
+                   fontname.IndexOf("TBレタリック") >= 0 Then
+                result = result.Replace("!!!", Ryo(2))
+                result = result.Replace("!!", Ryo(1))
+                result = result.Replace("!?", Ryo(3))
+                result = result.Replace("??", Ryo(4))
+                result = result.Replace("!", Ryo(0))
+                result = result.Replace("～", Ryo(5))
+                If Not My.Settings.GaijiSlant Then
+                    result = result.Replace("", "!!!")
+                End If
+                If vertical Then
+                    result = result.Replace(Ryo(5), "")
+                End If
             End If
         End If
         Return result
