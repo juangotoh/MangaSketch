@@ -83,6 +83,7 @@ Partial Class Form1
         Me.サイズToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.OpacueTextToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.ContextTextMenu.SuspendLayout()
@@ -166,7 +167,7 @@ Partial Class Form1
         '
         '編集ToolStripMenuItem
         '
-        Me.編集ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.元へ戻すToolStripMenuItem, Me.やり直しRToolStripMenuItem, Me.ToolStripMenuItem1, Me.切り取りToolStripMenuItem, Me.コピーToolStripMenuItem, Me.貼り付けToolStripMenuItem, Me.ToolStripMenuItem4, Me.GaijiToolStripMenuItem, Me.GaijiSlantToolStripMenuItem, Me.ToolStripMenuItem6, Me.選択されたテキストの削除ToolStripMenuItem, Me.テキスト選択解除ToolStripMenuItem})
+        Me.編集ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.元へ戻すToolStripMenuItem, Me.やり直しRToolStripMenuItem, Me.ToolStripMenuItem1, Me.切り取りToolStripMenuItem, Me.コピーToolStripMenuItem, Me.貼り付けToolStripMenuItem, Me.ToolStripMenuItem4, Me.GaijiToolStripMenuItem, Me.GaijiSlantToolStripMenuItem, Me.OpacueTextToolStripMenuItem, Me.ToolStripMenuItem6, Me.選択されたテキストの削除ToolStripMenuItem, Me.テキスト選択解除ToolStripMenuItem})
         Me.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem"
         Me.編集ToolStripMenuItem.Size = New System.Drawing.Size(57, 20)
         Me.編集ToolStripMenuItem.Text = "編集(&E)"
@@ -466,6 +467,12 @@ Partial Class Form1
         Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
         Me.ToolStripMenuItem5.Size = New System.Drawing.Size(132, 6)
         '
+        'OpacueTextToolStripMenuItem
+        '
+        Me.OpacueTextToolStripMenuItem.Name = "OpacueTextToolStripMenuItem"
+        Me.OpacueTextToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
+        Me.OpacueTextToolStripMenuItem.Text = "テキストの背景を隠す(&O)"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -550,4 +557,5 @@ Partial Class Form1
     Friend WithEvents ToolStripMenuItem6 As ToolStripSeparator
     Friend WithEvents GaijiSlantToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents OpacueTextToolStripMenuItem As ToolStripMenuItem
 End Class

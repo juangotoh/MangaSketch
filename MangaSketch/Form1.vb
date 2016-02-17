@@ -927,6 +927,7 @@ Public Class Form1
                         writer.WriteLine("Page=" + pagenum.ToString)
                         writer.WriteLine("Gaiji=" + My.Settings.UseGaiji.ToString)
                         writer.WriteLine("Slant=" + My.Settings.GaijiSlant.ToString)
+                        writer.WriteLine("Opaque=" + My.Settings.OpaqueText.ToString)
                     End Using
                     Dim num As Integer = 0
                     Dim i As Integer
@@ -1052,6 +1053,13 @@ Public Class Form1
                                     My.Settings.GaijiSlant = True
                                 Else
                                     My.Settings.GaijiSlant = False
+                                End If
+                            ElseIf key = "Opaque" Then
+                                If value = "True" Then
+                                    My.Settings.OpaqueText = True
+                                Else
+                                    My.Settings.OpaqueText = False
+
                                 End If
                             End If
                         Loop
@@ -1337,6 +1345,11 @@ Public Class Form1
             GaijiSlantToolStripMenuItem.Checked = False
 
         End If
+        If My.Settings.OpaqueText Then
+            OpacueTextToolStripMenuItem.Checked = True
+        Else
+            OpacueTextToolStripMenuItem.Checked = False
+        End If
     End Sub
     Public Sub setGaiji(useGaiji As Boolean, isSlant As Boolean)
         If useGaiji Then
@@ -1349,20 +1362,17 @@ Public Class Form1
 
 
     Private Sub GaijiToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GaijiToolStripMenuItem.Click
-        If My.Settings.UseGaiji Then
-            My.Settings.UseGaiji = False
-        Else
-            My.Settings.UseGaiji = True
-        End If
+        My.Settings.UseGaiji = Not My.Settings.UseGaiji
         Refresh()
     End Sub
 
     Private Sub GaijiSlantToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GaijiSlantToolStripMenuItem.Click
-        If My.Settings.GaijiSlant Then
-            My.Settings.GaijiSlant = False
-        Else
-            My.Settings.GaijiSlant = True
-        End If
+        My.Settings.GaijiSlant = Not My.Settings.GaijiSlant
+        Refresh()
+    End Sub
+
+    Private Sub OpacueTextToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpacueTextToolStripMenuItem.Click
+        My.Settings.OpaqueText = Not My.Settings.OpaqueText
         Refresh()
     End Sub
 

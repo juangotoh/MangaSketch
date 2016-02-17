@@ -85,7 +85,9 @@ Public Class TextView
         End If
         If r.IntersectsWith(bounds) And noDraw Is Nothing Then
             If noDraw IsNot Me Then
-                g.FillRectangle(New SolidBrush(Color.FromArgb(196, 255, 255, 255)), bounds)
+                If My.Settings.OpaqueText Then
+                    g.FillRectangle(New SolidBrush(Color.FromArgb(196, 255, 255, 255)), bounds)
+                End If
                 If vertical Then
                     MyDrawString(g, GaijiConvert(Text), origin, sf, fmt)
                 Else

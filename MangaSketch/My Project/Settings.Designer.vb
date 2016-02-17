@@ -257,6 +257,18 @@ Namespace My
                 Me("GaijiSlant") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property OpaqueText() As Boolean
+            Get
+                Return CType(Me("OpaqueText"),Boolean)
+            End Get
+            Set
+                Me("OpaqueText") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
