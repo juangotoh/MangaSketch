@@ -1376,6 +1376,11 @@ Public Class Form1
         Refresh()
     End Sub
 
+    Private Sub マニュアルの表示VToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles マニュアルの表示VToolStripMenuItem.Click
+        Dim p As System.Diagnostics.Process =
+    System.Diagnostics.Process.Start(My.Application.Info.DirectoryPath + "\help.html")
+    End Sub
+
     Private Sub HorizButton_Click(sender As Object, e As EventArgs) Handles HorizButton.Click
         SelectVertical(False)
     End Sub

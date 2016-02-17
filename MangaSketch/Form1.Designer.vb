@@ -45,6 +45,7 @@ Partial Class Form1
         Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripSeparator()
         Me.GaijiToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GaijiSlantToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpacueTextToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem6 = New System.Windows.Forms.ToolStripSeparator()
         Me.選択されたテキストの削除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.テキスト選択解除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -83,7 +84,7 @@ Partial Class Form1
         Me.サイズToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.OpacueTextToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.マニュアルの表示VToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.ContextTextMenu.SuspendLayout()
@@ -231,6 +232,12 @@ Partial Class Form1
         Me.GaijiSlantToolStripMenuItem.Text = "外字の「!」を傾ける(&I)"
         Me.GaijiSlantToolStripMenuItem.ToolTipText = "外字置き換え時、傾いた「!」「!!」「!!!」を使用します"
         '
+        'OpacueTextToolStripMenuItem
+        '
+        Me.OpacueTextToolStripMenuItem.Name = "OpacueTextToolStripMenuItem"
+        Me.OpacueTextToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
+        Me.OpacueTextToolStripMenuItem.Text = "テキストの背景を隠す(&O)"
+        '
         'ToolStripMenuItem6
         '
         Me.ToolStripMenuItem6.Name = "ToolStripMenuItem6"
@@ -252,7 +259,7 @@ Partial Class Form1
         '
         'ヘルプHToolStripMenuItem
         '
-        Me.ヘルプHToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.まんがスケッチについてToolStripMenuItem, Me.ヒントToolStripMenuItem})
+        Me.ヘルプHToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.まんがスケッチについてToolStripMenuItem, Me.ヒントToolStripMenuItem, Me.マニュアルの表示VToolStripMenuItem})
         Me.ヘルプHToolStripMenuItem.Name = "ヘルプHToolStripMenuItem"
         Me.ヘルプHToolStripMenuItem.Size = New System.Drawing.Size(65, 20)
         Me.ヘルプHToolStripMenuItem.Text = "ヘルプ(&H)"
@@ -467,11 +474,11 @@ Partial Class Form1
         Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
         Me.ToolStripMenuItem5.Size = New System.Drawing.Size(132, 6)
         '
-        'OpacueTextToolStripMenuItem
+        'マニュアルの表示VToolStripMenuItem
         '
-        Me.OpacueTextToolStripMenuItem.Name = "OpacueTextToolStripMenuItem"
-        Me.OpacueTextToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
-        Me.OpacueTextToolStripMenuItem.Text = "テキストの背景を隠す(&O)"
+        Me.マニュアルの表示VToolStripMenuItem.Name = "マニュアルの表示VToolStripMenuItem"
+        Me.マニュアルの表示VToolStripMenuItem.Size = New System.Drawing.Size(200, 22)
+        Me.マニュアルの表示VToolStripMenuItem.Text = "マニュアルの表示(&V)"
         '
         'Form1
         '
@@ -558,4 +565,5 @@ Partial Class Form1
     Friend WithEvents GaijiSlantToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents OpacueTextToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents マニュアルの表示VToolStripMenuItem As ToolStripMenuItem
 End Class
