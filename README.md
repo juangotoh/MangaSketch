@@ -19,3 +19,9 @@ WACOMタブレット(タブレットがないと全く使えません)
 
 #ビルド時の注意点
 2つのDLL、 WinTabDotnet.dll と、 BitMiracle.LibJpeg.NET.dll を参照していますが、64bit版と32bit版(Any CPU)でそれぞれDLLも使い分ける必要があります。ビルドターゲットを変更する場合、手動で参照の設定を変更してください。
+
+必要なDLLの入手先。
+* WintabDotnet.dll → https://osdn.jp/projects/wintabdotnet/
+* BitMiracle.LibJpeg.NET.dll → http://bitmiracle.com/libjpeg/
+
+64bit版DLLは、これらのソースから64bitターゲットでコンパイルしなおしたものを使用しました。
