@@ -2,6 +2,7 @@
 
     Private Sub smallEditForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         TextBox1.Select()
+        TextBox1.ImeMode = ImeMode.Hiragana
     End Sub
     Private Sub TextBox1_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBox1.KeyDown
         If e.KeyCode = Keys.Escape Then

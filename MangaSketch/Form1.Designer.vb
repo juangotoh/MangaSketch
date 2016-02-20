@@ -49,9 +49,14 @@ Partial Class Form1
         Me.ToolStripMenuItem6 = New System.Windows.Forms.ToolStripSeparator()
         Me.選択されたテキストの削除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.テキスト選択解除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.フォントの一括変更ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem7 = New System.Windows.Forms.ToolStripSeparator()
+        Me.AddPaperToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DelPaperToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ヘルプHToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.まんがスケッチについてToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ヒントToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.マニュアルの表示VToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.ToolStripLabel2 = New System.Windows.Forms.ToolStripLabel()
         Me.PenMenu = New System.Windows.Forms.ToolStripComboBox()
@@ -84,7 +89,6 @@ Partial Class Form1
         Me.サイズToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.マニュアルの表示VToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.ContextTextMenu.SuspendLayout()
@@ -168,7 +172,7 @@ Partial Class Form1
         '
         '編集ToolStripMenuItem
         '
-        Me.編集ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.元へ戻すToolStripMenuItem, Me.やり直しRToolStripMenuItem, Me.ToolStripMenuItem1, Me.切り取りToolStripMenuItem, Me.コピーToolStripMenuItem, Me.貼り付けToolStripMenuItem, Me.ToolStripMenuItem4, Me.GaijiToolStripMenuItem, Me.GaijiSlantToolStripMenuItem, Me.OpacueTextToolStripMenuItem, Me.ToolStripMenuItem6, Me.選択されたテキストの削除ToolStripMenuItem, Me.テキスト選択解除ToolStripMenuItem})
+        Me.編集ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.元へ戻すToolStripMenuItem, Me.やり直しRToolStripMenuItem, Me.ToolStripMenuItem1, Me.切り取りToolStripMenuItem, Me.コピーToolStripMenuItem, Me.貼り付けToolStripMenuItem, Me.ToolStripMenuItem4, Me.GaijiToolStripMenuItem, Me.GaijiSlantToolStripMenuItem, Me.OpacueTextToolStripMenuItem, Me.ToolStripMenuItem6, Me.選択されたテキストの削除ToolStripMenuItem, Me.テキスト選択解除ToolStripMenuItem, Me.フォントの一括変更ToolStripMenuItem, Me.ToolStripMenuItem7, Me.AddPaperToolStripMenuItem, Me.DelPaperToolStripMenuItem})
         Me.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem"
         Me.編集ToolStripMenuItem.Size = New System.Drawing.Size(57, 20)
         Me.編集ToolStripMenuItem.Text = "編集(&E)"
@@ -257,6 +261,29 @@ Partial Class Form1
         Me.テキスト選択解除ToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
         Me.テキスト選択解除ToolStripMenuItem.Text = "テキスト選択解除"
         '
+        'フォントの一括変更ToolStripMenuItem
+        '
+        Me.フォントの一括変更ToolStripMenuItem.Name = "フォントの一括変更ToolStripMenuItem"
+        Me.フォントの一括変更ToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
+        Me.フォントの一括変更ToolStripMenuItem.Text = "フォントの一括変更"
+        '
+        'ToolStripMenuItem7
+        '
+        Me.ToolStripMenuItem7.Name = "ToolStripMenuItem7"
+        Me.ToolStripMenuItem7.Size = New System.Drawing.Size(219, 6)
+        '
+        'AddPaperToolStripMenuItem
+        '
+        Me.AddPaperToolStripMenuItem.Name = "AddPaperToolStripMenuItem"
+        Me.AddPaperToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
+        Me.AddPaperToolStripMenuItem.Text = "末尾に用紙追加(&N)"
+        '
+        'DelPaperToolStripMenuItem
+        '
+        Me.DelPaperToolStripMenuItem.Name = "DelPaperToolStripMenuItem"
+        Me.DelPaperToolStripMenuItem.Size = New System.Drawing.Size(222, 22)
+        Me.DelPaperToolStripMenuItem.Text = "末尾の用紙削除(&D)"
+        '
         'ヘルプHToolStripMenuItem
         '
         Me.ヘルプHToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.まんがスケッチについてToolStripMenuItem, Me.ヒントToolStripMenuItem, Me.マニュアルの表示VToolStripMenuItem})
@@ -275,6 +302,12 @@ Partial Class Form1
         Me.ヒントToolStripMenuItem.Name = "ヒントToolStripMenuItem"
         Me.ヒントToolStripMenuItem.Size = New System.Drawing.Size(200, 22)
         Me.ヒントToolStripMenuItem.Text = "ヒント(&?)..."
+        '
+        'マニュアルの表示VToolStripMenuItem
+        '
+        Me.マニュアルの表示VToolStripMenuItem.Name = "マニュアルの表示VToolStripMenuItem"
+        Me.マニュアルの表示VToolStripMenuItem.Size = New System.Drawing.Size(200, 22)
+        Me.マニュアルの表示VToolStripMenuItem.Text = "マニュアルの表示(&V)"
         '
         'ToolStrip1
         '
@@ -474,12 +507,6 @@ Partial Class Form1
         Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
         Me.ToolStripMenuItem5.Size = New System.Drawing.Size(132, 6)
         '
-        'マニュアルの表示VToolStripMenuItem
-        '
-        Me.マニュアルの表示VToolStripMenuItem.Name = "マニュアルの表示VToolStripMenuItem"
-        Me.マニュアルの表示VToolStripMenuItem.Size = New System.Drawing.Size(200, 22)
-        Me.マニュアルの表示VToolStripMenuItem.Text = "マニュアルの表示(&V)"
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -566,4 +593,8 @@ Partial Class Form1
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents OpacueTextToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents マニュアルの表示VToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents フォントの一括変更ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem7 As ToolStripSeparator
+    Friend WithEvents AddPaperToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents DelPaperToolStripMenuItem As ToolStripMenuItem
 End Class

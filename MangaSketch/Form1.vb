@@ -173,20 +173,18 @@ Public Class Form1
 
 
         pFactor = PressureMax / 255.0
-        buildFontMenu()
+        buildFontMenu(ComboBox_Font)
         buildPenMenu()
         selectPenMenu(pensizes(pensize))
         selectEmenu(esizes(esize))
         selectFontMenu(fontname)
         selectSizeMenu(fontSize)
         note = New List(Of Page)
-        Dim dummyPanel As New Panel()
-        dummyPanel.Width = 0
-        dummyPanel.Height = 1000
+
 
         Me.WindowState = My.Settings.WindowState
 
-        FlowLayoutPanel1.Controls.Add(dummyPanel)
+
         If My.Application.CommandLineArgs IsNot Nothing Then
             If My.Application.CommandLineArgs.Count > 0 Then
                 Dim f As String = My.Application.CommandLineArgs(0)
@@ -201,6 +199,13 @@ Public Class Form1
         End If
 
     End Sub
+    Public Sub AddVertPad()
+        Dim dummyPanel As New Panel()
+        dummyPanel.Width = 0
+        dummyPanel.Height = 1000
+        FlowLayoutPanel1.Controls.Add(dummyPanel)
+    End Sub
+
     Public Sub selectPage(p As Page)
         If Not MenuDropping Then
             If thePage IsNot Nothing Then
@@ -506,8 +511,10 @@ Public Class Form1
         pagenum = 0
         mihiraki = 0
         Dim i As Integer
+        For i = 0 To FlowLayoutPanel1.Controls.Count - 1
+            FlowLayoutPanel1.Controls.RemoveAt(0)
+        Next
         For i = 0 To note.Count - 1
-            FlowLayoutPanel1.Controls.RemoveAt(1)
             note(i).DeleteData()
         Next
         note.Clear()
@@ -539,12 +546,14 @@ Public Class Form1
         If note.Count > 0 Then
             note = New List(Of Page)
         End If
+        AddVertPad()
         For i = 0 To pages - 1
             note.Add(New Page(Me, times(mul), rtl, startLeft, i))
 
             FlowLayoutPanel1.Controls.Add(note(i))
             note(i).Centering()
         Next
+        AddVertPad()
         FlowLayoutPanel1.ScrollControlIntoView(note(0))
     End Sub
     Private Sub Form1_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
@@ -728,7 +737,7 @@ Public Class Form1
     Private Sub Timer_Export_Tick(sender As Object, e As EventArgs) Handles Timer_Export.Tick
 
     End Sub
-    Private Sub buildFontMenu()
+    Public Sub buildFontMenu(c As Object)
         Dim installedFontCollection As New InstalledFontCollection()
         Dim fontFamilies() As FontFamily
         fontFamilies = installedFontCollection.Families
@@ -737,7 +746,7 @@ Public Class Form1
         Dim familyName As String
         While j < count
             familyName = fontFamilies(j).Name
-            ComboBox_Font.Items.Add(familyName)
+            c.Items.Add(familyName)
             j += 1
         End While
     End Sub
@@ -1127,12 +1136,14 @@ Public Class Form1
                     mihiraki = num
                     note.Clear()
                     note = pages
+                    AddVertPad()
                     For Each p As Page In note
                         p.setSize(times(mul))
 
                         FlowLayoutPanel1.Controls.Add(p)
                         p.Centering()
                     Next
+                    AddVertPad()
                     FlowLayoutPanel1.ScrollControlIntoView(note(1))
                 End Using
             End Using
@@ -1296,9 +1307,10 @@ Public Class Form1
             If undoIndex <= 0 Then
                 undoIndex = 0
                 UndoAble = False
-
+            Else
+                redoAble = True
             End If
-            redoAble = True
+
         End If
 
     End Sub
@@ -1379,6 +1391,81 @@ Public Class Form1
     Private Sub マニュアルの表示VToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles マニュアルの表示VToolStripMenuItem.Click
         Dim p As System.Diagnostics.Process =
     System.Diagnostics.Process.Start(My.Application.Info.DirectoryPath + "\help.html")
+    End Sub
+
+    Private Sub フォントの一括変更ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles フォントの一括変更ToolStripMenuItem.Click
+        Dim fc As New FontChange
+        If fc.ShowDialog(Me) = DialogResult.OK Then
+            If note IsNot Nothing Then
+                For Each p As Page In note
+                    For Each v As TextView In p.texts
+                        Dim fromFont = fc.fromFont.SelectedItem
+                        Dim toFont = fc.toFont.SelectedItem
+                        If fc.fromFont.SelectedIndex = 0 Or fromFont = v.GetFont Then
+                            v.SetFont(toFont)
+                            Debug.WriteLine(fc.toFont.SelectedText)
+                        End If
+                    Next
+                Next
+                Refresh()
+            End If
+        End If
+    End Sub
+    Public Sub rebuildPages()
+        Dim i As Integer
+        Dim max As Integer = FlowLayoutPanel1.Controls.Count - 1
+        For i = 0 To max
+            FlowLayoutPanel1.Controls.RemoveAt(0)
+        Next
+        max = note.Count - 1
+        AddVertPad()
+        For Each p As Page In note
+            FlowLayoutPanel1.Controls.Add(p)
+            p.Centering()
+        Next
+        AddVertPad()
+    End Sub
+    Public Sub AddPaper(p_ As Page)
+        Dim p As Page = p_
+        'p.setSize(times(mul))
+        p.mihirakiNum = note.Count
+        note.Add(p)
+        'p.Centering()
+        pagenum += 2
+        rebuildPages()
+        FlowLayoutPanel1.ScrollControlIntoView(note(note.Count - 1))
+        Refresh()
+        isDirty = True
+    End Sub
+    Public Sub AddPaper()
+
+        Dim p As Page = New Page(Me, times(mul), rtl, startLeft, note.Count)
+        note.Add(p)
+        'p.Centering()
+        pagenum += 2
+        rebuildPages()
+        FlowLayoutPanel1.ScrollControlIntoView(note(note.Count - 1))
+        Refresh()
+        isDirty = True
+    End Sub
+    Public Sub DelPaper()
+        Dim num As Integer = note.Count - 1
+        note.RemoveAt(num)
+        pagenum -= 2
+
+        rebuildPages()
+        FlowLayoutPanel1.ScrollControlIntoView(note(note.Count - 1))
+        Refresh()
+        isDirty = True
+    End Sub
+    Private Sub AddPaperToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddPaperToolStripMenuItem.Click
+        AddPaper()
+        AddUndo(New Undo(Undo.CMD_AddPage))
+    End Sub
+
+    Private Sub DelPaperToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DelPaperToolStripMenuItem.Click
+        DelPaper()
+        AddUndo(New Undo(note(note.Count - 1), Undo.CMD_DelPage))
     End Sub
 
     Private Sub HorizButton_Click(sender As Object, e As EventArgs) Handles HorizButton.Click

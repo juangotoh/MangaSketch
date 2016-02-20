@@ -15,7 +15,7 @@ Public Class Page
     Public form As Form1
     Dim rtl As Boolean
     Dim startLeft As Boolean
-    Dim mihirakiNum As Integer
+    Public mihirakiNum As Integer
     Public buf As Bitmap
     Dim rects(2) As RectangleF
     Public sizeFactor As Double

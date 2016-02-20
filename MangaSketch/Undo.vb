@@ -4,6 +4,8 @@
     Public Const CMD_MovText As Integer = 3
     Public Const CMD_Font As Integer = 4
     Public Const CMD_EditText As Integer = 5
+    Public Const CMD_AddPage As Integer = 6
+    Public Const CMD_DelPage As Integer = 7
     Dim task As Integer
     Dim page As Page
     Dim undoBits As Bitmap
@@ -68,6 +70,16 @@
         redoText = text.GetText()
     End Sub
 
+    'undo Add page
+    Public Sub New(command_ As Integer)
+        task = command_
+    End Sub
+    'undo Delete page
+    Public Sub New(page_ As Page, command_ As Integer)
+        page = page_
+        task = command_
+    End Sub
+
     Public Sub Undo()
         If undoBits IsNot Nothing Then
             page.buf = undoBits
@@ -93,9 +105,15 @@
 
                 Case CMD_EditText
                     text.SetText(undoText)
+
             End Select
             page.Refresh()
-
+        ElseIf task = CMD_AddPage Then
+            Form1.DelPaper()
+        ElseIf task = CMD_DelPage Then
+            page.Left = 0
+            page.Top = 0
+            Form1.AddPaper(page)
         End If
 
     End Sub
@@ -125,8 +143,10 @@
                     text.SetText(redoText)
             End Select
             page.Refresh()
-
-
+        ElseIf task = CMD_AddPage Then
+            Form1.AddPaper()
+        ElseIf task = CMD_DelPage Then
+            page.form.DelPaper()
         End If
     End Sub
 
