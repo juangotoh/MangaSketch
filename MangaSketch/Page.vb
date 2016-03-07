@@ -184,7 +184,7 @@ Public Class Page
         If Editor.ShowDialog() = DialogResult.OK Then
             Dim tv As TextView = FindSelectedText()
             If tv Is Nothing Then
-                tv = New TextView(Me, lastPoint.X * sizeFactor, lastPoint.Y * sizeFactor, Editor.TextBox1.Text, Form1.fontname, Form1.fontSize, Form1.vertical)
+                tv = New TextView(Me, lastPoint.X * sizeFactor, lastPoint.Y * sizeFactor, Editor.TextBox1.Text.Trim, Form1.fontname, Form1.fontSize, Form1.vertical)
                 texts.Add(tv)
                 unselectAllText()
                 tv.selected = True
@@ -194,7 +194,7 @@ Public Class Page
                 form.AddUndo(New Undo(Me, tv, Undo.CMD_AddText))
             Else
                 form.AddUndo(New Undo(Me, tv, tv.GetText))
-                tv.SetText(Editor.TextBox1.Text)
+                tv.SetText(Editor.TextBox1.Text.Trim)
                 Refresh()
                 Form1.isDirty = True
             End If
