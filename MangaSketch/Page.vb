@@ -136,6 +136,7 @@ Public Class Page
         Me.DoubleBuffered = True
         'Me.Controls.Add(Editor)
         Me.ImeMode = ImeMode.Alpha
+        Me.AllowDrop = True
     End Sub
     Public Sub setSize(sf As Double)
         SetBounds(0, 0, buf.Width / sf, buf.Height / sf)
@@ -956,6 +957,10 @@ Public Class Page
         ElseIf Form1.keyPressed = "　"c Or Form1.keyPressed = " "c Then
             m_PanStartPoint = New Point(e.X, e.Y)
             form.noDrawOperation = True
+        ElseIf (Control.ModifierKeys And Keys.Alt) = Keys.Alt Then
+            'ページをDrag & Dropで入れ替える処理を検討する（まだできてない）
+            'Dim hp As HalfPage = GetHalfPage(e.Location)
+            'Me.DoDragDrop(hp, DragDropEffects.All)
         End If
         oldLoc = e.Location
     End Sub
@@ -1054,6 +1059,111 @@ Public Class Page
 
 
     End Sub
+    Private Function CreateHalfPage(left As Boolean) As HalfPage
+        Dim shift As Integer
+        Dim width As Integer = buf.Width / 2
+        Dim height As Integer = buf.Height
+        Dim hb As New Bitmap(width, height, PixelFormat.Format24bppRgb)
+        Dim g As Graphics = Graphics.FromImage(hb)
+        Dim hp As New HalfPage
+        hp.texts = New List(Of TextView)
+        hp.src = Me
+        hp.isLeft = left
+        Dim r As New Rectangle(0, 0, width, height)
+
+        hp.buf = hb
+        If left Then
+            shift = 0
+        Else
+            shift = buf.Width / 2
+            r.Offset(shift, 0)
+        End If
+        g.DrawImage(buf, 0, 0, r, GraphicsUnit.Pixel)
+        For Each v As TextView In texts
+            Dim vp As New Point(v.x, v.y)
+            If r.Contains(vp) Then
+                v.x -= shift
+                hp.texts.Add(v)
+            End If
+        Next
+        Return hp
+    End Function
+    Public Sub CopyPixels(srcBits As Bitmap, x As Integer)
+        Dim bmpData As BitmapData = srcBits.LockBits(New Rectangle(0, 0, srcBits.Width, srcBits.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb)
+        Dim ba As Byte() = New Byte(srcBits.Width * srcBits.Height * 3) {}
+        Dim gData As BitmapData = buf.LockBits(New Rectangle(0, 0, buf.Width, buf.Height), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed)
+        Dim ga As Byte() = New Byte(buf.Width * buf.Height) {}
+        Marshal.Copy(bmpData.Scan0, ba, 0, ba.Length)
+        Dim pixelsize As Integer = buf.Width * buf.Height
+        Dim inputStride = bmpData.Stride
+        Dim outputStride = gData.Stride
+        Dim padding As Integer = gData.Stride - buf.Width
+        'For i As Integer = 0 To pixelsize
+        '    ba(i) = ba(i * 3 + i)
+        '    If i Mod (buf.Width - 1) = 0 Then
+        '        i += padding
+        '    End If
+        'Next
+
+        Parallel.For(0, cbuf.Height - 1, Sub(y)
+                                             Dim InputOffset As Integer = y * inputStride
+                                             Dim OutputOffset As Integer = y * outputStride + x
+                                             Dim count As Integer = 0
+                                             Do
+                                                 If count >= outputStride Then Exit Do
+                                                 If InputOffset >= ba.Length Then Exit Do
+                                                 If OutputOffset >= ga.Length Then Exit Do
+                                                 ga(OutputOffset) = ba(InputOffset)
+                                                 InputOffset += 3
+                                                 OutputOffset += 1
+                                                 count += 1
+
+                                             Loop
+
+
+                                         End Sub)
+
+
+        Marshal.Copy(ga, 0, gData.Scan0, buf.Height * buf.Width)
+        buf.UnlockBits(gData)
+        cbuf.UnlockBits(bmpData)
+    End Sub
+
+    Public Sub SetHalfPage(p As Point, hp As HalfPage)
+        Dim width As Integer = buf.Width / 2
+        Dim height As Integer = buf.Height
+        Dim r As New Rectangle(0, 0, width, height)
+        Dim left = PointIsLeft(p)
+        Dim shift As Integer = 0
+        If Not left Then
+            shift = width
+            r.Offset(width, 0)
+        End If
+        CopyPixels(hp.buf, shift)
+        For Each v As TextView In texts
+            Dim vp As New Point(v.x + shift, v.y)
+            If r.Contains(vp) Then
+                texts.Remove(v)
+            End If
+        Next
+        For Each v As TextView In hp.texts
+            texts.Add(v)
+        Next
+    End Sub
+    Private Function PointIsLeft(p As Point)
+        Dim left As Boolean = False
+        Dim pWidth As Integer = buf.Width / 2
+        Dim x = p.X * sizeFactor
+        If x <= pWidth Then
+            left = True
+        Else
+            left = False
+        End If
+        Return left
+    End Function
+    Private Function GetHalfPage(p As Point) As HalfPage
+        Return CreateHalfPage(PointIsLeft(p))
+    End Function
     Protected Overrides Sub OnPaintBackground(ByVal pevent As System.Windows.Forms.PaintEventArgs)
 
     End Sub
