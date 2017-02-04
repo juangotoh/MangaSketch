@@ -1025,8 +1025,8 @@ Public Class Page
         oldLoc = e.Location
         mouseStillDown = False
         Debug.WriteLine("MouseUp")
-        form.noDrawOperation = False
-        form.keyPressed = Nothing
+        'form.noDrawOperation = False
+        'form.keyPressed = Nothing
         lastPoint = e.Location
     End Sub
     Private Sub Page_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Me.MouseDoubleClick

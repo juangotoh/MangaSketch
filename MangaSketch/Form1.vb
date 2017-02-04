@@ -305,51 +305,56 @@ Public Class Form1
             If (Control.ModifierKeys And Keys.Control = Keys.Control) Or
             noDrawOperation Or
             MenuDropping Then Return
+            If System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.Space) Then
+                Debug.WriteLine("Space Key is Down")
+                Return
+            End If
+
             If e.pkts.pkStatus And &H10 Then
-                tool = Eraser
-                size = esizes(esize)
+                    tool = Eraser
+                    size = esizes(esize)
 
-            Else
-                tool = Pencil
-                size = mmpen
+                Else
+                    tool = Pencil
+                    size = mmpen
+
+                End If
+                Dim pss(4)() As Integer
+                Dim tmpx = 0, tmpy = 0, tmpPressure = 0
+
+
+
+                curX = e.pkts.pkX
+                curY = e.pkts.pkY
+                'Label1.Text = curX.ToString + " : " + curY.ToString
+                Dim curPoint As Point = New Point(curX, curY)
+                Dim oldPoint As Point = New Point(oldX, oldY)
+
+                Dim penPixel As Integer = mmToPixel(size)
+
+                Dim pr As Integer = e.pkts.pkNormalPressure / pFactor
+                'Dim pr As Integer = tmpPressure / 5 / pFactor
+                If pr > 255 Then
+                    pr = 255
+                End If
+                'thePage.draw(tool, curPoint, oldPoint, penPixel, pr)
+                thePage.draw(tool, curPoint, oldPoint, penPixel, e.pkts.pkNormalPressure)
+                If curPoint.X < leftest Then
+                    leftest = curPoint.X
+                ElseIf curPoint.X > rightest Then
+                    rightest = curPoint.X
+                End If
+                If curPoint.Y < toppest Then
+                    toppest = curPoint.Y
+                ElseIf curPoint.Y > bottomest Then
+                    bottomest = curPoint.Y
+                End If
+
+                oldX = curX
+                oldY = curY
+
 
             End If
-            Dim pss(4)() As Integer
-            Dim tmpx = 0, tmpy = 0, tmpPressure = 0
-
-
-
-            curX = e.pkts.pkX
-            curY = e.pkts.pkY
-            'Label1.Text = curX.ToString + " : " + curY.ToString
-            Dim curPoint As Point = New Point(curX, curY)
-            Dim oldPoint As Point = New Point(oldX, oldY)
-
-            Dim penPixel As Integer = mmToPixel(size)
-
-            Dim pr As Integer = e.pkts.pkNormalPressure / pFactor
-            'Dim pr As Integer = tmpPressure / 5 / pFactor
-            If pr > 255 Then
-                pr = 255
-            End If
-            'thePage.draw(tool, curPoint, oldPoint, penPixel, pr)
-            thePage.draw(tool, curPoint, oldPoint, penPixel, e.pkts.pkNormalPressure)
-            If curPoint.X < leftest Then
-                leftest = curPoint.X
-            ElseIf curPoint.X > rightest Then
-                rightest = curPoint.X
-            End If
-            If curPoint.Y < toppest Then
-                toppest = curPoint.Y
-            ElseIf curPoint.Y > bottomest Then
-                bottomest = curPoint.Y
-            End If
-
-            oldX = curX
-            oldY = curY
-
-
-        End If
     End Sub
     Dim bitLocked As Boolean = False
     Private Sub Form1_NPressureChange(e As PacketEventArgs)

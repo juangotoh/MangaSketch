@@ -345,14 +345,23 @@ Public Class TextView
         If hScale > 1 Then
             hScale = 1
             hanPad = (cWidth2 - hansize.Width) / 2
+        ElseIf hScale < 0 Then
+            hScale = 1
+            hanPad = 0
         End If
 
         Dim pad As Single = (cWidth - cWidth2) / 2.0F
         If vertical Then
+
+
+
             g.ScaleTransform(hScale, 1)
+
+
             Dim hloc = New Point((dLoc.X - cWidth + pad + hanPad) / hScale, dLoc.Y + cheight * 0.1)
             If draw Then g.DrawString(hanstr, hfont, Brushes.Black, hloc)
             g.ResetTransform()
+
         Else
             If draw Then g.DrawString(hanstr, hfont, Brushes.Black, dLoc)
             'dLoc.X += hansize.Width - cWidth2 + pad

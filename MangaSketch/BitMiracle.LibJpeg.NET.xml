@@ -1,0 +1,2180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>BitMiracle.LibJpeg.NET</name>
+  </assembly>
+  <members>
+    <member name="T:BitMiracle.LibJpeg.Colorspace">
+      <summary>
+            Known color spaces.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Colorspace.Unknown">
+      <summary>
+            Unspecified colorspace
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Colorspace.Grayscale">
+      <summary>
+            Grayscale
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Colorspace.RGB">
+      <summary>
+            RGB
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Colorspace.YCbCr">
+      <summary>
+            YCbCr (also known as YUV)
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Colorspace.CMYK">
+      <summary>
+            CMYK
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Colorspace.YCCK">
+      <summary>
+            YCbCrK
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.CompressionParameters">
+      <summary>
+            Parameters of compression.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.CompressionParameters.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:BitMiracle.LibJpeg.CompressionParameters" /> class.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.CompressionParameters.Equals(System.Object)">
+      <summary>
+            Determines whether the specified <see cref="T:System.Object" /> is equal to this instance.
+            </summary>
+      <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+      <returns>
+        <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.CompressionParameters.GetHashCode">
+      <summary>
+            Returns a hash code for this instance.
+            </summary>
+      <returns>
+            A hash code for this instance, suitable for use in hashing algorithms 
+            and data structures like a hash table. 
+            </returns>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.CompressionParameters.Quality">
+      <summary>
+            Gets or sets the quality of JPEG image.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.CompressionParameters.SimpleProgressive">
+      <summary>
+            Gets or sets a value indicating whether to write a progressive-JPEG file.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.CompressionParameters.SmoothingFactor">
+      <summary>
+            Gets or sets the coefficient of image smoothing.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.JpegImage">
+      <summary>
+            Main class for work with JPEG images.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.JpegImage.#ctor(BitMiracle.LibJpeg.SampleRow[],BitMiracle.LibJpeg.Colorspace)">
+      <summary>
+            Creates <see cref="T:BitMiracle.LibJpeg.JpegImage" /> from pixels
+            </summary>
+      <param name="sampleData">Description of pixels.</param>
+      <param name="colorspace">Colorspace of image.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.JpegImage.#ctor(System.IO.Stream)">
+      <summary>
+            Creates <see cref="T:BitMiracle.LibJpeg.JpegImage" /> from stream with an arbitrary image data
+            </summary>
+      <param name="imageData">Stream containing bytes of image in 
+            arbitrary format (BMP, Jpeg, GIF, PNG, TIFF, e.t.c)</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.JpegImage.#ctor(System.String)">
+      <summary>
+            Creates <see cref="T:BitMiracle.LibJpeg.JpegImage" /> from file with an arbitrary image
+            </summary>
+      <param name="fileName">Path to file with image in 
+            arbitrary format (BMP, Jpeg, GIF, PNG, TIFF, e.t.c)</param>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.JpegImage.BitsPerComponent">
+      <summary>
+            Gets the number of bits per color component of <see cref="T:BitMiracle.LibJpeg.Sample">sample</see>.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.JpegImage.Colorspace">
+      <summary>
+            Gets the colorspace of image.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.JpegImage.ComponentsPerSample">
+      <summary>
+            Gets the number of color components per <see cref="T:BitMiracle.LibJpeg.Sample">sample</see>.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.JpegImage.Dispose">
+      <summary>
+            Frees and releases all resources allocated by this <see cref="T:BitMiracle.LibJpeg.JpegImage" /></summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.JpegImage.GetRow(System.Int32)">
+      <summary>
+            Retrieves the required row of image.
+            </summary>
+      <param name="rowNumber">The number of row.</param>
+      <returns>Image row of samples.</returns>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.JpegImage.Height">
+      <summary>
+            Gets the height of image in <see cref="T:BitMiracle.LibJpeg.Sample">samples</see>.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.JpegImage.Width">
+      <summary>
+            Gets the width of image in <see cref="T:BitMiracle.LibJpeg.Sample">samples</see>.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.JpegImage.WriteBitmap(System.IO.Stream)">
+      <summary>
+            Writes decompressed image data as bitmap to stream.
+            </summary>
+      <param name="output">Output stream.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.JpegImage.WriteJpeg(System.IO.Stream)">
+      <summary>
+            Writes compressed JPEG image to stream.
+            </summary>
+      <param name="output">Output stream.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.JpegImage.WriteJpeg(System.IO.Stream,BitMiracle.LibJpeg.CompressionParameters)">
+      <summary>
+            Compresses image to JPEG with given parameters and writes it to stream.
+            </summary>
+      <param name="output">Output stream.</param>
+      <param name="parameters">The parameters of compression.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.JpegImage.#ctor(System.Drawing.Bitmap)">
+      <summary>
+            Creates <see cref="T:BitMiracle.LibJpeg.JpegImage" /> from <see cref="T:System.Drawing.Bitmap">.NET bitmap</see></summary>
+      <param name="bitmap">Source .NET bitmap.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.JpegImage.FromBitmap(System.Drawing.Bitmap)">
+      <summary>
+            Creates <see cref="T:BitMiracle.LibJpeg.JpegImage" /> from <see cref="T:System.Drawing.Bitmap">.NET bitmap</see></summary>
+      <param name="bitmap">Source .NET bitmap.</param>
+      <returns>Created instance of <see cref="T:BitMiracle.LibJpeg.JpegImage" /> class.</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.JpegImage.ToBitmap">
+      <summary>
+            Retrieves image as .NET Bitmap.
+            </summary>
+      <returns>.NET Bitmap</returns>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Sample">
+      <summary>
+            Represents a "sample" (you can understand it as a "pixel") of image.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Sample.BitsPerComponent">
+      <summary>
+            Gets the number of bits per color component.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Sample.ComponentCount">
+      <summary>
+            Gets the number of color components.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Sample.GetComponent(System.Int32)">
+      <summary>
+            Gets the required color component.
+            </summary>
+      <param name="componentNumber">The number of color component.</param>
+      <returns>Value of color component.</returns>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Sample.Item(System.Int32)">
+      <summary>
+            Gets the color component at the specified index.
+            </summary>
+      <param name="componentNumber">The number of color component.</param>
+      <returns>Value of color component.</returns>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.SampleRow">
+      <summary>
+            Represents a row of image - collection of samples.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.SampleRow.#ctor(System.Byte[],System.Int32,System.Byte,System.Byte)">
+      <summary>
+            Creates a row from raw samples data.
+            </summary>
+      <param name="row">Raw description of samples.<br />
+            You can pass collection with more than sampleCount samples - only sampleCount samples 
+            will be parsed and all remaining bytes will be ignored.</param>
+      <param name="sampleCount">The number of samples in row.</param>
+      <param name="bitsPerComponent">The number of bits per component.</param>
+      <param name="componentsPerSample">The number of components per sample.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.SampleRow.GetAt(System.Int32)">
+      <summary>
+            Gets the sample at the specified index.
+            </summary>
+      <param name="sampleNumber">The number of sample.</param>
+      <returns>The required sample.</returns>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.SampleRow.Item(System.Int32)">
+      <summary>
+            Gets the sample at the specified index.
+            </summary>
+      <param name="sampleNumber">The number of sample.</param>
+      <returns>The required sample.</returns>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.SampleRow.Length">
+      <summary>
+            Gets the number of samples in this row.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.SampleRow.ToBytes">
+      <summary>
+            Serializes this row to raw bytes.
+            </summary>
+      <returns>The row representation as array of bytes</returns>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.DensityUnit">
+      <summary>
+            The unit of density.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.DensityUnit.Unknown">
+      <summary>
+            Unknown density
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.DensityUnit.DotsInch">
+      <summary>
+            Dots/inch
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.DensityUnit.DotsCm">
+      <summary>
+            Dots/cm
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.J_COLOR_SPACE">
+      <summary>
+            Known color spaces.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_COLOR_SPACE.JCS_UNKNOWN">
+      <summary>
+            Unspecified color space.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_COLOR_SPACE.JCS_GRAYSCALE">
+      <summary>
+            Grayscale
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_COLOR_SPACE.JCS_RGB">
+      <summary>
+            RGB
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_COLOR_SPACE.JCS_YCbCr">
+      <summary>
+            YCbCr (also known as YUV)
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_COLOR_SPACE.JCS_CMYK">
+      <summary>
+            CMYK
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_COLOR_SPACE.JCS_YCCK">
+      <summary>
+            YCbCrK
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.J_DCT_METHOD">
+      <summary>
+            Algorithm used for the DCT step.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_DCT_METHOD.JDCT_ISLOW">
+      <summary>
+            Slow but accurate integer algorithm.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_DCT_METHOD.JDCT_IFAST">
+      <summary>
+            Faster, less accurate integer method.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_DCT_METHOD.JDCT_FLOAT">
+      <summary>
+            Floating-point method.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.J_DITHER_MODE">
+      <summary>
+            Dithering options for decompression.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_DITHER_MODE.JDITHER_NONE">
+      <summary>
+            No dithering: fast, very low quality
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_DITHER_MODE.JDITHER_ORDERED">
+      <summary>
+            Ordered dither: moderate speed and quality
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_DITHER_MODE.JDITHER_FS">
+      <summary>
+            Floyd-Steinberg dither: slow, high quality
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE">
+      <summary>
+            Message codes used in code to signal errors, warning and trace messages.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JMSG_NOMESSAGE">
+      <summary>
+            Must be first entry!
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_ARITH_NOTIMPL">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_BUFFER_MODE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_COMPONENT_ID">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_DCT_COEF">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_DCTSIZE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_HUFF_TABLE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_IN_COLORSPACE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_J_COLORSPACE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_LENGTH">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_MCU_SIZE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_PRECISION">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_PROGRESSION">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_PROG_SCRIPT">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_SAMPLING">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_SCAN_SCRIPT">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_STATE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BAD_VIRTUAL_ACCESS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_BUFFER_SIZE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_CANT_SUSPEND">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_CCIR601_NOTIMPL">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_COMPONENT_COUNT">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_CONVERSION_NOTIMPL">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_DHT_INDEX">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_DQT_INDEX">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_EMPTY_IMAGE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_EOI_EXPECTED">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_FILE_WRITE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_FRACT_SAMPLE_NOTIMPL">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_HUFF_CLEN_OVERFLOW">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_HUFF_MISSING_CODE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_IMAGE_TOO_BIG">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_INPUT_EMPTY">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_INPUT_EOF">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_MISMATCHED_QUANT_TABLE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_MISSING_DATA">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_MODE_CHANGE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_NOTIMPL">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_NOT_COMPILED">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_NO_HUFF_TABLE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_NO_IMAGE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_NO_QUANT_TABLE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_NO_SOI">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_OUT_OF_MEMORY">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_QUANT_COMPONENTS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_QUANT_FEW_COLORS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_QUANT_MANY_COLORS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_SOF_DUPLICATE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_SOF_NO_SOS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_SOF_UNSUPPORTED">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_SOI_DUPLICATE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_SOS_NO_SOF">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_TOO_LITTLE_DATA">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_UNKNOWN_MARKER">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JERR_WIDTH_OVERFLOW">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_16BIT_TABLES">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_ADOBE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_APP0">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_APP14">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_DHT">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_DQT">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_DRI">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_EOI">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_HUFFBITS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_JFIF">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_JFIF_BADTHUMBNAILSIZE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_JFIF_EXTENSION">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_JFIF_THUMBNAIL">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_MISC_MARKER">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_PARMLESS_MARKER">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_QUANTVALS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_QUANT_3_NCOLORS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_QUANT_NCOLORS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_QUANT_SELECTED">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_RECOVERY_ACTION">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_RST">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_SMOOTH_NOTIMPL">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_SOF">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_SOF_COMPONENT">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_SOI">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_SOS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_SOS_COMPONENT">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_SOS_PARAMS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_THUMB_JPEG">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_THUMB_PALETTE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_THUMB_RGB">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JTRC_UNKNOWN_IDS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JWRN_ADOBE_XFORM">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JWRN_BOGUS_PROGRESSION">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JWRN_EXTRANEOUS_DATA">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JWRN_HIT_MARKER">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JWRN_HUFF_BAD_CODE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JWRN_JFIF_MAJOR">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JWRN_JPEG_EOF">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JWRN_MUST_RESYNC">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JWRN_NOT_SEQUENTIAL">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JWRN_TOO_MUCH_DATA">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JMSG_UNKNOWNMSGCODE">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE.JMSG_LASTMSGCODE">
+      <summary></summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.JBLOCK">
+      <summary>
+            One block of coefficients.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.JBLOCK.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>BitMiracle.LibJpeg.Classic.JBLOCK</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.JBLOCK.Item(System.Int32)">
+      <summary>
+            Gets or sets the element at the specified index.
+            </summary>
+      <param name="index">The index of required element.</param>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.JHUFF_TBL">
+      <summary>
+            Huffman coding table.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.JHUFF_TBL.Sent_table">
+      <summary>
+            Gets or sets a value indicating whether the table has been output to file.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.jpeg_common_struct">
+      <summary>Base class for both JPEG compressor and decompresor.</summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.#ctor">
+      <summary>
+            Base constructor.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.#ctor(BitMiracle.LibJpeg.Classic.jpeg_error_mgr)">
+      <summary>
+            Base constructor.
+            </summary>
+      <param name="errorManager">The error manager.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.AllocJpegSamples(System.Int32,System.Int32)">
+      <summary>
+            Creates 2-D sample array.
+            </summary>
+      <param name="samplesPerRow">The number of samples per row.</param>
+      <param name="numberOfRows">The number of rows.</param>
+      <returns>The array of samples.</returns>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_common_struct.Copyright">
+      <summary>
+            Gets the LibJpeg's copyright.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.CreateBlocksArray(System.Int32,System.Int32)">
+      <summary>
+            Creates the array of blocks.
+            </summary>
+      <param name="blocksPerRow">The number of blocks in row.</param>
+      <param name="numberOfRows">The number of rows.</param>
+      <returns>The array of blocks.</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.CreateSamplesArray(System.Int32,System.Int32)">
+      <summary>
+            Creates the array of samples.
+            </summary>
+      <param name="samplesPerRow">The number of samples in row.</param>
+      <param name="numberOfRows">The number of rows.</param>
+      <returns>The array of samples.</returns>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_common_struct.Err">
+      <summary>
+            Error handler module.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.ERREXIT(BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE)">
+      <summary>
+            Used for fatal errors (print message and exit).
+            </summary>
+      <param name="code">The message code.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.ERREXIT(BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE,System.Object[])">
+      <summary>
+            Used for fatal errors (print message and exit).
+            </summary>
+      <param name="code">The message code.</param>
+      <param name="args">The parameters of message.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.ERREXIT(System.Int32,System.Object[])">
+      <summary>
+            Used for fatal errors (print message and exit).
+            </summary>
+      <param name="code">The message code.</param>
+      <param name="args">The parameters of message.</param>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_common_struct.IsDecompressor">
+      <summary>
+            Gets a value indicating whether this instance is Jpeg decompressor.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.jpeg_abort">
+      <summary>
+            Abort processing of a JPEG compression or decompression operation,
+            but don't destroy the object itself.
+            
+            Closing a data source or destination, if necessary, is the 
+            application's responsibility.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.jpeg_destroy">
+      <summary>
+            Destruction of a JPEG object. 
+            
+            Closing a data source or destination, if necessary, is the 
+            application's responsibility.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_common_struct.Progress">
+      <summary>
+            Progress monitor.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.TRACEMS(System.Int32,BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE)">
+      <summary>
+            Shows informational and debugging messages.
+            </summary>
+      <param name="lvl">See <see cref="M:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.emit_message(System.Int32)" /> for description.</param>
+      <param name="code">The message code.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.TRACEMS(System.Int32,BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE,System.Object[])">
+      <summary>
+            Shows informational and debugging messages.
+            </summary>
+      <param name="lvl">See <see cref="M:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.emit_message(System.Int32)" /> for description.</param>
+      <param name="code">The message code.</param>
+      <param name="args">The parameters of message.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.TRACEMS(System.Int32,System.Int32,System.Object[])">
+      <summary>
+            Shows informational and debugging messages.
+            </summary>
+      <param name="lvl">See <see cref="M:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.emit_message(System.Int32)" /> for description.</param>
+      <param name="code">The message code.</param>
+      <param name="args">The parameters of message.</param>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_common_struct.Version">
+      <summary>
+            Gets the version of LibJpeg.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.WARNMS(BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE)">
+      <summary>
+            Used for non-fatal errors (we can keep going, but the data is probably corrupt).
+            </summary>
+      <param name="code">The message code.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.WARNMS(BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE,System.Object[])">
+      <summary>
+            Used for non-fatal errors (we can keep going, but the data is probably corrupt).
+            </summary>
+      <param name="code">The message code.</param>
+      <param name="args">The parameters of message.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.WARNMS(System.Int32,System.Object[])">
+      <summary>
+            Used for non-fatal errors (we can keep going, but the data is probably corrupt).
+            </summary>
+      <param name="code">The message code.</param>
+      <param name="args">The parameters of message.</param>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.jpeg_component_info">
+      <summary>
+            Basic info about one component (color channel).
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_component_info.Ac_tbl_no">
+      <summary>
+            AC entropy table selector (0..3)
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_component_info.Component_id">
+      <summary>
+            Identifier for this component (0..255)
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_component_info.Component_index">
+      <summary>
+            Its index in SOF or <see cref="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Comp_info" />.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_component_info.Dc_tbl_no">
+      <summary>
+            DC entropy table selector (0..3)
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_component_info.Downsampled_width">
+      <summary>
+            Gets the downsampled width.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_component_info.H_samp_factor">
+      <summary>
+            Horizontal sampling factor (1..4)
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_component_info.Quant_tbl_no">
+      <summary>
+            Quantization table selector (0..3)
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_component_info.V_samp_factor">
+      <summary>
+            Vertical sampling factor (1..4)
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_component_info.Width_in_blocks">
+      <summary>
+            Gets or sets the width in blocks.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.jpeg_compress_struct">
+      <summary>
+            JPEG compression routine.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:BitMiracle.LibJpeg.Classic.jpeg_compress_struct" /> class.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.#ctor(BitMiracle.LibJpeg.Classic.jpeg_error_mgr)">
+      <summary>
+            Initializes a new instance of the <see cref="T:BitMiracle.LibJpeg.Classic.jpeg_compress_struct" /> class.
+            </summary>
+      <param name="errorManager">The error manager.</param>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Ac_huff_tbl_ptrs">
+      <summary>
+            Gets the Huffman coding tables.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.CCIR601_sampling">
+      <summary>
+            Gets or sets a value indicating whether first samples are cosited.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Component_info">
+      <summary>
+            Gets the components that appears in SOF.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Data_precision">
+      <summary>
+            Gets or sets the number of bits of precision in image data.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Dc_huff_tbl_ptrs">
+      <summary>
+            Gets the Huffman coding tables.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Dct_method">
+      <summary>
+            Gets or sets the algorithm used for the DCT step.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Density_unit">
+      <summary>
+            Gets or sets the resolution information to be written into the JFIF marker; not used otherwise.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Dest">
+      <summary>
+            Gets or sets the destination for compressed data
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Image_height">
+      <summary>
+            Gets or sets the height of image, in pixels.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Image_width">
+      <summary>
+            Gets or sets the width of image, in pixels.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.In_color_space">
+      <summary>
+            Gets or sets the color space of source image.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Input_components">
+      <summary>
+            Gets or sets the number of color channels (components per pixel)
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.IsDecompressor">
+      <summary>
+            Retrieves <c>false</c> because this is not decompressor.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.JFIF_major_version">
+      <summary>
+            Gets or sets the version number to be written into the JFIF marker.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.JFIF_minor_version">
+      <summary>
+            Gets or sets the version number to be written into the JFIF marker.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_abort_compress">
+      <summary>
+            Abort processing of a JPEG compression operation.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_add_quant_table(System.Int32,System.Int32[],System.Int32,System.Boolean)">
+      <summary>
+            Allows an arbitrary quantization table to be created.
+            </summary>
+      <param name="which_tbl">Indicates which table slot to fill.</param>
+      <param name="basic_table">An array of 64 unsigned integers given in normal array order.
+            These values are multiplied by <c>scale_factor/100</c> and then clamped to the range 1..65535 
+            (or to 1..255 if <c>force_baseline</c> is <c>true</c>).<br />
+            The basic table should be given in JPEG zigzag order.
+            </param>
+      <param name="scale_factor">Multiplier for values in <c>basic_table</c>.</param>
+      <param name="force_baseline">Defines range of values in <c>basic_table</c>. 
+            If <c>true</c> - 1..255, otherwise - 1..65535.</param>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Jpeg_color_space">
+      <summary>
+            Gets or sets the JPEG color space.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_default_colorspace">
+      <summary>
+            Select an appropriate JPEG colorspace based on <see cref="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.In_color_space" />,
+            and calls <see cref="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_set_colorspace(BitMiracle.LibJpeg.Classic.J_COLOR_SPACE)" /></summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_finish_compress">
+      <summary>
+            Finishes JPEG compression.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_quality_scaling(System.Int32)">
+      <summary>
+            Converts a value on the IJG-recommended quality scale to a linear scaling percentage.
+            </summary>
+      <param name="quality">The IJG-recommended quality scale. Should be 0 (terrible) to 100 (very good).</param>
+      <returns>The linear scaling percentage.</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_set_colorspace(BitMiracle.LibJpeg.Classic.J_COLOR_SPACE)">
+      <summary>
+            Set the JPEG colorspace (property <see cref="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Jpeg_color_space" />,
+            and choose colorspace-dependent parameters appropriately.
+            </summary>
+      <param name="colorspace">The required colorspace.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_set_defaults">
+      <summary>
+            Jpeg_set_defaultses this instance.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_set_linear_quality(System.Int32,System.Boolean)">
+      <summary>
+            Same as <see cref="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_set_quality(System.Int32,System.Boolean)" /> except that the generated tables are the 
+            sample tables given in the JPEG specification section K.1, multiplied by 
+            the specified scale factor.
+            </summary>
+      <param name="scale_factor">The scale_factor.</param>
+      <param name="force_baseline">If <c>true</c>, then the quantization table entries are 
+            constrained to the range 1..255 for full JPEG baseline compatibility. In the current 
+            implementation, this only makes a difference for quality settings below 25, and it 
+            effectively prevents very small/low quality files from being generated. The IJG decoder 
+            is capable of reading the non-baseline files generated at low quality settings when 
+            <c>force_baseline</c> is <c>false</c>, but other decoders may not be.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_set_quality(System.Int32,System.Boolean)">
+      <summary>
+            Constructs JPEG quantization tables appropriate for the indicated quality setting.
+            </summary>
+      <param name="quality">The quality value is expressed on the 0..100 scale recommended by IJG.</param>
+      <param name="force_baseline">If <c>true</c>, then the quantization table entries are constrained 
+            to the range 1..255 for full JPEG baseline compatibility. In the current implementation, 
+            this only makes a difference for quality settings below 25, and it effectively prevents 
+            very small/low quality files from being generated. The IJG decoder is capable of reading 
+            the non-baseline files generated at low quality settings when <c>force_baseline</c> is <c>false</c>,
+            but other decoders may not be.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_simple_progression">
+      <summary>
+            Generates a default scan script for writing a progressive-JPEG file.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_start_compress(System.Boolean)">
+      <summary>
+            Starts JPEG compression.
+            </summary>
+      <param name="write_all_tables">Write or not write all quantization and Huffman tables.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_stdio_dest(System.IO.Stream)">
+      <summary>
+            Sets output stream.
+            </summary>
+      <param name="outfile">The output stream.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_suppress_tables(System.Boolean)">
+      <summary>
+            Forcibly suppress or un-suppress all quantization and Huffman tables.
+            </summary>
+      <param name="suppress">if set to <c>true</c> then suppress tables; 
+            otherwise unsuppress.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_write_coefficients(BitMiracle.LibJpeg.Classic.jvirt_array{BitMiracle.LibJpeg.Classic.JBLOCK}[])">
+      <summary>
+            Compression initialization for writing raw-coefficient data. Useful for lossless transcoding.
+            </summary>
+      <param name="coef_arrays">The virtual arrays need not be filled or even realized at the time 
+            <c>jpeg_write_coefficients</c> is called; indeed, the virtual arrays typically will be realized 
+            during this routine and filled afterwards.
+            </param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_write_m_byte(System.Byte)">
+      <summary>
+            Writes a byte of special marker's data.
+            </summary>
+      <param name="val">The byte of data.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_write_m_header(System.Int32,System.Int32)">
+      <summary>
+            Writes special marker's header.
+            </summary>
+      <param name="marker">Special marker.</param>
+      <param name="datalen">Length of data associated with the marker.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_write_marker(System.Int32,System.Byte[])">
+      <summary>
+            Write a special marker.
+            </summary>
+      <param name="marker">Specify the marker type parameter as <see cref="T:BitMiracle.LibJpeg.Classic.JPEG_MARKER" />.COM for COM or 
+            <see cref="T:BitMiracle.LibJpeg.Classic.JPEG_MARKER" />.APP0 + n for APPn. (Actually, jpeg_write_marker will let you write any marker type, 
+            but we don't recommend writing any other kinds of marker)</param>
+      <param name="data">The data associated with the marker.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_write_raw_data(System.Byte[][][],System.Int32)">
+      <summary>
+            Alternate entry point to write raw data.
+            </summary>
+      <param name="data">The raw data.</param>
+      <param name="num_lines">The number of scanlines for writing.</param>
+      <returns>The number of lines actually written.</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_write_scanlines(System.Byte[][],System.Int32)">
+      <summary>
+            Write some scanlines of data to the JPEG compressor.
+            </summary>
+      <param name="scanlines">The array of scanlines.</param>
+      <param name="num_lines">The number of scanlines for writing.</param>
+      <returns>The return value will be the number of lines actually written.<br />
+            This should be less than the supplied <c>num_lines</c> only in case that 
+            the data destination module has requested suspension of the compressor, 
+            or if more than image_height scanlines are passed in.
+            </returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_write_tables">
+      <summary>
+            Alternate compression function: just write an abbreviated table file.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Max_v_samp_factor">
+      <summary>
+            Gets the largest vertical sample factor.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Next_scanline">
+      <summary>
+            Gets the index of next scanline to be written to <see cref="M:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.jpeg_write_scanlines(System.Byte[][],System.Int32)" />.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Num_components">
+      <summary>
+            Gets or sets the number of color components for JPEG color space.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Optimize_coding">
+      <summary>
+            Gets or sets a value indicating a way of using Huffman coding tables.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Quant_tbl_ptrs">
+      <summary>
+            Gets the coefficient quantization tables.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Raw_data_in">
+      <summary>
+            Gets or sets a value indicating whether you will be supplying raw data.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Restart_in_rows">
+      <summary>
+            Gets or sets the interval in MCU rows.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Restart_interval">
+      <summary>
+            Gets or sets the exact interval in MCU blocks.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Smoothing_factor">
+      <summary>
+            Gets or sets the coefficient of image smoothing.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Write_Adobe_marker">
+      <summary>
+            Gets or sets a value indicating whether to emit Adobe APP14 marker.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Write_JFIF_header">
+      <summary>
+            Gets or sets a value indicating whether the JFIF APP0 marker is emitted.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.X_density">
+      <summary>
+            Gets or sets the horizontal component of pixel ratio.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_compress_struct.Y_density">
+      <summary>
+            Gets or sets the vertical component of pixel ratio.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct">
+      <summary>
+            JPEG decompression routine.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct" /> class.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.#ctor(BitMiracle.LibJpeg.Classic.jpeg_error_mgr)">
+      <summary>
+            Initializes a new instance of the <see cref="T:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct" /> class.
+            </summary>
+      <param name="errorManager">The error manager.</param>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Actual_number_of_colors">
+      <summary>
+            The number of colors in the color map.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Buffered_image">
+      <summary>
+            Gets or sets a value indicating whether to use buffered-image mode.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Coef_bits">
+      <summary>
+            Gets the current progression status..
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Colormap">
+      <summary>
+            The color map, represented as a 2-D pixel array of <see cref="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Out_color_components" /> rows 
+            and <see cref="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Actual_number_of_colors" /> columns.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Comp_info">
+      <summary>
+            Comp_info[i] describes component that appears i'th in SOF
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Data_precision">
+      <summary>
+            Gets the data precision.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Dct_method">
+      <summary>
+            Gets or sets the algorithm used for the DCT step.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Density_unit">
+      <summary>
+            Gets the resolution information from JFIF marker.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Desired_number_of_colors">
+      <summary>
+            Maximum number of colors to use in generating a library-supplied color map.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Dither_mode">
+      <summary>
+            Selects color dithering method.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Do_block_smoothing">
+      <summary>
+            Apply interblock smoothing in early stages of decoding progressive JPEG files.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Do_fancy_upsampling">
+      <summary>
+            Enable or disable upsampling of chroma components.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Enable_1pass_quant">
+      <summary>
+            Enable future use of 1-pass quantizer.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Enable_2pass_quant">
+      <summary>
+            Enable future use of 2-pass quantizer.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Enable_external_quant">
+      <summary>
+            Enable future use of external colormap.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Image_height">
+      <summary>
+            Gets the height of image, set by <see cref="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_read_header(System.Boolean)" /></summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Image_width">
+      <summary>
+            Gets the width of image, set by <see cref="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_read_header(System.Boolean)" /></summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Input_iMCU_row">
+      <summary>
+            Gets the number of iMCU rows completed.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Input_scan_number">
+      <summary>
+            Gets the number of SOS markers seen so far.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.IsDecompressor">
+      <summary>
+            Retrieves <c>true</c> because this is a decompressor.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_abort_decompress">
+      <summary>
+            Aborts processing of a JPEG decompression operation.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_calc_output_dimensions">
+      <summary>
+            Pre-calculate output image dimensions and related values for current decompression parameters.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Jpeg_color_space">
+      <summary>
+            Gets or sets the colorspace of JPEG image.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_consume_input">
+      <summary>
+            Consume data in advance of what the decompressor requires.
+            </summary>
+      <returns>The result of data consumption.</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_copy_critical_parameters(BitMiracle.LibJpeg.Classic.jpeg_compress_struct)">
+      <summary>
+            Initializes the compression object with default parameters, then copy from the source object 
+            all parameters needed for lossless transcoding.
+            </summary>
+      <param name="dstinfo">Target JPEG compression object.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_finish_decompress">
+      <summary>
+            Finish JPEG decompression.
+            </summary>
+      <returns>Returns <c>false</c> if suspended. The return value need be inspected 
+            only if a suspending data source is used.
+            </returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_finish_output">
+      <summary>
+            Finish up after an output pass in <see href="6dba59c5-d32e-4dfc-87fe-f9eff7004146.htm" target="_self">buffered-image mode</see>.
+            </summary>
+      <returns>Returns <c>false</c> if suspended. The return value need be inspected only if a suspending data source is used.</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_has_multiple_scans">
+      <summary>
+            Is there more than one scan?
+            </summary>
+      <returns>
+        <c>true</c> if image has more than one scan; otherwise, <c>false</c></returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_input_complete">
+      <summary>
+            Indicates if we have finished reading the input file.
+            </summary>
+      <returns>
+        <c>true</c> if we have finished reading the input file.</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_read_coefficients">
+      <summary>
+            Read or write the raw DCT coefficient arrays from a JPEG file (useful for lossless transcoding).
+            </summary>
+      <returns>Returns <c>null</c> if suspended. This case need be checked only 
+            if a suspending data source is used.
+            </returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_read_header(System.Boolean)">
+      <summary>
+            Decompression startup: this will read the source datastream header markers, up to the beginning of the compressed data proper.
+            </summary>
+      <param name="require_image">Read a description of <b>Return Value</b>.</param>
+      <returns>
+            If you pass <c>require_image=true</c> (normal case), you need not check for a
+            <see cref="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_HEADER_TABLES_ONLY" /> return code; an abbreviated file will cause
+            an error exit. <see cref="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_SUSPENDED" /> is only possible if you use a data source
+            module that can give a suspension return.<br /><br />
+            
+            This method will read as far as the first SOS marker (ie, actual start of compressed data),
+            and will save all tables and parameters in the JPEG object. It will also initialize the
+            decompression parameters to default values, and finally return <see cref="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_HEADER_OK" />.
+            On return, the application may adjust the decompression parameters and then call
+            <see cref="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_start_decompress" />. (Or, if the application only wanted to
+            determine the image parameters, the data need not be decompressed. In that case, call
+            <see cref="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.jpeg_abort" /> to release any temporary space.)<br /><br />
+            
+            If an abbreviated (tables only) datastream is presented, the routine will return
+            <see cref="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_HEADER_TABLES_ONLY" /> upon reaching EOI. The application may then re-use
+            the JPEG object to read the abbreviated image datastream(s). It is unnecessary (but OK) to call
+            <see cref="M:BitMiracle.LibJpeg.Classic.jpeg_common_struct.jpeg_abort">jpeg_abort</see> in this case.
+            The <see cref="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_SUSPENDED" /> return code only occurs if the data source module
+            requests suspension of the decompressor. In this case the application should load more source
+            data and then re-call <c>jpeg_read_header</c> to resume processing.<br /><br />
+            
+            If a non-suspending data source is used and <c>require_image</c> is <c>true</c>,
+            then the return code need not be inspected since only <see cref="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_HEADER_OK" /> is possible.
+            </returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_read_raw_data(System.Byte[][][],System.Int32)">
+      <summary>
+            Alternate entry point to read raw data.
+            </summary>
+      <param name="data">The raw data.</param>
+      <param name="max_lines">The number of scanlines for reading.</param>
+      <returns>The number of lines actually read.</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_read_scanlines(System.Byte[][],System.Int32)">
+      <summary>
+            Read some scanlines of data from the JPEG decompressor.
+            </summary>
+      <param name="scanlines">Buffer for filling.</param>
+      <param name="max_lines">Required number of lines.</param>
+      <returns>The return value will be the number of lines actually read. 
+            This may be less than the number requested in several cases, including 
+            bottom of image, data source suspension, and operating modes that emit multiple scanlines at a time.
+            </returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_save_markers(System.Int32,System.Int32)">
+      <summary>
+            Control saving of COM and APPn markers into <see cref="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Marker_list">Marker_list</see>.
+            </summary>
+      <param name="marker_code">The marker type to save (see JPEG_MARKER enumeration).<br />
+            To arrange to save all the special marker types, you need to call this 
+            routine 17 times, for COM and APP0-APP15 markers.</param>
+      <param name="length_limit">If the incoming marker is longer than <c>length_limit</c> data bytes, 
+            only <c>length_limit</c> bytes will be saved; this parameter allows you to avoid chewing up memory 
+            when you only need to see the first few bytes of a potentially large marker. If you want to save 
+            all the data, set <c>length_limit</c> to 0xFFFF; that is enough since marker lengths are only 16 bits. 
+            As a special case, setting <c>length_limit</c> to 0 prevents that marker type from being saved at all. 
+            (That is the default behavior, in fact.)
+            </param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_set_marker_processor(System.Int32,BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_marker_parser_method)">
+      <summary>
+            Sets processor for special marker.
+            </summary>
+      <param name="marker_code">The marker code.</param>
+      <param name="routine">The processor.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_start_decompress">
+      <summary>
+            Decompression initialization.
+            </summary>
+      <returns>Returns <c>false</c> if suspended. The return value need be inspected 
+            only if a suspending data source is used.
+            </returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_start_output(System.Int32)">
+      <summary>
+            Initialize for an output pass in <see href="6dba59c5-d32e-4dfc-87fe-f9eff7004146.htm" target="_self">buffered-image mode</see>.
+            </summary>
+      <param name="scan_number">Indicates which scan of the input file is to be displayed; 
+            the scans are numbered starting at 1 for this purpose.</param>
+      <returns>
+        <c>true</c> if done; <c>false</c> if suspended</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_stdio_src(System.IO.Stream)">
+      <summary>
+            Sets input stream.
+            </summary>
+      <param name="infile">The input stream.</param>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Marker_list">
+      <summary>
+            Gets the list of loaded special markers.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Max_v_samp_factor">
+      <summary>
+            Gets the largest vertical sample factor.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Num_components">
+      <summary>
+            Gets the number of color components in JPEG image.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Out_color_components">
+      <summary>
+            Gets the number of color components in <see cref="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Out_color_space" />.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Out_color_space">
+      <summary>
+            Gets or sets the output color space.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Output_components">
+      <summary>
+            Gets the number of color components returned.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Output_height">
+      <summary>
+            Gets the actual height of output image.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Output_iMCU_row">
+      <summary>
+            Gets the number of iMCU rows read.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Output_scan_number">
+      <summary>
+            Gets the nominal scan number being displayed.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Output_scanline">
+      <summary>
+            Gets the number of scanlines returned so far.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Output_width">
+      <summary>
+            Gets the actual width of output image.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Quantize_colors">
+      <summary>
+            Colors quantization.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Raw_data_out">
+      <summary>
+            Enable or disable raw data output.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Rec_outbuf_height">
+      <summary>
+            Gets the recommended height of scanline buffer.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Scale_denom">
+      <summary>
+            Gets or sets the denominator of the fraction of image scaling.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Scale_num">
+      <summary>
+            Gets or sets the numerator of the fraction of image scaling.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Src">
+      <summary>
+            Gets or sets the source for decompression.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Two_pass_quantize">
+      <summary>
+            Gets or sets a value indicating whether to use two-pass color quantization.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Unread_marker">
+      <summary>
+            Gets the last read and unprocessed JPEG marker.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.X_density">
+      <summary>
+            Gets the horizontal component of pixel ratio.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.Y_density">
+      <summary>
+            Gets the vertical component of pixel ratio.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct.jpeg_marker_parser_method">
+      <summary>
+            The delegate for application-supplied marker processing methods.
+            </summary>
+      <param name="cinfo">Decompressor.</param>
+      <returns>Return <c>true</c> to indicate success. <c>false</c> should be returned only 
+            if you are using a suspending data source and it tells you to suspend.
+            </returns>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.jpeg_destination_mgr">
+      <summary>
+            Data destination object for compression.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_destination_mgr.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>BitMiracle.LibJpeg.Classic.jpeg_destination_mgr</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_destination_mgr.emit_byte(System.Int32)">
+      <summary>
+            Emits a byte.
+            </summary>
+      <param name="val">The byte value.</param>
+      <returns>
+        <c>true</c> if operation succeed; otherwise, <c>false</c></returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_destination_mgr.empty_output_buffer">
+      <summary>
+            Empties output buffer.
+            </summary>
+      <returns>
+        <c>true</c> if operation succeed; otherwise, <c>false</c></returns>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_destination_mgr.freeInBuffer">
+      <summary>
+            Gets the number of free bytes in buffer.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_destination_mgr.init_destination">
+      <summary>
+            Initializes this instance.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_destination_mgr.initInternalBuffer(System.Byte[],System.Int32)">
+      <summary>
+            Initializes the internal buffer.
+            </summary>
+      <param name="buffer">The buffer.</param>
+      <param name="offset">The offset.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_destination_mgr.term_destination">
+      <summary>
+            Term_destinations this instance.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.jpeg_error_mgr">
+      <summary>
+            Contains simple error-reporting and trace-message routines.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:BitMiracle.LibJpeg.Classic.jpeg_error_mgr" /> class.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.emit_message(System.Int32)">
+      <summary>
+            Conditionally emit a trace or warning message.
+            </summary>
+      <param name="msg_level">The message severity level.<br />
+            Values are:<br />
+            -1: recoverable corrupt-data warning, may want to abort.<br />
+            0: important advisory messages (always display to user).<br />
+            1: first level of tracing detail.<br />
+            2, 3, ...: successively more detailed tracing messages.
+            </param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.error_exit">
+      <summary>
+            Receives control for a fatal error.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.format_message">
+      <summary>
+            Constructs a readable error message string.
+            </summary>
+      <returns>The formatted message</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.GetMessageText(System.Int32)">
+      <summary>
+            Gets the actual message texts.
+            </summary>
+      <param name="code">The message code. See <see cref="T:BitMiracle.LibJpeg.Classic.J_MESSAGE_CODE" /> for details.</param>
+      <returns>The message text associated with <c>code</c>.</returns>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.Num_warnings">
+      <summary>
+            Gets the number of corrupt-data warnings.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.output_message">
+      <summary>
+            Actual output of any JPEG message.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.reset_error_mgr">
+      <summary>
+            Resets error manager to initial state.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_error_mgr.Trace_level">
+      <summary>
+            Gets or sets the maximum message level that will be displayed.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.JPEG_MARKER">
+      <summary>
+            JPEG marker codes.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF0">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF1">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF2">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF3">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF5">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF6">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF7">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.JPG">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF9">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF10">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF11">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF13">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF14">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOF15">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.DHT">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.DAC">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.RST0">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.RST1">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.RST2">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.RST3">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.RST4">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.RST5">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.RST6">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.RST7">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOI">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.EOI">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.SOS">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.DQT">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.DNL">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.DRI">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.DHP">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.EXP">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP0">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP1">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP2">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP3">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP4">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP5">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP6">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP7">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP8">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP9">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP10">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP11">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP12">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP13">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP14">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.APP15">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.JPG0">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.JPG13">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.COM">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.TEM">
+      <summary></summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JPEG_MARKER.ERROR">
+      <summary></summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.jpeg_marker_struct">
+      <summary>
+            Representation of special JPEG marker.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_marker_struct.Data">
+      <summary>
+            Gets the data associated with the marker.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_marker_struct.Marker">
+      <summary>
+            Gets the special marker.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_marker_struct.OriginalLength">
+      <summary>
+            Gets the full length of original data associated with the marker.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.jpeg_progress_mgr">
+      <summary>
+            The progress monitor object.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_progress_mgr.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>BitMiracle.LibJpeg.Classic.jpeg_progress_mgr</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_progress_mgr.Completed_passes">
+      <summary>
+            Gets or sets the number of passes completed so far.
+            </summary>
+    </member>
+    <member name="E:BitMiracle.LibJpeg.Classic.jpeg_progress_mgr.OnProgress">
+      <summary>
+            Occurs when progress is changed.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_progress_mgr.Pass_counter">
+      <summary>
+            Gets or sets the number of work units completed in this pass.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_progress_mgr.Pass_limit">
+      <summary>
+            Gets or sets the total number of work units in this pass.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jpeg_progress_mgr.Total_passes">
+      <summary>
+            Gets or sets the total number of passes expected.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_progress_mgr.Updated">
+      <summary>
+            Indicates that progress was changed.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.jpeg_source_mgr">
+      <summary>
+            Data source object for decompression.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_source_mgr.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>BitMiracle.LibJpeg.Classic.jpeg_source_mgr</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_source_mgr.fill_input_buffer">
+      <summary>
+            Fills input buffer
+            </summary>
+      <returns>
+        <c>true</c> if operation succeed; otherwise, <c>false</c></returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_source_mgr.GetByte(System.Int32@)">
+      <summary>
+            Read a byte into variable V.
+            If must suspend, take the specified action (typically "return false").
+            </summary>
+      <param name="V">The result.</param>
+      <returns>
+        <c>true</c> if operation succeed; otherwise, <c>false</c></returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_source_mgr.GetBytes(System.Byte[],System.Int32)">
+      <summary>
+            Gets the bytes.
+            </summary>
+      <param name="dest">The destination.</param>
+      <param name="amount">The amount.</param>
+      <returns>The number of available bytes.</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_source_mgr.GetTwoBytes(System.Int32@)">
+      <summary>
+            Reads two bytes interpreted as an unsigned 16-bit integer.
+            </summary>
+      <param name="V">The result.</param>
+      <returns>
+        <c>true</c> if operation succeed; otherwise, <c>false</c></returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_source_mgr.init_source">
+      <summary>
+            Initializes this instance.
+            </summary>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_source_mgr.initInternalBuffer(System.Byte[],System.Int32)">
+      <summary>
+            Initializes the internal buffer.
+            </summary>
+      <param name="buffer">The buffer.</param>
+      <param name="size">The size.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_source_mgr.MakeByteAvailable">
+      <summary>
+            Functions for fetching data from the data source module.
+            </summary>
+      <returns>
+        <c>true</c> if operation succeed; otherwise, <c>false</c></returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_source_mgr.resync_to_restart(BitMiracle.LibJpeg.Classic.jpeg_decompress_struct,System.Int32)">
+      <summary>
+            This is the default resync_to_restart method for data source 
+            managers to use if they don't have any better approach.
+            </summary>
+      <param name="cinfo">An instance of <see cref="T:BitMiracle.LibJpeg.Classic.jpeg_decompress_struct" /></param>
+      <param name="desired">The desired</param>
+      <returns>
+        <c>false</c> if suspension is required.</returns>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_source_mgr.skip_input_data(System.Int32)">
+      <summary>
+            Skip data - used to skip over a potentially large amount of
+            uninteresting data (such as an APPn marker).
+            </summary>
+      <param name="num_bytes">The number of bytes to skip.</param>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jpeg_source_mgr.term_source">
+      <summary>
+            Terminate source - called by jpeg_finish_decompress
+            after all data has been read.  Often a no-op.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.JpegConstants">
+      <summary>
+            Defines some JPEG constants.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.BITS_IN_JSAMPLE">
+      <summary>
+            The size of sample.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.C_MAX_BLOCKS_IN_MCU">
+      <summary>
+            Compressor's limit on blocks per MCU.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.CENTERJSAMPLE">
+      <summary>
+            The medium sample value.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.D_MAX_BLOCKS_IN_MCU">
+      <summary>
+            Decompressor's limit on blocks per MCU.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.DCTSIZE">
+      <summary>
+            The basic DCT block is 8x8 samples
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.DCTSIZE2">
+      <summary>
+            DCTSIZE squared; the number of elements in a block. 
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.HUFF_LOOKAHEAD">
+      <summary>
+            The number of bits of lookahead.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.JDCT_DEFAULT">
+      <summary>
+            DCT method used by default.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.JDCT_FASTEST">
+      <summary>
+            Fastest DCT method.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.JPEG_MAX_DIMENSION">
+      <summary>
+            A tad under 64K to prevent overflows. 
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.MAX_COMPONENTS">
+      <summary>
+            Maximum number of color channels allowed in JPEG image.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.MAX_COMPS_IN_SCAN">
+      <summary>
+            JPEG limit on the number of components in one scan.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.MAX_SAMP_FACTOR">
+      <summary>
+            JPEG limit on sampling factors.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.MAXJSAMPLE">
+      <summary>
+            The maximum sample value.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.NUM_HUFF_TBLS">
+      <summary>
+            Huffman tables are numbered 0..3
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.NUM_QUANT_TBLS">
+      <summary>
+            Quantization tables are numbered 0..3 
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.RGB_BLUE">
+      <summary>
+            Offset of Blue in an RGB scanline element. 
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.RGB_GREEN">
+      <summary>
+            Offset of Green in an RGB scanline element. 
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.RGB_PIXELSIZE">
+      <summary>
+            Bytes per RGB scanline element.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.JpegConstants.RGB_RED">
+      <summary>
+            Offset of Red in an RGB scanline element. 
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.JQUANT_TBL">
+      <summary>
+            DCT coefficient quantization tables.
+            </summary>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.JQUANT_TBL.Sent_table">
+      <summary>
+            Gets or sets a value indicating whether the table has been output to file.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.jvirt_array`1">
+      <summary>
+            JPEG virtual array.
+            </summary>
+      <typeparam name="T">The type of array's elements.</typeparam>
+    </member>
+    <member name="M:BitMiracle.LibJpeg.Classic.jvirt_array`1.Access(System.Int32,System.Int32)">
+      <summary>
+            Access the part of a virtual array.
+            </summary>
+      <param name="startRow">The first row in required block.</param>
+      <param name="numberOfRows">The number of required rows.</param>
+      <returns>The required part of virtual array.</returns>
+    </member>
+    <member name="P:BitMiracle.LibJpeg.Classic.jvirt_array`1.ErrorProcessor">
+      <summary>
+            Gets or sets the error processor.
+            </summary>
+    </member>
+    <member name="T:BitMiracle.LibJpeg.Classic.ReadResult">
+      <summary>
+            Describes a result of read operation.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_SUSPENDED">
+      <summary>
+            Suspended due to lack of input data. Can occur only if a suspending data source is used.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_HEADER_OK">
+      <summary>
+            Found valid image datastream.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_HEADER_TABLES_ONLY">
+      <summary>
+            Found valid table-specs-only datastream.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_REACHED_SOS">
+      <summary>
+            Reached a SOS marker (the start of a new scan)
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_REACHED_EOI">
+      <summary>
+            Reached the EOI marker (end of image)
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_ROW_COMPLETED">
+      <summary>
+            Completed reading one MCU row of compressed data.
+            </summary>
+    </member>
+    <member name="F:BitMiracle.LibJpeg.Classic.ReadResult.JPEG_SCAN_COMPLETED">
+      <summary>
+            Completed reading last MCU row of current scan.
+            </summary>
+    </member>
+  </members>
+</doc>
